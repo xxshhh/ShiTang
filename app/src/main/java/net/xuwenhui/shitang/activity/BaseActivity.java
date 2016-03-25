@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import net.xuwenhui.shitang.MyApplication;
+import net.xuwenhui.shitang.AppApplication;
 
 import butterknife.ButterKnife;
 
@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
  * Created by xwh on 2016/3/15.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+
 	/**
 	 * 打印标签
 	 */
@@ -27,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 	/**
 	 * 应用全局实例
 	 */
-	protected MyApplication mApplication;
+	protected AppApplication mApplication;
 
 	/**
 	 * 获取布局文件Id
@@ -41,14 +42,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 	 *
 	 * @return
 	 */
-	protected abstract int initData();
+	protected abstract void initData();
 
 	/**
 	 * 初始化监听器
 	 *
 	 * @return
 	 */
-	protected abstract int initListener();
+	protected abstract void initListener();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +59,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 		// 字段赋值
 		TAG = this.getClass().getSimpleName();
 		mContext = getApplicationContext();
-		mApplication = (MyApplication) this.getApplication();
+		mApplication = (AppApplication) this.getApplication();
 		// 方法调用
 		setContentView(getContentLayoutId());
 		ButterKnife.bind(this); // 注解绑定
 		initData();
 		initListener();
-		Log.e(TAG, "TaskId:" + this.getTaskId());
+		Log.e(TAG, "onCreate");
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import android.app.Application;
  * <p/>
  * Created by xwh on 2016/3/22.
  */
-public class MyApplication extends Application {
+public class AppApplication extends Application {
 
 	@Override
 	public void onCreate() {

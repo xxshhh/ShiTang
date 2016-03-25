@@ -27,6 +27,11 @@ dependencies {
     compile project(':core')
     compile project(':model')
 
+    // 基础框架
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.code.gson:gson:2.6.2'
+    // material dialog
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
+        transitive = true
+    }
 }
