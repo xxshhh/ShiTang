@@ -53,14 +53,14 @@ public abstract class BaseFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(getContentLayoutId(), container, false);
 		// 字段赋值
-		TAG = this.getClass().getSimpleName();
+		TAG = getClass().getName();
 		mContext = getActivity().getApplicationContext();
 		// 方法调用
 		// 注解绑定
 		ButterKnife.bind(this, view);
 		initData();
 		initListener();
-		Log.e(TAG, "onCreateView");
+		Log.i(TAG, "onCreateView");
 		return view;
 	}
 
@@ -69,6 +69,6 @@ public abstract class BaseFragment extends Fragment {
 		super.onDestroyView();
 		// 绑定重置
 		ButterKnife.unbind(this);
-		Log.e(TAG, "onDestroyView");
+		Log.i(TAG, "onDestroyView");
 	}
 }

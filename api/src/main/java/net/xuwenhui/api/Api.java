@@ -6,30 +6,23 @@ package net.xuwenhui.api;
  * Created by xwh on 2016/3/22.
  */
 public interface Api {
-	/**
-	 * 发送验证码
-	 *
-	 * @param phoneNum 手机号
-	 * @return
-	 */
-	public ApiResponse<Void> sendSmsCode4Register(String phoneNum);
-
-	/**
-	 * 注册
-	 *
-	 * @param phoneNum 手机号
-	 * @param code     验证码
-	 * @param password MD5加密的密码
-	 * @return
-	 */
-	public ApiResponse<Void> register(String phoneNum, String code, String password);
 
 	/**
 	 * 登录
 	 *
-	 * @param phoneNum 手机号
-	 * @param password MD5加密的密码
+	 * @param phone_num 手机号
+	 * @param password  密码
 	 * @return
 	 */
-	public ApiResponse<Void> login(String phoneNum, String password);
+	ApiResponse<Void> login(String phone_num, String password);
+
+	/**
+	 * 注册
+	 *
+	 * @param phone_num 手机号
+	 * @param password  密码
+	 * @param role_id   角色（2：用户，3：商家）
+	 * @return
+	 */
+	ApiResponse<Void> register(String phone_num, String password, int role_id);
 }

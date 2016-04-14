@@ -19,6 +19,12 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -29,9 +35,12 @@ dependencies {
 
     // 基础框架
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.google.code.gson:gson:2.6.2'
     // material dialog
     compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') {
         transitive = true
     }
+    // Mob短信SDK
+    compile name:'SMSSDK-2.0.2',ext:'aar'
+    // 圆圈头像
+    compile 'de.hdodenhof:circleimageview:2.0.0'
 }

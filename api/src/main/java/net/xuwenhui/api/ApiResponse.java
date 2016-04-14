@@ -6,49 +6,22 @@ package net.xuwenhui.api;
  * Created by xwh on 2016/3/22.
  */
 public class ApiResponse<T> {
-	/**
-	 * json数据分类
-	 * {"event": "0", "msg": "success"}
-	 * {"event": "0", "msg": "success", "obj":{...}}
-	 * {"event": "0", "msg": "success", "objList":[{...}, {...}], "currentPage": 1, "pageSize": 20, "maxCount": 2, "maxPage": 1}
-	 */
 
 	/**
-	 * 返回码，0为成功
+	 * {
+	 * code：0
+	 * message: "success"
+	 * data: { key1: value1, key2: value2, ... }
+	 * }
 	 */
-	private String event;
-	/**
-	 * 返回信息
-	 */
-	private String msg;
-	/**
-	 * 单个对象
-	 */
-	private T obj;
-	/**
-	 * 数组对象
-	 */
-	private T objList;
-	/**
-	 * 当前页数
-	 */
-	private int currentPage;
-	/**
-	 * 每页显示数量
-	 */
-	private int pageSize;
-	/**
-	 * 总条数
-	 */
-	private int maxCount;
-	/**
-	 * 总页数
-	 */
-	private int maxPage;
 
-	public ApiResponse(String event, String msg) {
-		this.event = event;
-		this.msg = msg;
+	private String code; // 状态码，0表示成功，非0表示各种不同的错误
+	private String message; // 描述信息，成功时为"success"，错误时则是错误信息
+	private T data; // 成功时返回的数据，类型为对象或数组
+
+	public ApiResponse(String code, String message) {
+		this.code = code;
+		this.message = message;
 	}
 
 	/**
@@ -57,70 +30,30 @@ public class ApiResponse<T> {
 	 * @return
 	 */
 	public boolean isSuccess() {
-		return event.equals("0");
+		return code.equals("0");
 	}
 
-	public String getEvent() {
-		return event;
+	public String getCode() {
+		return code;
 	}
 
-	public void setEvent(String event) {
-		this.event = event;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
-	public T getObj() {
-		return obj;
+	public T getData() {
+		return data;
 	}
 
-	public void setObj(T obj) {
-		this.obj = obj;
-	}
-
-	public T getObjList() {
-		return objList;
-	}
-
-	public void setObjList(T objList) {
-		this.objList = objList;
-	}
-
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
-
-	public int getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	public int getMaxCount() {
-		return maxCount;
-	}
-
-	public void setMaxCount(int maxCount) {
-		this.maxCount = maxCount;
-	}
-
-	public int getMaxPage() {
-		return maxPage;
-	}
-
-	public void setMaxPage(int maxPage) {
-		this.maxPage = maxPage;
+	public void setData(T data) {
+		this.data = data;
 	}
 }

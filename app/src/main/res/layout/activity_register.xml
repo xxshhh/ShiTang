@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/layout_appbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15sp"
+        android:layout_marginRight="15sp"
+        android:orientation="vertical"
+        android:paddingTop="13dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 手机号 -->
+            <EditText
+                android:id="@+id/edt_username"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="4"
+                android:hint="手机号"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textSize="18sp"/>
+
+            <!-- 获取验证码 -->
+            <Button
+                android:id="@+id/btn_sendSMSCode"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="获取验证码"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <!-- 验证码 -->
+        <EditText
+            android:id="@+id/edt_SMSCode"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="验证码"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textSize="18sp"/>
+
+        <!-- 密码 -->
+        <EditText
+            android:id="@+id/edt_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textSize="18sp"/>
+
+        <!-- 注册 -->
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="注册"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+</LinearLayout>
