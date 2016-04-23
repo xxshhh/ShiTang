@@ -61,14 +61,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		// 设置竖屏
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		setContentView(getContentLayoutId());
 		// 字段赋值
 		TAG = getClass().getName();
 		mContext = this;
 		mApplication = (AppApplication) getApplication();
 		mAppAction = mApplication.getAppAction();
-		// 方法调用
-		setContentView(getContentLayoutId());
-		ButterKnife.bind(this); // 注解绑定
+		// 注解绑定
+		ButterKnife.bind(this);
 		initData();
 		initListener();
 		Log.i(TAG, "onCreate");

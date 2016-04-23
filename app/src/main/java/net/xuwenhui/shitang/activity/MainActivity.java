@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.fragment.EmptyFragment;
+import net.xuwenhui.shitang.fragment.HomeFragment;
 
 import butterknife.Bind;
 
@@ -64,9 +65,11 @@ public class MainActivity extends BaseActivity {
 						break;
 					case R.id.navigation_order:
 						Toast.makeText(mContext, "订单", Toast.LENGTH_SHORT).show();
+						switchToOrder();
 						break;
 					case R.id.navigation_person:
-						Toast.makeText(mContext, "个人信息", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "我的信息", Toast.LENGTH_SHORT).show();
+						switchToPerson();
 						break;
 				}
 				item.setCheckable(true);
@@ -80,8 +83,24 @@ public class MainActivity extends BaseActivity {
 	 * 跳转到首页
 	 */
 	private void switchToHome() {
-		getFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HomeFragment()).commit();
 		mToolbar.setTitle("首页");
+	}
+
+	/**
+	 * 跳转到订单
+	 */
+	private void switchToOrder() {
+		getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+		mToolbar.setTitle("订单");
+	}
+
+	/**
+	 * 跳转到我的信息
+	 */
+	private void switchToPerson() {
+		getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+		mToolbar.setTitle("我的信息");
 	}
 
 	@Override

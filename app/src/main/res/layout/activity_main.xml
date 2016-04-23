@@ -15,14 +15,14 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/layout_appbar"
+            android:id="@+id/appbar"
             layout="@layout/layout_appbar"/>
 
         <FrameLayout
             android:id="@+id/frame_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/layout_appbar"
+            android:layout_below="@id/appbar"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
@@ -34,7 +34,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/menu_navigation"/>
+        app:menu="@menu/menu_drawer"
+        app:theme="@style/NavigationDrawerStyle"/>
 
 </android.support.v4.widget.DrawerLayout>
 

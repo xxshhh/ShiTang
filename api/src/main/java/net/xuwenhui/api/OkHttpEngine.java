@@ -16,13 +16,13 @@ import okhttp3.Response;
 
 /**
  * OkHttp引擎处理类
- * <p/>
+ * <p>
  * Created by xwh on 2016/3/29.
  */
 public class OkHttpEngine {
 
 	private final static String TAG = "OkHttpEngine";
-	private final static String SERVER_URL = "http://192.168.1.101:8080/web/";
+	private final static String SERVER_URL = "http://192.168.1.104:8080/web/";
 
 	private static OkHttpEngine instance = null;
 

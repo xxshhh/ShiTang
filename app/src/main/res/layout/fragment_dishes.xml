@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <!-- 购物车 -->
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true">
+
+        <!-- 下单 -->
+        <TextView
+            android:id="@+id/tv_order"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/third_text"
+            android:gravity="center"
+            android:text="开始选购"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_check"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/tv_order">
+
+            <!-- 图标 -->
+            <ImageView
+                android:id="@+id/img_cart"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/ic_cart_dark_64px"/>
+
+            <!-- 总价 -->
+            <TextView
+                android:id="@+id/tv_total_price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/img_cart"
+                android:gravity="center|left"
+                android:text="￥10.0"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- 菜品展示 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout1">
+
+        <!-- 菜品类别 -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_dishes_category"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"/>
+
+        <!-- 菜品列表 -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_dishes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/list_dishes_category"
+            android:layout_toRightOf="@id/list_dishes_category"/>
+    </RelativeLayout>
+
+    <!-- 购物车详情 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layout1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <RelativeLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical"
+                        android:text="购物车"
+                        android:textColor="@color/primary_text"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_clean_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_clean_yellow_64px"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="清空购物车"
+                        android:textColor="@color/primary_text"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- 订单项列表 -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_order_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout2">
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+    </FrameLayout>
+
+</RelativeLayout>

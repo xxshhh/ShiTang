@@ -1,9 +1,9 @@
 package net.xuwenhui.shitang.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,8 +54,7 @@ public abstract class BaseFragment extends Fragment {
 		View view = inflater.inflate(getContentLayoutId(), container, false);
 		// 字段赋值
 		TAG = getClass().getName();
-		mContext = getActivity().getApplicationContext();
-		// 方法调用
+		mContext = getActivity();
 		// 注解绑定
 		ButterKnife.bind(this, view);
 		initData();

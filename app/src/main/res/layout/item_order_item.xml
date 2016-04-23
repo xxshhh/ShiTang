@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <!-- 增加数量 -->
+    <ImageView
+        android:id="@+id/img_add"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/ic_add_yellow_64px"/>
+
+    <!-- 当前数量 -->
+    <TextView
+        android:id="@+id/tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/img_add"
+        android:text="1"
+        android:textColor="@color/primary_text"
+        android:textSize="20sp"
+        android:visibility="visible"/>
+
+    <!-- 减少数量 -->
+    <ImageView
+        android:id="@+id/img_subtract"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/tv_amount"
+        android:src="@mipmap/ic_subtract_yellow_64px"
+        android:visibility="visible"/>
+
+    <!-- 总价 -->
+    <TextView
+        android:id="@+id/tv_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/img_subtract"
+        android:text="￥10"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"/>
+
+    <!-- 菜品名 -->
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/tv_total_price"
+        android:singleLine="true"
+        android:text="这里是菜名"
+        android:textColor="@color/primary_text"
+        android:textSize="20sp"/>
+
+</RelativeLayout>

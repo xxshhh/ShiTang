@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/card_shop"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <!-- 图片 -->
+        <ImageView
+            android:id="@+id/img_dishes"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@mipmap/ic_launcher"/>
+
+        <RelativeLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/img_dishes">
+
+            <!-- 菜品名 -->
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="菜品"
+                android:textColor="@color/primary_text"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <!-- 销售 -->
+            <TextView
+                android:id="@+id/tv_sell"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_name"
+                android:layout_marginTop="5dp"
+                android:text="月售99份"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout1"
+            android:layout_marginLeft="69dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dp">
+
+            <!-- 售价 -->
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="￥10"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"/>
+
+            <!-- 增加数量 -->
+            <ImageView
+                android:id="@+id/img_add"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/ic_add_yellow_64px"/>
+
+            <!-- 当前数量 -->
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/img_add"
+                android:text="1"
+                android:textColor="@color/primary_text"
+                android:textSize="20sp"
+                android:visibility="visible"/>
+
+            <!-- 减少数量 -->
+            <ImageView
+                android:id="@+id/img_subtract"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/tv_amount"
+                android:src="@mipmap/ic_subtract_yellow_64px"
+                android:visibility="visible"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
