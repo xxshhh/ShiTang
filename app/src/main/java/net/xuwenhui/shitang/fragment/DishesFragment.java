@@ -1,13 +1,18 @@
 package net.xuwenhui.shitang.fragment;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
@@ -16,6 +21,7 @@ import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.DishesAdapter;
 import net.xuwenhui.shitang.adapter.DishesCategoryAdapter;
 import net.xuwenhui.shitang.adapter.OrderItemAdapter;
+import net.xuwenhui.shitang.util.T;
 import net.xuwenhui.shitang.view.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -40,18 +46,20 @@ public class DishesFragment extends BaseFragment {
 	TextView mTvTotalPrice;
 	@Bind(R.id.layout_check)
 	RelativeLayout mLayoutCheck;
-	@Bind(R.id.layout1)
-	RelativeLayout mLayout1;
+	@Bind(R.id.layout_cart_bottom)
+	RelativeLayout mLayoutCartBottom;
 	@Bind(R.id.list_dishes_category)
 	RecyclerView mListDishesCategory;
 	@Bind(R.id.list_dishes)
 	RecyclerView mListDishes;
 	@Bind(R.id.layout_clean_cart)
 	LinearLayout mLayoutCleanCart;
-	@Bind(R.id.layout2)
-	RelativeLayout mLayout2;
+	@Bind(R.id.layout)
+	RelativeLayout mLayout;
 	@Bind(R.id.list_order_item)
 	RecyclerView mListOrderItem;
+	@Bind(R.id.layout_cart_detail)
+	FrameLayout mLayoutCartDetail;
 
 	DishesCategoryAdapter mDishesCategoryAdapter;
 
@@ -90,7 +98,7 @@ public class DishesFragment extends BaseFragment {
 			Dishes dishes = new Dishes(i, "测试菜品" + i, "", 10, (i - 1) / 5 + 1, 99 * i);
 			data2.add(dishes);
 		}
-		mDishesCountMap = new HashMap<>();
+		mDishesCountMap = new HashMap<>(); // 记录菜品数量
 		mDishesAdapter = new DishesAdapter(mContext, data2, mDishesCountMap);
 		mListDishes.setAdapter(mDishesAdapter);
 
@@ -99,7 +107,7 @@ public class DishesFragment extends BaseFragment {
 		mListOrderItem.setItemAnimator(new DefaultItemAnimator());
 		mListOrderItem.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
 		List<OrderItem> data3 = new ArrayList<>();
-		mOrderItemAdapter = new OrderItemAdapter(mContext, data3, mDishesCountMap);
+		mOrderItemAdapter = new OrderItemAdapter(mContext, data3);
 		mListOrderItem.setAdapter(mOrderItemAdapter);
 	}
 
@@ -133,21 +141,31 @@ public class DishesFragment extends BaseFragment {
 			}
 		});
 
-		// 监听加、减按钮
+		// 监听菜品上的加、减按钮
 		mDishesAdapter.setOnMyClickListener(new DishesAdapter.onMyClickListener() {
 			@Override
 			public void onAddClickListener(View view, int position) {
 				Dishes dishes = mDishesAdapter.getDataList().get(position);
 				int dishes_id = dishes.getDishes_id();
-				if (mDishesCountMap != null && mDishesCountMap.containsKey(dishes_id)) {
+				if (mDishesCountMap.size() != 0 && mDishesCountMap.containsKey(dishes_id)) {
 					int count = mDishesCountMap.get(dishes_id);
 					mDishesCountMap.put(dishes_id, count + 1);
+					// 更新购物车数据
+					for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
+						if (mOrderItemAdapter.getDataList().get(i).getDishes_id() == dishes_id) {
+							mOrderItemAdapter.getDataList().get(i).setCount(count + 1);
+							break;
+						}
+					}
+					updateBottomCartStyle();
 				} else {
 					mDishesCountMap.put(dishes_id, 1);
+					// 更新购物车数据
+					OrderItem orderItem = new OrderItem(dishes_id, dishes.getName(), dishes.getPrice(), 1);
+					mOrderItemAdapter.getDataList().add(orderItem);
+					updateBottomCartStyle();
 				}
 				mDishesAdapter.notifyDataSetChanged();
-
-				// 更新购物车...
 				mOrderItemAdapter.notifyDataSetChanged();
 			}
 
@@ -159,23 +177,138 @@ public class DishesFragment extends BaseFragment {
 					int count = mDishesCountMap.get(dishes_id);
 					if (count == 1) {
 						mDishesCountMap.remove(dishes_id);
+						// 更新购物车数据
+						for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
+							if (mOrderItemAdapter.getDataList().get(i).getDishes_id() == dishes_id) {
+								mOrderItemAdapter.getDataList().remove(i);
+								break;
+							}
+						}
+						updateBottomCartStyle();
 					} else {
 						mDishesCountMap.put(dishes_id, count - 1);
+						// 更新购物车数据
+						for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
+							if (mOrderItemAdapter.getDataList().get(i).getDishes_id() == dishes_id) {
+								mOrderItemAdapter.getDataList().get(i).setCount(count - 1);
+								break;
+							}
+						}
+						updateBottomCartStyle();
 					}
 					mDishesAdapter.notifyDataSetChanged();
-
-					// 更新购物车...
 					mOrderItemAdapter.notifyDataSetChanged();
 				}
 			}
 		});
 
+		// 监听购物车上的加、减按钮
+		mOrderItemAdapter.setOnMyClickListener(new OrderItemAdapter.onMyClickListener() {
+			@Override
+			public void onAddClickListener(View view, int position) {
+				int dishes_id = mOrderItemAdapter.getDataList().get(position).getDishes_id();
+				int count = mDishesCountMap.get(dishes_id);
+				mDishesCountMap.put(dishes_id, count + 1);
+				mOrderItemAdapter.getDataList().get(position).setCount(count + 1);
+				updateBottomCartStyle();
+
+				mDishesAdapter.notifyDataSetChanged();
+				mOrderItemAdapter.notifyDataSetChanged();
+			}
+
+			@Override
+			public void onSubtractClickListener(View view, int position) {
+				int dishes_id = mOrderItemAdapter.getDataList().get(position).getDishes_id();
+				int count = mDishesCountMap.get(dishes_id);
+				if (count == 1) {
+					mDishesCountMap.remove(dishes_id);
+					mOrderItemAdapter.getDataList().remove(position);
+					updateBottomCartStyle();
+				} else {
+					mDishesCountMap.put(dishes_id, count - 1);
+					mOrderItemAdapter.getDataList().get(position).setCount(count - 1);
+					updateBottomCartStyle();
+				}
+
+				mDishesAdapter.notifyDataSetChanged();
+				mOrderItemAdapter.notifyDataSetChanged();
+			}
+		});
+
+		// 设置购物车显示
+		mLayoutCartDetail.setVisibility(View.INVISIBLE);
+		mLayoutCheck.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (mLayoutCartDetail.getVisibility() == View.INVISIBLE)
+					mLayoutCartDetail.setVisibility(View.VISIBLE);
+				else {
+					mLayoutCartDetail.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+		mLayoutCheck.setClickable(false);
+
 		// 清空购物车
 		mLayoutCleanCart.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				new MaterialDialog.Builder(mContext)
+						.content("确定要清空购物车吗？")
+						.positiveText(R.string.agree)
+						.negativeText(R.string.disagree)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+							@Override
+							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+								mDishesCountMap.clear();
+								mOrderItemAdapter.getDataList().clear();
+								updateBottomCartStyle();
+
+								mDishesAdapter.notifyDataSetChanged();
+								mOrderItemAdapter.notifyDataSetChanged();
+							}
+						})
+						.show();
 			}
 		});
+
+		// 下单按钮
+		mTvOrder.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				T.show(mContext, "我要下单！！！");
+			}
+		});
+		mTvOrder.setClickable(false);
 	}
 
+	/**
+	 * 更新底部购物车样式
+	 */
+	void updateBottomCartStyle() {
+		// 无点餐样式
+		if (mDishesCountMap.size() == 0) {
+			mLayoutCartDetail.setVisibility(View.INVISIBLE);
+			mLayoutCheck.setClickable(false);
+			mTvOrder.setClickable(false);
+			mImgCart.setImageResource(R.mipmap.ic_cart_dark_64px);
+			mTvOrder.setText("开始选购");
+			mTvOrder.setBackgroundColor(getResources().getColor(R.color.third_text));
+			mTvTotalPrice.setText("￥0.0");
+			mTvTotalPrice.setTextColor(getResources().getColor(R.color.third_text));
+		} else {
+			mLayoutCheck.setClickable(true);
+			mTvOrder.setClickable(true);
+			mImgCart.setImageResource(R.mipmap.ic_cart_yellow_64px);
+			mTvOrder.setText("下单");
+			mTvOrder.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+			float total_price = 0.0f;
+			for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
+				total_price += mOrderItemAdapter.getDataList().get(i).getPrice()
+						* mOrderItemAdapter.getDataList().get(i).getCount();
+			}
+			mTvTotalPrice.setText("￥" + total_price);
+			mTvTotalPrice.setTextColor(getResources().getColor(R.color.colorAccent));
+		}
+	}
 }

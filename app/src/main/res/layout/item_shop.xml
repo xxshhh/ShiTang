@@ -96,6 +96,7 @@
                     hedgehog:starCount="5"
                     hedgehog:starEmpty="@mipmap/ic_star_empty"
                     hedgehog:starFill="@mipmap/ic_star_fill"
+                    hedgehog:starHalf="@mipmap/ic_star_empty"
                     hedgehog:starImageSize="20dp"/>
                 <!-- 销售情况 -->
                 <TextView

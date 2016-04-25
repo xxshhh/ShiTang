@@ -12,7 +12,6 @@ import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.shitang.R;
 
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,15 +23,11 @@ import butterknife.ButterKnife;
  */
 public class OrderItemAdapter extends CommonAdapter<OrderItem> {
 
-	// 菜品数量
-	private Map<Integer, Integer> mDishesCountMap;
-
 	// 自定义点击事件
 	private onMyClickListener mOnMyClickListener;
 
-	public OrderItemAdapter(Context context, List<OrderItem> dataList, Map<Integer, Integer> dishesCountMap) {
+	public OrderItemAdapter(Context context, List<OrderItem> dataList) {
 		super(context, dataList);
-		mDishesCountMap = dishesCountMap;
 	}
 
 	public void setOnMyClickListener(onMyClickListener onMyClickListener) {

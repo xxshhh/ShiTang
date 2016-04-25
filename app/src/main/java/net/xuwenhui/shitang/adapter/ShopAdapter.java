@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hedgehog.ratingbar.RatingBar;
@@ -105,10 +106,14 @@ public class ShopAdapter extends CommonAdapter<Shop> {
 		TextView mTvSort;
 		@Bind(R.id.tv_delivery_time)
 		TextView mTvDeliveryTime;
+		@Bind(R.id.layout1)
+		LinearLayout mLayout1;
 		@Bind(R.id.ratingBar)
 		RatingBar mRatingBar;
 		@Bind(R.id.tv_sell)
 		TextView mTvSell;
+		@Bind(R.id.layout2)
+		LinearLayout mLayout2;
 		@Bind(R.id.card_shop)
 		CardView mCardShop;
 

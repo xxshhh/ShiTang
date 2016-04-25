@@ -62,7 +62,7 @@ public class DishesAdapter extends CommonAdapter<Dishes> {
 		viewHolder.mTvSell.setText("月售" + dishes.getSell() + "份");
 		viewHolder.mTvPrice.setText("￥" + dishes.getPrice());
 
-		if (mDishesCountMap != null && mDishesCountMap.containsKey(dishes.getDishes_id())) {
+		if (mDishesCountMap.size() != 0 && mDishesCountMap.containsKey(dishes.getDishes_id())) {
 			viewHolder.mTvAmount.setText(String.valueOf(mDishesCountMap.get(dishes.getDishes_id())));
 			viewHolder.mTvAmount.setVisibility(View.VISIBLE);
 			viewHolder.mImgSubtract.setVisibility(View.VISIBLE);
