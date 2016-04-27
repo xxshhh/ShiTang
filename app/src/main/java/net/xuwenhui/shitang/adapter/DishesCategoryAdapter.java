@@ -1,12 +1,12 @@
 package net.xuwenhui.shitang.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.xuwenhui.model.DishesCategory;
@@ -66,7 +66,7 @@ public class DishesCategoryAdapter extends CommonAdapter<DishesCategory> {
 		final ViewHolder viewHolder = (ViewHolder) holder;
 
 		// 设置tag
-		viewHolder.mLayout.setTag(position);
+		viewHolder.mCardDishesCategory.setTag(position);
 
 		DishesCategory dishesCategory = mDataList.get(position);
 		viewHolder.mTvCategory.setText(dishesCategory.getCategory_desc());
@@ -80,7 +80,7 @@ public class DishesCategoryAdapter extends CommonAdapter<DishesCategory> {
 
 		// 设置点击事件
 		if (mOnClickListener != null) {
-			viewHolder.mLayout.setOnClickListener(new View.OnClickListener() {
+			viewHolder.mCardDishesCategory.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
 					int position = (int) view.getTag();
@@ -94,8 +94,8 @@ public class DishesCategoryAdapter extends CommonAdapter<DishesCategory> {
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
-		@Bind(R.id.layout)
-		RelativeLayout mLayout;
+		@Bind(R.id.card_dishes_category)
+		CardView mCardDishesCategory;
 		@Bind(R.id.img_flag)
 		ImageView mImgFlag;
 		@Bind(R.id.tv_category)

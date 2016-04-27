@@ -13,12 +13,14 @@ import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.ViewpagerAdapter;
 import net.xuwenhui.shitang.fragment.DishesFragment;
 import net.xuwenhui.shitang.fragment.EmptyFragment;
+import net.xuwenhui.shitang.fragment.EvaluationFragment;
+import net.xuwenhui.shitang.fragment.ShopInfoFragment;
 
 import butterknife.Bind;
 
 /**
  * 店铺详情界面
- * <p/>
+ * <p>
  * Created by xwh on 2016/4/20.
  */
 public class ShopDetailActivity extends BaseActivity {
@@ -60,8 +62,8 @@ public class ShopDetailActivity extends BaseActivity {
 		// 设置Viewpager
 		ViewpagerAdapter adapter = new ViewpagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new DishesFragment(), "点菜");
-		adapter.addFragment(new EmptyFragment(), "评价");
-		adapter.addFragment(new EmptyFragment(), "商家");
+		adapter.addFragment(new EvaluationFragment(), "评价");
+		adapter.addFragment(new ShopInfoFragment(), "商家");
 		mViewPager.setAdapter(adapter);
 		mTabLayout.setupWithViewPager(mViewPager);
 	}

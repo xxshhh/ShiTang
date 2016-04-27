@@ -14,15 +14,15 @@ public class Evaluation implements Serializable {
 	private String phone_num;
 	private String time;
 	private float star;
-	private String message;
+	private String content;
 
-	public Evaluation(int evaluation_id, String image_src, String phone_num, String time, float star, String message) {
+	public Evaluation(int evaluation_id, String image_src, String phone_num, String time, float star, String content) {
 		this.evaluation_id = evaluation_id;
 		this.image_src = image_src;
 		this.phone_num = phone_num;
 		this.time = time;
 		this.star = star;
-		this.message = message;
+		this.content = content;
 	}
 
 	public int getEvaluation_id() {
@@ -65,11 +65,11 @@ public class Evaluation implements Serializable {
 		this.star = star;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getContent() {
+		return content;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setContent(String content) {
+		this.content = content;
 	}
 }

@@ -108,8 +108,8 @@ public class DishesAdapter extends CommonAdapter<Dishes> {
 		TextView mTvAmount;
 		@Bind(R.id.img_subtract)
 		IconicsImageView mImgSubtract;
-		@Bind(R.id.card_shop)
-		CardView mCardShop;
+		@Bind(R.id.card_dishes)
+		CardView mCardDishes;
 
 		ViewHolder(View view) {
 			super(view);

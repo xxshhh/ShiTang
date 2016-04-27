@@ -1,11 +1,13 @@
 package net.xuwenhui.model;
 
+import java.io.Serializable;
+
 /**
  * 订单项实体类
  * <p/>
  * Created by xwh on 2016/4/23.
  */
-public class OrderItem {
+public class OrderItem implements Serializable {
 
 	private int dishes_id;
 	private String dishes_name;

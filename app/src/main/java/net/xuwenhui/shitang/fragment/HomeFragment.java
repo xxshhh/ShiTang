@@ -33,8 +33,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
 	@Bind(R.id.slider_show)
 	SliderLayout mSliderShow;
-	@Bind(R.id.fab_cart)
-	FloatingActionButton mFabCart;
 	@Bind(R.id.list_shop)
 	RecyclerView mListShop;
 

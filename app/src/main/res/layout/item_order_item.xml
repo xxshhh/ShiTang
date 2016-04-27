@@ -1,65 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v7.widget.CardView
+    android:id="@+id/card_order_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background">
 
-    <!-- 增加数量 -->
-    <com.mikepenz.iconics.view.IconicsImageView
-        android:id="@+id/img_add"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        app:iiv_color="@color/colorPrimary"
-        app:iiv_icon="gmd-add-circle"/>
-
-    <!-- 当前数量 -->
-    <TextView
-        android:id="@+id/tv_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/img_add"
-        android:text="1"
-        android:textColor="@color/primary_text"
-        android:textSize="20sp"/>
-
-    <!-- 减少数量 -->
-    <com.mikepenz.iconics.view.IconicsImageView
-        android:id="@+id/img_subtract"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/tv_amount"
-        app:iiv_color="@color/colorPrimary"
-        app:iiv_icon="gmd-remove-circle"/>
-
-    <!-- 总价 -->
-    <TextView
-        android:id="@+id/tv_total_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dp"
-        android:layout_toLeftOf="@id/img_subtract"
-        android:text="￥10"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp"/>
-
-    <!-- 菜品名 -->
-    <TextView
-        android:id="@+id/tv_name"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/tv_total_price"
-        android:singleLine="true"
-        android:text="这里是菜名"
-        android:textColor="@color/primary_text"
-        android:textSize="20sp"/>
+        android:padding="5dp">
 
-</RelativeLayout>
+        <!-- 增加数量 -->
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/img_add"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:iiv_color="@color/colorPrimary"
+            app:iiv_icon="gmd-add-circle"/>
+
+        <!-- 当前数量 -->
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/img_add"
+            android:text="1"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"/>
+
+        <!-- 减少数量 -->
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/img_subtract"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/tv_amount"
+            app:iiv_color="@color/colorPrimary"
+            app:iiv_icon="gmd-remove-circle"/>
+
+        <!-- 总价 -->
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/img_subtract"
+            android:text="￥10"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"/>
+
+        <!-- 菜品名 -->
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_total_price"
+            android:singleLine="true"
+            android:text="这里是菜名"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
