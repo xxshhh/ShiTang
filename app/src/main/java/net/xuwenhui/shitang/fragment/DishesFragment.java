@@ -6,13 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.iconics.view.IconicsImageView;
 
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
@@ -41,7 +41,7 @@ public class DishesFragment extends BaseFragment {
 	@Bind(R.id.tv_order)
 	TextView mTvOrder;
 	@Bind(R.id.img_cart)
-	ImageView mImgCart;
+	IconicsImageView mImgCart;
 	@Bind(R.id.tv_total_price)
 	TextView mTvTotalPrice;
 	@Bind(R.id.layout_check)
@@ -291,7 +291,7 @@ public class DishesFragment extends BaseFragment {
 			mLayoutCartDetail.setVisibility(View.INVISIBLE);
 			mLayoutCheck.setClickable(false);
 			mTvOrder.setClickable(false);
-			mImgCart.setImageResource(R.mipmap.ic_cart_dark_64px);
+			mImgCart.setColor(getResources().getColor(R.color.third_text));
 			mTvOrder.setText("开始选购");
 			mTvOrder.setBackgroundColor(getResources().getColor(R.color.third_text));
 			mTvTotalPrice.setText("￥0.0");
@@ -299,7 +299,7 @@ public class DishesFragment extends BaseFragment {
 		} else {
 			mLayoutCheck.setClickable(true);
 			mTvOrder.setClickable(true);
-			mImgCart.setImageResource(R.mipmap.ic_cart_yellow_64px);
+			mImgCart.setColor(getResources().getColor(R.color.colorPrimary));
 			mTvOrder.setText("下单");
 			mTvOrder.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 			float total_price = 0.0f;
@@ -311,4 +311,5 @@ public class DishesFragment extends BaseFragment {
 			mTvTotalPrice.setTextColor(getResources().getColor(R.color.colorAccent));
 		}
 	}
+
 }

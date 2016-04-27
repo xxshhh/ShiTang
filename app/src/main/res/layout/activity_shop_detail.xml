@@ -56,11 +56,12 @@
             android:gravity="center_vertical"
             android:padding="3dp">
 
-            <ImageView
+            <com.mikepenz.iconics.view.IconicsImageView
                 android:layout_width="18sp"
                 android:layout_height="18sp"
                 android:layout_marginLeft="5dp"
-                android:src="@mipmap/ic_notice_red_64px"/>
+                app:iiv_color="@color/colorAccent"
+                app:iiv_icon="gmd-event-note"/>
 
             <!-- 店铺公告 -->
             <TextView

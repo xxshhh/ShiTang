@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mikepenz.iconics.view.IconicsImageView;
+
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.shitang.R;
 
@@ -101,11 +103,11 @@ public class DishesAdapter extends CommonAdapter<Dishes> {
 		@Bind(R.id.tv_price)
 		TextView mTvPrice;
 		@Bind(R.id.img_add)
-		ImageView mImgAdd;
+		IconicsImageView mImgAdd;
 		@Bind(R.id.tv_amount)
 		TextView mTvAmount;
 		@Bind(R.id.img_subtract)
-		ImageView mImgSubtract;
+		IconicsImageView mImgSubtract;
 		@Bind(R.id.card_shop)
 		CardView mCardShop;
 

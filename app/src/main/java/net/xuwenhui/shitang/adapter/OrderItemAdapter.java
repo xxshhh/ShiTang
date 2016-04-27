@@ -5,8 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mikepenz.iconics.view.IconicsImageView;
 
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.shitang.R;
@@ -74,11 +75,11 @@ public class OrderItemAdapter extends CommonAdapter<OrderItem> {
 
 	class ViewHolder extends RecyclerView.ViewHolder {
 		@Bind(R.id.img_add)
-		ImageView mImgAdd;
+		IconicsImageView mImgAdd;
 		@Bind(R.id.tv_amount)
 		TextView mTvAmount;
 		@Bind(R.id.img_subtract)
-		ImageView mImgSubtract;
+		IconicsImageView mImgSubtract;
 		@Bind(R.id.tv_total_price)
 		TextView mTvTotalPrice;
 		@Bind(R.id.tv_name)

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "net.xuwenhui.shitang"
@@ -43,7 +43,7 @@ dependencies {
         transitive = true
     }
     // Mob短信SDK
-    compile name:'SMSSDK-2.0.2',ext:'aar'
+    compile name: 'SMSSDK-2.0.2', ext: 'aar'
     // 圆圈头像
     compile 'de.hdodenhof:circleimageview:2.0.0'
     // 图片展示墙
@@ -52,4 +52,11 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     // 评分条
     compile 'com.hedgehog.ratingbar:app:1.0.4'
+    // 抽屉导航
+    compile('com.mikepenz:materialdrawer:5.2.1@aar') {
+        transitive = true
+    }
+    // 字体图标库
+    compile 'com.mikepenz:iconics-core:2.5.11@aar'
+    compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
 }

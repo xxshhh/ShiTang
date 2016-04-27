@@ -1,14 +1,18 @@
 package net.xuwenhui.shitang.activity;
 
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.view.View;
+
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.Badgeable;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.fragment.EmptyFragment;
@@ -25,14 +29,8 @@ public class MainActivity extends BaseActivity {
 
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
-	@Bind(R.id.frame_content)
-	FrameLayout mFrameContent;
-	@Bind(R.id.layout_main)
-	CoordinatorLayout mLayoutMain;
-	@Bind(R.id.navigation_view)
-	NavigationView mNavigationView;
-	@Bind(R.id.layout_drawer)
-	DrawerLayout mLayoutDrawer;
+
+	private Drawer mDrawer;
 
 	@Override
 	protected int getContentLayoutId() {
@@ -41,66 +39,80 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		// 设置toolbar
 		mToolbar.setTitle("首页");
-		// toolbar替换actionbar
 		setSupportActionBar(mToolbar);
-		// 设置抽屉开关
-		ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mLayoutDrawer, mToolbar, R.string.drawer_open, R.string.drawer_close);
-		drawerToggle.syncState();
-		mLayoutDrawer.setDrawerListener(drawerToggle);
-		// 默认跳转到首页
-		switchToHome();
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(false);
+		// 设置抽屉导航菜单
+		setupDrawer();
+		mDrawer.setSelection(1);
 	}
 
 	@Override
 	protected void initListener() {
-		// 设置抽屉导航菜单
-		mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-			@Override
-			public boolean onNavigationItemSelected(MenuItem item) {
-				switch (item.getItemId()) {
-					case R.id.navigation_home:
-						Toast.makeText(mContext, "首页", Toast.LENGTH_SHORT).show();
-						switchToHome();
-						break;
-					case R.id.navigation_order:
-						Toast.makeText(mContext, "订单", Toast.LENGTH_SHORT).show();
-						switchToOrder();
-						break;
-					case R.id.navigation_person:
-						Toast.makeText(mContext, "我的信息", Toast.LENGTH_SHORT).show();
-						switchToPerson();
-						break;
-				}
-				item.setCheckable(true);
-				mLayoutDrawer.closeDrawers();
-				return true;
-			}
-		});
+
 	}
 
 	/**
-	 * 跳转到首页
+	 * 设置抽屉导航菜单
 	 */
-	private void switchToHome() {
-		getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HomeFragment()).commit();
-		mToolbar.setTitle("首页");
-	}
+	private void setupDrawer() {
+		PrimaryDrawerItem item_home = new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1);
+		PrimaryDrawerItem item_order = new PrimaryDrawerItem().withName(R.string.drawer_item_order).withIcon(GoogleMaterial.Icon.gmd_assignment).withBadge("99").withIdentifier(2);
+		PrimaryDrawerItem item_person = new PrimaryDrawerItem().withName(R.string.drawer_item_person).withIcon(GoogleMaterial.Icon.gmd_person).withIdentifier(3);
 
-	/**
-	 * 跳转到订单
-	 */
-	private void switchToOrder() {
-		getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
-		mToolbar.setTitle("订单");
-	}
+		SecondaryDrawerItem item_settings = (SecondaryDrawerItem) new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(4);
 
-	/**
-	 * 跳转到我的信息
-	 */
-	private void switchToPerson() {
-		getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
-		mToolbar.setTitle("我的信息");
+		mDrawer = new DrawerBuilder()
+				.withActivity(this)
+				.withHeader(R.layout.layout_drawer_header)
+				.withToolbar(mToolbar)
+				.addDrawerItems(
+						item_home,
+						item_order,
+						item_person,
+						new SectionDrawerItem().withName(R.string.drawer_item_others),
+						item_settings
+				)
+				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+					@Override
+					public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+						if (drawerItem != null) {
+							// 设置气泡
+							if (drawerItem instanceof Badgeable) {
+								Badgeable badgeable = (Badgeable) drawerItem;
+								if (badgeable.getBadge() != null) {
+									//note don't do this if your badge contains a "+"
+									//only use toString() if you set the test as String
+									int badge = Integer.valueOf(badgeable.getBadge().toString());
+									if (badge > 0) {
+										badgeable.withBadge(String.valueOf(badge - 1));
+										mDrawer.updateItem(drawerItem);
+									}
+								}
+							}
+							// 跳转页面
+							switch ((int) drawerItem.getIdentifier()) {
+								case 1:
+									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HomeFragment()).commit();
+									mToolbar.setTitle("首页");
+									break;
+								case 2:
+									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+									mToolbar.setTitle("订单");
+									break;
+								case 3:
+									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+									mToolbar.setTitle("我的信息");
+									break;
+								default:
+							}
+						}
+						return false;
+					}
+				})
+				.build();
 	}
 
 	@Override
@@ -123,5 +135,15 @@ public class MainActivity extends BaseActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		//handle the back press :D close the drawer first and if the drawer is closed close the activity
+		if (mDrawer != null && mDrawer.isDrawerOpen()) {
+			mDrawer.closeDrawer();
+		} else {
+			super.onBackPressed();
+		}
 	}
 }

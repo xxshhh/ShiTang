@@ -102,7 +102,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 
 		final List<Shop> data = new ArrayList<>();
 		for (int i = 1; i < 10; i++) {
-			Shop shop = new Shop(i, "测试店" + i, "", "六食堂", i + 20, (float) (i / 5.0 + 2.0), 200 * i);
+			Shop shop = new Shop(i, "测试店" + i, "", "六食堂", i + 20, (float) (i / 5.0 + 3.0), 200 * i);
 			data.add(shop);
 		}
 		ShopAdapter adapter = new ShopAdapter(mContext, data);

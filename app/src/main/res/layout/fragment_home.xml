@@ -22,7 +22,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"
-        android:src="@mipmap/ic_cart_white_64px"/>
+        android:src="@mipmap/ic_launcher"/>
 
     <!-- 商店列表 -->
     <android.support.v7.widget.RecyclerView

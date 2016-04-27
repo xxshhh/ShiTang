@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hedgehog.ratingbar.RatingBar;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -57,7 +60,24 @@ public class ShopAdapter extends CommonAdapter<Shop> {
 		viewHolder.mTvDeliveryTime.setText("约" + shop.getDelivery_time() + "分钟");
 		viewHolder.mTvSell.setText("月售" + shop.getSell() + "单");
 
-		viewHolder.mRatingBar.setStar(Math.round(shop.getAvg_star()));
+		// 设置评分条外观
+		Drawable fill = new IconicsDrawable(mContext)
+				.icon(GoogleMaterial.Icon.gmd_star)
+				.color(mContext.getResources().getColor(R.color.colorPrimary))
+				.sizeDp(20);
+		Drawable empty = new IconicsDrawable(mContext)
+				.icon(GoogleMaterial.Icon.gmd_star_border)
+				.color(mContext.getResources().getColor(R.color.colorPrimary))
+				.sizeDp(20);
+		Drawable half = new IconicsDrawable(mContext)
+				.icon(GoogleMaterial.Icon.gmd_star_half)
+				.color(mContext.getResources().getColor(R.color.colorPrimary))
+				.sizeDp(20);
+		viewHolder.mRatingBar.setStarFillDrawable(fill);
+		viewHolder.mRatingBar.setStarEmptyDrawable(empty);
+		viewHolder.mRatingBar.setStarHalfDrawable(half);
+		viewHolder.mRatingBar.setStar(shop.getAvg_star());
+
 		if (!TextUtils.isEmpty(shop.getImage_src())) {
 			Picasso.with(mContext).load("http://7xjda2.com1.z0.glb.clouddn.com/t1.jpg")
 					.resize(DensityUtils.dp2px(mContext, 64), DensityUtils.dp2px(mContext, 64))

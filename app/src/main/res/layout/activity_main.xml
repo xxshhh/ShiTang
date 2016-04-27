@@ -1,41 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 抽屉式布局 -->
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/layout_drawer"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!-- 主布局 -->
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/layout_main"
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/layout_appbar"/>
+
+    <FrameLayout
+        android:id="@+id/frame_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/appbar"
-            layout="@layout/layout_appbar"/>
-
-        <FrameLayout
-            android:id="@+id/frame_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/appbar"
-            android:scrollbars="none"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-    </android.support.design.widget.CoordinatorLayout>
-
-    <!-- 抽屉导航 -->
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/menu_drawer"
-        app:theme="@style/NavigationDrawerStyle"/>
+        android:layout_below="@id/appbar"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>
 

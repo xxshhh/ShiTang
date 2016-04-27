@@ -70,13 +70,14 @@
                 android:textSize="20sp"/>
 
             <!-- 增加数量 -->
-            <ImageView
+            <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/img_add"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:src="@mipmap/ic_add_yellow_64px"/>
+                app:iiv_color="@color/colorPrimary"
+                app:iiv_icon="gmd-add-circle"/>
 
             <!-- 当前数量 -->
             <TextView
@@ -88,18 +89,17 @@
                 android:layout_toLeftOf="@id/img_add"
                 android:text="1"
                 android:textColor="@color/primary_text"
-                android:textSize="20sp"
-                android:visibility="visible"/>
+                android:textSize="20sp"/>
 
             <!-- 减少数量 -->
-            <ImageView
+            <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/img_subtract"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@id/tv_amount"
-                android:src="@mipmap/ic_subtract_yellow_64px"
-                android:visibility="visible"/>
+                app:iiv_color="@color/colorPrimary"
+                app:iiv_icon="gmd-remove-circle"/>
         </RelativeLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>
