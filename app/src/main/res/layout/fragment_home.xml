@@ -14,12 +14,81 @@
         app:pager_animation="Accordion"
         app:pager_animation_span="1100"/>
 
+    <!-- 所选商家 -->
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/slider_show"
+        android:background="@color/third_text"
+        android:padding="5dp">
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            app:iiv_color="@color/colorAccent"
+            app:iiv_icon="gmd-store"/>
+
+        <TextView
+            android:id="@+id/tv_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="全部商家"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
     <!-- 商店列表 -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_shop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/slider_show">
+        android:layout_below="@id/layout">
     </android.support.v7.widget.RecyclerView>
+
+    <!-- FAB Menu -->
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab_menu"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        fab:fab_addButtonColorNormal="@android:color/white"
+        fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
+        fab:fab_addButtonPlusIconColor="@color/colorAccent"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_title="aaa"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_title="bbb"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_title="ccc"/>
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>

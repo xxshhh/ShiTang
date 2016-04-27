@@ -11,25 +11,26 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="5dp">
 
-        <!-- 选中标志线 -->
-        <ImageView
+        <!-- 选中标志图 -->
+        <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/img_flag"
-            android:layout_width="5dp"
-            android:layout_height="30dp"
-            android:background="@color/colorPrimary"
-            android:visibility="visible"/>
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:visibility="visible"
+            app:iiv_color="@color/colorPrimary"
+            app:iiv_icon="gmd-bookmark"/>
 
         <!-- 菜品类别名 -->
         <TextView
             android:id="@+id/tv_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:layout_toRightOf="@id/img_flag"
             android:text="测试菜品"
             android:textColor="@color/secondary_text"
-            android:textSize="20dp"/>
+            android:textSize="18dp"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>
