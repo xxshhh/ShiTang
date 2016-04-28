@@ -28,6 +28,9 @@
         </activity>
         <activity android:name=".activity.RegisterActivity"></activity>
         <activity android:name=".activity.ShopDetailActivity"></activity>
+        <activity android:name=".activity.ConfirmOrderActivity"></activity>
+        <activity android:name=".activity.AddressActivity"></activity>
+        <activity android:name=".activity.AddressDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -39,7 +39,7 @@
     <!-- 分隔条 -->
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:layout_below="@id/tv_evaluation"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
@@ -79,7 +79,7 @@
     <!-- 分隔条 -->
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="3dp"
         android:layout_below="@id/tv_evaluation"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"

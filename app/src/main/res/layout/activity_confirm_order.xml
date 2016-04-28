@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground">
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/layout_appbar"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_confirm_order_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true">
+
+        <!-- 下单 -->
+        <TextView
+            android:id="@+id/tv_order"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="确认下单"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+
+        <!-- 总价 -->
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/tv_order"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:text="总价 ￥0.0"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+    <!-- 收货地址 -->
+    <RelativeLayout
+        android:id="@+id/layout_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appbar"
+        android:padding="20dp">
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/icon_location"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            app:iiv_color="@color/colorPrimary"
+            app:iiv_icon="gmd-location-on"/>
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/icon_forward"
+            android:layout_width="20dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:iiv_color="@color/primary_text"
+            app:iiv_icon="gmd-arrow-forward"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@id/icon_forward"
+            android:layout_toRightOf="@id/icon_location"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_address_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="许文辉 先生 18995629148"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_address_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="海4"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- 分隔条 -->
+    <ImageView
+        android:id="@+id/img_divider1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/layout_address"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/third_text"/>
+
+    <!-- 订单备注 -->
+    <RelativeLayout
+        android:id="@+id/layout_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_divider1"
+        android:padding="20dp">
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/icon_note"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            app:iiv_color="@color/colorPrimary"
+            app:iiv_icon="gmd-create"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/icon_note"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/icon_note"
+                android:text="订单备注"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="点击添加备注"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- 分隔条 -->
+    <ImageView
+        android:id="@+id/img_divider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/layout_note"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/third_text"/>
+
+    <!-- 订单项 -->
+    <RelativeLayout
+        android:id="@+id/layout_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/layout_confirm_order_bottom"
+        android:layout_below="@id/img_divider2"
+        android:padding="20dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_shop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/icon_shop"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                app:iiv_color="@color/colorPrimary"
+                app:iiv_icon="gmd-store"/>
+
+            <TextView
+                android:id="@+id/tv_order_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/icon_shop"
+                android:text="店铺名"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
+        <!-- 订单项列表 -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_order_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_shop"
+            android:layout_marginTop="15dp">
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+</RelativeLayout>

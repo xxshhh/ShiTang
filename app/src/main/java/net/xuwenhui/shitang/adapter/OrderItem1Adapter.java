@@ -19,16 +19,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 订单项适配器
+ * 订单项适配器1(用于购物车)
  * <p/>
  * Created by xwh on 2016/4/23.
  */
-public class OrderItemAdapter extends CommonAdapter<OrderItem> {
+public class OrderItem1Adapter extends CommonAdapter<OrderItem> {
 
 	// 自定义点击事件
 	private onMyClickListener mOnMyClickListener;
 
-	public OrderItemAdapter(Context context, List<OrderItem> dataList) {
+	public OrderItem1Adapter(Context context, List<OrderItem> dataList) {
 		super(context, dataList);
 	}
 
@@ -44,7 +44,7 @@ public class OrderItemAdapter extends CommonAdapter<OrderItem> {
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(mContext).inflate(R.layout.item_order_item, parent, false);
+		View v = LayoutInflater.from(mContext).inflate(R.layout.item_order_item1, parent, false);
 		return new ViewHolder(v);
 	}
 

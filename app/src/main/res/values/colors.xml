@@ -7,5 +7,7 @@
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
-    <color name="third_text">#c3c3c3</color>
+    <color name="third_text">#D3D3D3</color>
+
+    <color name="colorBackground">#EEEEEC</color>
 </resources>

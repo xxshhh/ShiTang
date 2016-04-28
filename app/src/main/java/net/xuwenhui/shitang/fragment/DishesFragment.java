@@ -1,5 +1,7 @@
 package net.xuwenhui.shitang.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,12 +20,13 @@ import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.activity.ConfirmOrderActivity;
 import net.xuwenhui.shitang.adapter.DishesAdapter;
 import net.xuwenhui.shitang.adapter.DishesCategoryAdapter;
-import net.xuwenhui.shitang.adapter.OrderItemAdapter;
-import net.xuwenhui.shitang.util.T;
+import net.xuwenhui.shitang.adapter.OrderItem1Adapter;
 import net.xuwenhui.shitang.view.DividerItemDecoration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +68,7 @@ public class DishesFragment extends BaseFragment {
 
 	DishesAdapter mDishesAdapter;
 
-	OrderItemAdapter mOrderItemAdapter;
+	OrderItem1Adapter mOrderItem1Adapter;
 
 	// 菜品数量
 	private Map<Integer, Integer> mDishesCountMap;
@@ -107,8 +110,8 @@ public class DishesFragment extends BaseFragment {
 		mListOrderItem.setItemAnimator(new DefaultItemAnimator());
 		mListOrderItem.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
 		List<OrderItem> data3 = new ArrayList<>();
-		mOrderItemAdapter = new OrderItemAdapter(mContext, data3);
-		mListOrderItem.setAdapter(mOrderItemAdapter);
+		mOrderItem1Adapter = new OrderItem1Adapter(mContext, data3);
+		mListOrderItem.setAdapter(mOrderItem1Adapter);
 	}
 
 	@Override
@@ -151,9 +154,9 @@ public class DishesFragment extends BaseFragment {
 					int count = mDishesCountMap.get(dishes_id);
 					mDishesCountMap.put(dishes_id, count + 1);
 					// 更新购物车数据
-					for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
-						if (mOrderItemAdapter.getDataList().get(i).getDishes_id() == dishes_id) {
-							mOrderItemAdapter.getDataList().get(i).setCount(count + 1);
+					for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
+						if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
+							mOrderItem1Adapter.getDataList().get(i).setCount(count + 1);
 							break;
 						}
 					}
@@ -162,11 +165,11 @@ public class DishesFragment extends BaseFragment {
 					mDishesCountMap.put(dishes_id, 1);
 					// 更新购物车数据
 					OrderItem orderItem = new OrderItem(dishes_id, dishes.getName(), dishes.getPrice(), 1);
-					mOrderItemAdapter.getDataList().add(orderItem);
+					mOrderItem1Adapter.getDataList().add(orderItem);
 					updateBottomCartStyle();
 				}
 				mDishesAdapter.notifyDataSetChanged();
-				mOrderItemAdapter.notifyDataSetChanged();
+				mOrderItem1Adapter.notifyDataSetChanged();
 			}
 
 			@Override
@@ -178,9 +181,9 @@ public class DishesFragment extends BaseFragment {
 					if (count == 1) {
 						mDishesCountMap.remove(dishes_id);
 						// 更新购物车数据
-						for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
-							if (mOrderItemAdapter.getDataList().get(i).getDishes_id() == dishes_id) {
-								mOrderItemAdapter.getDataList().remove(i);
+						for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
+							if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
+								mOrderItem1Adapter.getDataList().remove(i);
 								break;
 							}
 						}
@@ -188,50 +191,50 @@ public class DishesFragment extends BaseFragment {
 					} else {
 						mDishesCountMap.put(dishes_id, count - 1);
 						// 更新购物车数据
-						for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
-							if (mOrderItemAdapter.getDataList().get(i).getDishes_id() == dishes_id) {
-								mOrderItemAdapter.getDataList().get(i).setCount(count - 1);
+						for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
+							if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
+								mOrderItem1Adapter.getDataList().get(i).setCount(count - 1);
 								break;
 							}
 						}
 						updateBottomCartStyle();
 					}
 					mDishesAdapter.notifyDataSetChanged();
-					mOrderItemAdapter.notifyDataSetChanged();
+					mOrderItem1Adapter.notifyDataSetChanged();
 				}
 			}
 		});
 
 		// 监听购物车上的加、减按钮
-		mOrderItemAdapter.setOnMyClickListener(new OrderItemAdapter.onMyClickListener() {
+		mOrderItem1Adapter.setOnMyClickListener(new OrderItem1Adapter.onMyClickListener() {
 			@Override
 			public void onAddClickListener(View view, int position) {
-				int dishes_id = mOrderItemAdapter.getDataList().get(position).getDishes_id();
+				int dishes_id = mOrderItem1Adapter.getDataList().get(position).getDishes_id();
 				int count = mDishesCountMap.get(dishes_id);
 				mDishesCountMap.put(dishes_id, count + 1);
-				mOrderItemAdapter.getDataList().get(position).setCount(count + 1);
+				mOrderItem1Adapter.getDataList().get(position).setCount(count + 1);
 				updateBottomCartStyle();
 
 				mDishesAdapter.notifyDataSetChanged();
-				mOrderItemAdapter.notifyDataSetChanged();
+				mOrderItem1Adapter.notifyDataSetChanged();
 			}
 
 			@Override
 			public void onSubtractClickListener(View view, int position) {
-				int dishes_id = mOrderItemAdapter.getDataList().get(position).getDishes_id();
+				int dishes_id = mOrderItem1Adapter.getDataList().get(position).getDishes_id();
 				int count = mDishesCountMap.get(dishes_id);
 				if (count == 1) {
 					mDishesCountMap.remove(dishes_id);
-					mOrderItemAdapter.getDataList().remove(position);
+					mOrderItem1Adapter.getDataList().remove(position);
 					updateBottomCartStyle();
 				} else {
 					mDishesCountMap.put(dishes_id, count - 1);
-					mOrderItemAdapter.getDataList().get(position).setCount(count - 1);
+					mOrderItem1Adapter.getDataList().get(position).setCount(count - 1);
 					updateBottomCartStyle();
 				}
 
 				mDishesAdapter.notifyDataSetChanged();
-				mOrderItemAdapter.notifyDataSetChanged();
+				mOrderItem1Adapter.notifyDataSetChanged();
 			}
 		});
 
@@ -261,11 +264,11 @@ public class DishesFragment extends BaseFragment {
 							@Override
 							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 								mDishesCountMap.clear();
-								mOrderItemAdapter.getDataList().clear();
+								mOrderItem1Adapter.getDataList().clear();
 								updateBottomCartStyle();
 
 								mDishesAdapter.notifyDataSetChanged();
-								mOrderItemAdapter.notifyDataSetChanged();
+								mOrderItem1Adapter.notifyDataSetChanged();
 							}
 						})
 						.show();
@@ -276,7 +279,12 @@ public class DishesFragment extends BaseFragment {
 		mTvOrder.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				T.show(mContext, "我要下单！！！");
+				Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("OrderItemList", (Serializable) mOrderItem1Adapter.getDataList());
+				bundle.putString("TotalPrice", mTvTotalPrice.getText().toString());
+				intent.putExtras(bundle);
+				startActivity(intent);
 			}
 		});
 		mTvOrder.setClickable(false);
@@ -300,12 +308,12 @@ public class DishesFragment extends BaseFragment {
 			mLayoutCheck.setClickable(true);
 			mTvOrder.setClickable(true);
 			mImgCart.setColor(getResources().getColor(R.color.colorPrimary));
-			mTvOrder.setText("下单");
+			mTvOrder.setText("选好了");
 			mTvOrder.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 			float total_price = 0.0f;
-			for (int i = 0; i < mOrderItemAdapter.getDataList().size(); i++) {
-				total_price += mOrderItemAdapter.getDataList().get(i).getPrice()
-						* mOrderItemAdapter.getDataList().get(i).getCount();
+			for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
+				total_price += mOrderItem1Adapter.getDataList().get(i).getPrice()
+						* mOrderItem1Adapter.getDataList().get(i).getCount();
 			}
 			mTvTotalPrice.setText("￥" + total_price);
 			mTvTotalPrice.setTextColor(getResources().getColor(R.color.colorAccent));

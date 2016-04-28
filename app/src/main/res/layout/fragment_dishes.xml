@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/tv_order"
+            android:background="@android:color/white"
             android:clickable="false">
 
             <!-- 图标 -->
