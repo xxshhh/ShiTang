@@ -116,7 +116,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 		// 设置ItemAnimator
 		mListShop.setItemAnimator(new DefaultItemAnimator());
 		// 设置分隔线
-		mListShop.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
+//		mListShop.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
 		// 设置固定大小
 		mListShop.setHasFixedSize(true);
 

@@ -17,6 +17,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.fragment.EmptyFragment;
 import net.xuwenhui.shitang.fragment.HomeFragment;
+import net.xuwenhui.shitang.fragment.OrderFragment;
 
 import butterknife.Bind;
 
@@ -99,7 +100,7 @@ public class MainActivity extends BaseActivity {
 									mToolbar.setTitle("首页");
 									break;
 								case 2:
-									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new OrderFragment()).commit();
 									mToolbar.setTitle("订单");
 									break;
 								case 3:

@@ -98,7 +98,7 @@ public class DishesFragment extends BaseFragment {
 		mListDishes.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
 		List<Dishes> data2 = new ArrayList<>();
 		for (int i = 1; i <= 15; i++) {
-			Dishes dishes = new Dishes(i, "测试菜品" + i, "", 10, (i - 1) / 5 + 1, 99 * i);
+			Dishes dishes = new Dishes(i, "测试菜品" + i, "", 10 - i / 5, (i - 1) / 5 + 1, 99 * i);
 			data2.add(dishes);
 		}
 		mDishesCountMap = new HashMap<>(); // 记录菜品数量
