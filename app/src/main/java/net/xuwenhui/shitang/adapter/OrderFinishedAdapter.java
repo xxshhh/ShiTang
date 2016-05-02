@@ -79,7 +79,7 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 							.customView(R.layout.dialog_evaluate, true)
 							.negativeText(R.string.disagree)
 							.positiveText(R.string.agree)
-							.show();
+							.build();
 					final Map<String, String> map = new HashMap<>();
 					map.put("star", String.valueOf(0));
 					map.put("content", "");
@@ -126,6 +126,7 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 							dialog.dismiss();
 						}
 					});
+					dialog.show();
 				}
 			});
 		} else {
@@ -139,6 +140,7 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 				Intent intent = new Intent(mContext, OrderDetailActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("Order", order);
+				intent.putExtras(bundle);
 				mContext.startActivity(intent);
 			}
 		});

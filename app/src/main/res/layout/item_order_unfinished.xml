@@ -52,8 +52,8 @@
             <!-- 商店头像 -->
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circle_image_shop"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@mipmap/ic_launcher"
                 app:civ_border_color="@color/colorPrimaryDark"
                 app:civ_border_width="2dp"/>

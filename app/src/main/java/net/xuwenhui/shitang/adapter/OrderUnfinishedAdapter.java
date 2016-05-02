@@ -105,6 +105,7 @@ public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
 				Intent intent = new Intent(mContext, OrderDetailActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("Order", order);
+				intent.putExtras(bundle);
 				mContext.startActivity(intent);
 			}
 		});

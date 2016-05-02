@@ -18,6 +18,7 @@ import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.fragment.EmptyFragment;
 import net.xuwenhui.shitang.fragment.HomeFragment;
 import net.xuwenhui.shitang.fragment.OrderFragment;
+import net.xuwenhui.shitang.fragment.PersonFragment;
 
 import butterknife.Bind;
 
@@ -104,7 +105,7 @@ public class MainActivity extends BaseActivity {
 									mToolbar.setTitle("订单");
 									break;
 								case 3:
-									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new PersonFragment()).commit();
 									mToolbar.setTitle("我的信息");
 									break;
 								default:

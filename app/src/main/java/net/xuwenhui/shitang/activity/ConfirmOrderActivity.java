@@ -7,7 +7,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,7 +19,6 @@ import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.OrderItem2Adapter;
 import net.xuwenhui.shitang.util.T;
-import net.xuwenhui.shitang.view.DividerItemDecoration;
 
 import java.util.List;
 
@@ -123,8 +121,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 			public void onClick(View view) {
 				new MaterialDialog.Builder(mContext)
 						.title("填写备注")
-						.inputType(InputType.TYPE_CLASS_TEXT)
-						.inputRange(0, 20)
+						.negativeText(R.string.disagree)
 						.positiveText(R.string.agree)
 						.input("", "", false, new MaterialDialog.InputCallback() {
 							@Override

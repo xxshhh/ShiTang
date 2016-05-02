@@ -1,6 +1,6 @@
 package net.xuwenhui.shitang.activity;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -50,10 +50,10 @@ public class OrderDetailActivity extends BaseActivity {
 		});
 
 		// 获取Intent
-		Intent intent = getIntent();
-		Order order = (Order) intent.getSerializableExtra("Order");
+		Bundle bundle = getIntent().getExtras();
+		Order order = (Order) bundle.getSerializable("Order");
 		if (order != null) {
-			mTvOrderId.setText(order.getOrder_id());
+			mTvOrderId.setText(String.valueOf(order.getOrder_id()));
 			mTvName.setText(order.getName());
 			mTvCreateTime.setText(order.getCreate_time());
 			mTvAddressSummary.setText(order.getAddress_summary());
