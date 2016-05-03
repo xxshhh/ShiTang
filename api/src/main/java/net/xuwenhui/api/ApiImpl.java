@@ -2,6 +2,8 @@ package net.xuwenhui.api;
 
 import com.google.gson.reflect.TypeToken;
 
+import net.xuwenhui.model.User;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -24,13 +26,13 @@ public class ApiImpl implements Api {
 	}
 
 	@Override
-	public ApiResponse<Void> login(String phone_num, String password) {
+	public ApiResponse<User> login(String phone_num, String password) {
 		Map<String, String> paramMap = new HashMap<>();
 		paramMap.put("method", "login");
 		paramMap.put("phone_num", phone_num);
 		paramMap.put("password", password);
 
-		Type type = new TypeToken<ApiResponse<Void>>() {
+		Type type = new TypeToken<ApiResponse<User>>() {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);

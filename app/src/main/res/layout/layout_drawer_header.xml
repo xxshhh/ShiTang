@@ -19,7 +19,7 @@
         app:civ_border_color="@color/colorPrimaryDark"/>
 
     <TextView
-        android:id="@+id/tv_username"
+        android:id="@+id/tv_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

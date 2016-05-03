@@ -6,22 +6,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mikepenz.iconics.view.IconicsImageView;
+
 import net.xuwenhui.shitang.R;
 
 import butterknife.Bind;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 需要登录/注册界面
- * <p>
+ * <p/>
  * Created by xwh on 2016/5/3.
  */
 public class NeedLoginRegisterActivity extends BaseActivity {
 
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
-	@Bind(R.id.circle_image_person)
-	CircleImageView mCircleImagePerson;
+	@Bind(R.id.img_person)
+	IconicsImageView mImgPerson;
 	@Bind(R.id.tv_tips)
 	TextView mTvTips;
 	@Bind(R.id.btn_login_register)

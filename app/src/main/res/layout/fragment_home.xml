@@ -28,7 +28,7 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             app:iiv_color="@color/colorAccent"
-            app:iiv_icon="gmd-store"/>
+            app:iiv_icon="gmd-local-dining"/>
 
         <TextView
             android:id="@+id/tv_display_name"

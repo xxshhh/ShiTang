@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/appbar"
+            layout="@layout/layout_appbar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 基本信息管理 -->
+            <LinearLayout
+                android:id="@+id/layout_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_green_light"
+                    app:iiv_icon="gmd-local-dining"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="基本信息管理"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+
+            <!-- 分隔线 -->
+            <ImageView
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/third_text"/>
+
+            <!-- 发布公告 -->
+            <LinearLayout
+                android:id="@+id/layout_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_red_light"
+                    app:iiv_icon="gmd-event-note"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="发布公告"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 分隔线 -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/third_text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 菜品类别管理 -->
+            <LinearLayout
+                android:id="@+id/layout_dishes_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_blue_dark"
+                    app:iiv_icon="gmd-sort"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="菜品类别管理"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+
+            <!-- 分隔线 -->
+            <ImageView
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/third_text"/>
+
+            <!-- 菜品管理 -->
+            <LinearLayout
+                android:id="@+id/layout_dishes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_orange_dark"
+                    app:iiv_icon="gmd-face"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="菜品管理"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 分隔线 -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/third_text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 订单管理 -->
+            <LinearLayout
+                android:id="@+id/layout_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_purple"
+                    app:iiv_icon="gmd-assignment"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="订单管理"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+
+            <!-- 分隔线 -->
+            <ImageView
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/third_text"/>
+
+            <!-- 更多 -->
+            <LinearLayout
+                android:id="@+id/layout_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/black"
+                    app:iiv_icon="gmd-more-horiz"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="更多"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 分隔线 -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/third_text"/>
+
+    </LinearLayout>
+</RelativeLayout>

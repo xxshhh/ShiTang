@@ -1,9 +1,11 @@
 package net.xuwenhui.shitang.activity;
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.Drawer;
@@ -19,6 +21,7 @@ import net.xuwenhui.shitang.fragment.EmptyFragment;
 import net.xuwenhui.shitang.fragment.HomeFragment;
 import net.xuwenhui.shitang.fragment.OrderFragment;
 import net.xuwenhui.shitang.fragment.PersonFragment;
+import net.xuwenhui.shitang.fragment.merchant.ShopFragment;
 
 import butterknife.Bind;
 
@@ -48,77 +51,122 @@ public class MainActivity extends BaseActivity {
 		getSupportActionBar().setHomeButtonEnabled(false);
 		// 设置抽屉导航菜单
 		setupDrawer();
-		mDrawer.setSelection(1);
 	}
 
 	@Override
 	protected void initListener() {
+		/**
+		 * 抽屉顶部点击事件
+		 */
+		if (mApplication.getUser() == null) {
+			// 没登录，则点击跳转登录界面
+			mDrawer.getHeader().setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Intent intent = new Intent(mContext, LoginActivity.class);
+					startActivity(intent);
+				}
+			});
+		} else {
+			TextView tv_nickname = (TextView) mDrawer.getHeader().findViewById(R.id.tv_nickname);
+			if (mApplication.getUser().getNickname().equals("")) {
+				tv_nickname.setText("昵称");
+			} else {
+				tv_nickname.setText(mApplication.getUser().getNickname());
+			}
+		}
 
+		/**
+		 * 抽屉导航菜单点击事件
+		 */
+		mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+			@Override
+			public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+				if (drawerItem != null) {
+					// 设置气泡
+					if (drawerItem instanceof Badgeable) {
+						Badgeable badgeable = (Badgeable) drawerItem;
+						if (badgeable.getBadge() != null) {
+							//note don't do this if your badge contains a "+"
+							//only use toString() if you set the test as String
+							int badge = Integer.valueOf(badgeable.getBadge().toString());
+							if (badge > 0) {
+								badgeable.withBadge(String.valueOf(badge - 1));
+								mDrawer.updateItem(drawerItem);
+							}
+						}
+					}
+					// 跳转界面
+					switch ((int) drawerItem.getIdentifier()) {
+						case 1:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HomeFragment()).commit();
+							mToolbar.setTitle("首页");
+							break;
+						case 2:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new OrderFragment()).commit();
+							mToolbar.setTitle("我的订单");
+							break;
+						case 3:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new PersonFragment()).commit();
+							mToolbar.setTitle("我的信息");
+							break;
+						case 4:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+							mToolbar.setTitle("设置");
+							break;
+						case 5:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ShopFragment()).commit();
+							mToolbar.setTitle("我的店铺");
+							break;
+						default:
+					}
+				}
+				return false;
+			}
+		});
+		mDrawer.setSelection(1); // 默认首页
 	}
 
 	/**
-	 * 设置抽屉导航菜单
+	 * 设置抽屉导航菜单（分角色）
 	 */
 	private void setupDrawer() {
 		PrimaryDrawerItem item_home = new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1);
 		PrimaryDrawerItem item_order = new PrimaryDrawerItem().withName(R.string.drawer_item_order).withIcon(GoogleMaterial.Icon.gmd_assignment).withBadge("99").withIdentifier(2);
 		PrimaryDrawerItem item_person = new PrimaryDrawerItem().withName(R.string.drawer_item_person).withIcon(GoogleMaterial.Icon.gmd_person).withIdentifier(3);
-
 		SecondaryDrawerItem item_settings = (SecondaryDrawerItem) new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(4);
+		PrimaryDrawerItem item_shop_management = new PrimaryDrawerItem().withName(R.string.drawer_item_shop).withIcon(GoogleMaterial.Icon.gmd_local_dining).withIdentifier(5);
 
-		mDrawer = new DrawerBuilder()
-				.withActivity(this)
-				.withHeader(R.layout.layout_drawer_header)
-				.withToolbar(mToolbar)
-				.addDrawerItems(
-						item_home,
-						item_order,
-						item_person,
-						new SectionDrawerItem().withName(R.string.drawer_item_others),
-						item_settings
-				)
-				.withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-					@Override
-					public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-						if (drawerItem != null) {
-							// 设置气泡
-							if (drawerItem instanceof Badgeable) {
-								Badgeable badgeable = (Badgeable) drawerItem;
-								if (badgeable.getBadge() != null) {
-									//note don't do this if your badge contains a "+"
-									//only use toString() if you set the test as String
-									int badge = Integer.valueOf(badgeable.getBadge().toString());
-									if (badge > 0) {
-										badgeable.withBadge(String.valueOf(badge - 1));
-										mDrawer.updateItem(drawerItem);
-									}
-								}
-							}
-							// 跳转页面
-							switch ((int) drawerItem.getIdentifier()) {
-								case 1:
-									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HomeFragment()).commit();
-									mToolbar.setTitle("首页");
-									break;
-								case 2:
-									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new OrderFragment()).commit();
-									mToolbar.setTitle("订单");
-									break;
-								case 3:
-									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new PersonFragment()).commit();
-									mToolbar.setTitle("我的信息");
-									break;
-								case 4:
-									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
-									mToolbar.setTitle("设置");
-									break;
-								default:
-							}
-						}
-						return false;
-					}
-				})
-				.build();
+		if (mApplication.getUser() == null || mApplication.getUser().getRole_id() == 2) {
+			// 游客或普通用户
+			mDrawer = new DrawerBuilder()
+					.withActivity(this)
+					.withHeader(R.layout.layout_drawer_header)
+					.withToolbar(mToolbar)
+					.addDrawerItems(
+							item_home,
+							item_order,
+							item_person,
+							new SectionDrawerItem().withName(R.string.drawer_item_others),
+							item_settings
+					).build();
+		} else if (mApplication.getUser().getRole_id() == 3) {
+			// 商家
+			mDrawer = new DrawerBuilder()
+					.withActivity(this)
+					.withHeader(R.layout.layout_drawer_header)
+					.withToolbar(mToolbar)
+					.addDrawerItems(
+							item_home,
+							item_shop_management,
+							item_order,
+							item_person,
+							new SectionDrawerItem().withName(R.string.drawer_item_others),
+							item_settings
+					).build();
+		} else if (mApplication.getUser().getRole_id() == 4) {
+			// 管理员
+		}
 	}
 
 	@Override

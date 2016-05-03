@@ -9,7 +9,7 @@ import net.xuwenhui.shitang.adapter.ViewpagerAdapter;
 import butterknife.Bind;
 
 /**
- * 订单界面
+ * 我的订单界面
  * <p/>
  * Created by xwh on 2016/5/2.
  */

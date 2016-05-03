@@ -7,10 +7,11 @@ import net.xuwenhui.api.Api;
 import net.xuwenhui.api.ApiImpl;
 import net.xuwenhui.api.ApiResponse;
 import net.xuwenhui.core.util.FormCheckUtil;
+import net.xuwenhui.model.User;
 
 /**
  * AppAction接口的实现类
- * <p>
+ * <p/>
  * Created by xwh on 2016/3/29.
  */
 public class AppActionImpl implements AppAction {
@@ -27,7 +28,7 @@ public class AppActionImpl implements AppAction {
 	}
 
 	@Override
-	public void login(final String phone_num, final String password, final ActionCallbackListener<Void> listener) {
+	public void login(final String phone_num, final String password, final ActionCallbackListener<User> listener) {
 		// 参数检查
 		if (FormCheckUtil.isEmpty(phone_num)) {
 			if (listener != null)
@@ -51,18 +52,18 @@ public class AppActionImpl implements AppAction {
 		}
 
 		// 请求Api
-		new AsyncTask<Void, Void, ApiResponse<Void>>() {
+		new AsyncTask<Void, Void, ApiResponse<User>>() {
 
 			@Override
-			protected ApiResponse<Void> doInBackground(Void... voids) {
+			protected ApiResponse<User> doInBackground(Void... voids) {
 				return mApi.login(phone_num, password);
 			}
 
 			@Override
-			protected void onPostExecute(ApiResponse<Void> response) {
+			protected void onPostExecute(ApiResponse<User> response) {
 				if (listener != null && response != null) {
 					if (response.isSuccess()) {
-						listener.onSuccess(null);
+						listener.onSuccess(response.getData());
 					} else {
 						listener.onFailure(response.getCode(), response.getMessage());
 					}

@@ -25,7 +25,7 @@ import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * 个人信息界面
+ * 我的信息界面
  * <p/>
  * Created by xwh on 2016/5/2.
  */

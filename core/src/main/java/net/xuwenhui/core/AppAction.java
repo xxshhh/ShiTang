@@ -1,5 +1,7 @@
 package net.xuwenhui.core;
 
+import net.xuwenhui.model.User;
+
 /**
  * 接收app层的各种Action
  * <p/>
@@ -14,7 +16,7 @@ public interface AppAction {
 	 * @param password  密码
 	 * @param listener  回调监听器
 	 */
-	void login(String phone_num, String password, ActionCallbackListener<Void> listener);
+	void login(String phone_num, String password, ActionCallbackListener<User> listener);
 
 	/**
 	 * 注册

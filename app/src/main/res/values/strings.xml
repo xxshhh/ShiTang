@@ -5,9 +5,9 @@
     <string name="disagree">取消</string>
     <string name="choose">选择</string>
     <string name="drawer_item_home">首页</string>
-    <string name="drawer_item_order">订单</string>
+    <string name="drawer_item_order">我的订单</string>
     <string name="drawer_item_person">我的信息</string>
     <string name="drawer_item_others">其他</string>
     <string name="drawer_item_settings">设置</string>
-    <string name="drawer_item_shop_management">店铺管理</string>
+    <string name="drawer_item_shop">我的店铺</string>
 </resources>

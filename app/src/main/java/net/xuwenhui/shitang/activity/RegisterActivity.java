@@ -19,6 +19,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.util.ProgressDialogUtil;
 import net.xuwenhui.shitang.util.T;
 
 import org.json.JSONObject;
@@ -90,6 +91,7 @@ public class RegisterActivity extends BaseActivity {
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
+				ProgressDialogUtil.dismiss();
 				int event = msg.arg1;
 				int result = msg.arg2;
 				Object data = msg.obj;
@@ -151,6 +153,7 @@ public class RegisterActivity extends BaseActivity {
 		mBtnHandle.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				ProgressDialogUtil.show(mContext);
 				switch (mStep) {
 					case 1:
 						mPhoneNum = mEdtInput.getText().toString();
@@ -168,12 +171,14 @@ public class RegisterActivity extends BaseActivity {
 						mAppAction.register(mPhoneNum, mPassword, mRoleId, new ActionCallbackListener<Void>() {
 							@Override
 							public void onSuccess(Void data) {
+								ProgressDialogUtil.dismiss();
 								T.show(mContext, "注册成功");
 								finish();
 							}
 
 							@Override
 							public void onFailure(String code, String message) {
+								ProgressDialogUtil.dismiss();
 								Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
 							}
 						});

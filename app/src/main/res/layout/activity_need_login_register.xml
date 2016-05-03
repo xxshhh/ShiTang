@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -8,36 +7,41 @@
         android:id="@+id/appbar"
         layout="@layout/layout_appbar"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circle_image_person"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher"
-        app:civ_border_color="@color/colorPrimaryDark"
-        app:civ_border_width="2dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appbar"
+        android:gravity="center">
 
-    <TextView
-        android:id="@+id/tv_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/circle_image_person"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="请登录后查看"
-        android:textColor="@color/secondary_text"
-        android:textSize="18sp"/>
+        <ImageView
+            android:id="@+id/img_person"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher"/>
 
-    <Button
-        android:id="@+id/btn_login_register"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_tips"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/btn_common_selector"
-        android:padding="5dp"
-        android:text="登录/注册"
-        android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/tv_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_person"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="请登录后查看"
+            android:textColor="@color/secondary_text"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/btn_login_register"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tips"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_common_selector"
+            android:padding="5dp"
+            android:text="登录/注册"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+
 </RelativeLayout>

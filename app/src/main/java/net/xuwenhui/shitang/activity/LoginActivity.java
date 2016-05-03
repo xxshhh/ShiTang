@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.User;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.util.ProgressDialogUtil;
 import net.xuwenhui.shitang.util.T;
@@ -70,11 +71,12 @@ public class LoginActivity extends BaseActivity {
 				ProgressDialogUtil.show(mContext);
 				String phoneNum = mEdtUsername.getText().toString();
 				String password = mEdtPassword.getText().toString();
-				mAppAction.login(phoneNum, password, new ActionCallbackListener<Void>() {
+				mAppAction.login(phoneNum, password, new ActionCallbackListener<User>() {
 					@Override
-					public void onSuccess(Void data) {
+					public void onSuccess(User data) {
 						ProgressDialogUtil.dismiss();
 						T.show(mContext, "登录成功");
+						mApplication.setUser(data);
 						Intent intent = new Intent(mContext, MainActivity.class);
 						startActivity(intent);
 						finish();

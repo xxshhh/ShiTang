@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/layout_appbar"/>
+
+    <!-- 当前公告 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="当前公告"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/cardview_shadow_start_color"
+        android:gravity="center_vertical"
+        android:padding="3dp">
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:layout_width="18sp"
+            android:layout_height="18sp"
+            android:layout_marginLeft="5dp"
+            app:iiv_color="@color/colorAccent"
+            app:iiv_icon="gmd-event-note"/>
+
+        <!-- 店铺公告 -->
+        <TextView
+            android:id="@+id/tv_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="公告！！！"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <!-- 更新公告 -->
+    <Button
+        android:id="@+id/btn_update_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_common_selector"
+        android:text="更新公告"
+        android:textSize="18sp"/>
+
+</LinearLayout>

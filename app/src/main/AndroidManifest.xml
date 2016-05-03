@@ -33,6 +33,9 @@
         <activity android:name=".activity.AddressDetailActivity"></activity>
         <activity android:name=".activity.OrderDetailActivity"></activity>
         <activity android:name=".activity.NeedLoginRegisterActivity"></activity>
+        <activity android:name=".activity.merchant.CreateUpdateShopActivity"></activity>
+        <activity android:name=".activity.merchant.ShopFunctionActivity"></activity>
+        <activity android:name=".activity.merchant.ShopNoticeActivity"></activity>
     </application>
 
 </manifest>

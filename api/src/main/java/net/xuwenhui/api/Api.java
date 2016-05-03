@@ -1,5 +1,7 @@
 package net.xuwenhui.api;
 
+import net.xuwenhui.model.User;
+
 /**
  * Api接口
  * <p/>
@@ -14,7 +16,7 @@ public interface Api {
 	 * @param password  密码
 	 * @return
 	 */
-	ApiResponse<Void> login(String phone_num, String password);
+	ApiResponse<User> login(String phone_num, String password);
 
 	/**
 	 * 注册

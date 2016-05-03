@@ -50,7 +50,7 @@
                 android:layout_marginTop="2dp"
                 android:text="点击更换头像"
                 android:textColor="@color/secondary_text"
-                android:textSize="16sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -89,7 +89,7 @@
                 android:layout_marginTop="2dp"
                 android:text="这里是昵称"
                 android:textColor="@color/secondary_text"
-                android:textSize="16sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -127,7 +127,7 @@
                 android:layout_marginTop="2dp"
                 android:text="189****9148"
                 android:textColor="@color/secondary_text"
-                android:textSize="16sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -165,7 +165,7 @@
                 android:layout_marginTop="2dp"
                 android:text="点击修改密码"
                 android:textColor="@color/secondary_text"
-                android:textSize="16sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -204,7 +204,7 @@
                 android:layout_marginTop="2dp"
                 android:text="点击管理地址"
                 android:textColor="@color/secondary_text"
-                android:textSize="16sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
