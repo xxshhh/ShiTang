@@ -108,6 +108,10 @@ public class MainActivity extends BaseActivity {
 									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new PersonFragment()).commit();
 									mToolbar.setTitle("我的信息");
 									break;
+								case 4:
+									getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+									mToolbar.setTitle("设置");
+									break;
 								default:
 							}
 						}

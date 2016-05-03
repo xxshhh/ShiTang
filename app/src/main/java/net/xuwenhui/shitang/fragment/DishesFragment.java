@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,8 +42,8 @@ import butterknife.Bind;
  */
 public class DishesFragment extends BaseFragment {
 
-	@Bind(R.id.tv_order)
-	TextView mTvOrder;
+	@Bind(R.id.btn_order)
+	Button mBtnOrder;
 	@Bind(R.id.img_cart)
 	IconicsImageView mImgCart;
 	@Bind(R.id.tv_total_price)
@@ -276,7 +277,7 @@ public class DishesFragment extends BaseFragment {
 		});
 
 		// 下单按钮
-		mTvOrder.setOnClickListener(new View.OnClickListener() {
+		mBtnOrder.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
@@ -287,7 +288,7 @@ public class DishesFragment extends BaseFragment {
 				startActivity(intent);
 			}
 		});
-		mTvOrder.setClickable(false);
+		mBtnOrder.setClickable(false);
 	}
 
 	/**
@@ -298,18 +299,18 @@ public class DishesFragment extends BaseFragment {
 		if (mDishesCountMap.size() == 0) {
 			mLayoutCartDetail.setVisibility(View.INVISIBLE);
 			mLayoutCheck.setClickable(false);
-			mTvOrder.setClickable(false);
+			mBtnOrder.setClickable(false);
 			mImgCart.setColor(getResources().getColor(R.color.third_text));
-			mTvOrder.setText("开始选购");
-			mTvOrder.setBackgroundColor(getResources().getColor(R.color.third_text));
+			mBtnOrder.setText("开始选购");
+			mBtnOrder.setBackgroundColor(getResources().getColor(R.color.third_text));
 			mTvTotalPrice.setText("￥0.0");
 			mTvTotalPrice.setTextColor(getResources().getColor(R.color.third_text));
 		} else {
 			mLayoutCheck.setClickable(true);
-			mTvOrder.setClickable(true);
+			mBtnOrder.setClickable(true);
 			mImgCart.setColor(getResources().getColor(R.color.colorPrimary));
-			mTvOrder.setText("选好了");
-			mTvOrder.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+			mBtnOrder.setText("选好了");
+			mBtnOrder.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_common_selector));
 			float total_price = 0.0f;
 			for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
 				total_price += mOrderItem1Adapter.getDataList().get(i).getPrice()

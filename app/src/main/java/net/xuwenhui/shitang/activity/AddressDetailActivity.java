@@ -3,8 +3,8 @@ package net.xuwenhui.shitang.activity;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.mikepenz.iconics.view.IconicsImageView;
 
@@ -34,8 +34,8 @@ public class AddressDetailActivity extends BaseActivity {
 	EditText mEdtAddressDesc;
 	@Bind(R.id.edt_note)
 	EditText mEdtNote;
-	@Bind(R.id.tv_ok)
-	TextView mTvOk;
+	@Bind(R.id.btn_ok)
+	Button mBtnOk;
 
 	@Override
 	protected int getContentLayoutId() {

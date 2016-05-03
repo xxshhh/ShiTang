@@ -32,6 +32,7 @@
         <activity android:name=".activity.AddressActivity"></activity>
         <activity android:name=".activity.AddressDetailActivity"></activity>
         <activity android:name=".activity.OrderDetailActivity"></activity>
+        <activity android:name=".activity.NeedLoginRegisterActivity"></activity>
     </application>
 
 </manifest>

@@ -1,79 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/layout_login"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/layout_appbar"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/layout_login"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:layout_below="@+id/appbar"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="wrap_content"
+        <!-- 用户名 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:padding="5dp">
 
-            <!-- 用户名 -->
-            <android.support.design.widget.TextInputEditText
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                app:iiv_color="@color/colorPrimary"
+                app:iiv_icon="gmd-phone-android"/>
+
+            <EditText
                 android:id="@+id/edt_username"
-                android:layout_width="240dp"
-                android:layout_height="50dp"
-                android:layout_margin="5dp"
-                android:hint="手机号"
-                android:inputType="number"
-                android:singleLine="true"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="请输入您的手机号"
+                android:singleLine="true"
+                android:textSize="16sp"/>
+        </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <!-- 密码 -->
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edt_password"
-                android:layout_width="240dp"
-                android:layout_height="50dp"
-                android:layout_margin="5dp"
-                android:hint="密码"
-                android:password="true"
-                android:singleLine="true"/>
-        </android.support.design.widget.TextInputLayout>
-
-        <!-- 登录 -->
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="200dp"
+        <!-- 密码 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="登录"
-            android:textSize="18sp"/>
+            android:padding="5dp">
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                app:iiv_color="@color/colorPrimary"
+                app:iiv_icon="gmd-lock-open"/>
+
+            <EditText
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="密码"
+                android:singleLine="true"
+                android:textSize="16sp"/>
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- 忘记密码 -->
-    <TextView
-        android:id="@+id/tv_forgetPsw"
-        android:layout_width="wrap_content"
+    <!-- 登录 -->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="20dp"
-        android:clickable="true"
-        android:text="忘记密码？"
-        android:textSize="16dp"/>
+        android:layout_below="@id/layout_login"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_common_selector"
+        android:text="登录"
+        android:textSize="18sp"/>
 
-    <!-- 注册 -->
-    <TextView
-        android:id="@+id/tv_register"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="20dp"
-        android:clickable="true"
-        android:text="没有账号？注册"
-        android:textSize="16dp"/>
+        android:layout_below="@id/btn_login"
+        android:layout_margin="10dp">
+
+        <!-- 忘记密码 -->
+        <TextView
+            android:id="@+id/tv_forgetPsw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:text="忘记密码？"
+            android:textSize="14dp"/>
+
+        <!-- 注册 -->
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:text="没有账号？注册"
+            android:textSize="14dp"/>
+    </RelativeLayout>
+
 </RelativeLayout>

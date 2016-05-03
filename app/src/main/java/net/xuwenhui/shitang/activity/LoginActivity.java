@@ -1,10 +1,11 @@
 package net.xuwenhui.shitang.activity;
 
 import android.content.Intent;
-import android.support.design.widget.TextInputEditText;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -23,18 +24,20 @@ import butterknife.Bind;
  */
 public class LoginActivity extends BaseActivity {
 
+	@Bind(R.id.toolbar)
+	Toolbar mToolbar;
 	@Bind(R.id.edt_username)
-	TextInputEditText mEdtUsername;
+	EditText mEdtUsername;
 	@Bind(R.id.edt_password)
-	TextInputEditText mEdtPassword;
+	EditText mEdtPassword;
+	@Bind(R.id.layout_login)
+	LinearLayout mLayoutLogin;
 	@Bind(R.id.btn_login)
 	Button mBtnLogin;
 	@Bind(R.id.tv_forgetPsw)
 	TextView mTvForgetPsw;
 	@Bind(R.id.tv_register)
 	TextView mTvRegister;
-	@Bind(R.id.layout_login)
-	RelativeLayout mLayoutLogin;
 
 	@Override
 	protected int getContentLayoutId() {
@@ -43,7 +46,17 @@ public class LoginActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
-
+		// 设置toolbar
+		mToolbar.setTitle("登录");
+		setSupportActionBar(mToolbar);
+		// 设置返回键<-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				onBackPressed();
+			}
+		});
 	}
 
 	@Override
@@ -92,10 +105,10 @@ public class LoginActivity extends BaseActivity {
 								Intent intent = new Intent(mContext, RegisterActivity.class);
 								switch (which) {
 									case 0:
-										intent.putExtra("role_type", 2);
+										intent.putExtra("role_id", 2);
 										break;
 									case 1:
-										intent.putExtra("role_type", 3);
+										intent.putExtra("role_id", 3);
 										break;
 									default:
 										return true;
@@ -109,4 +122,5 @@ public class LoginActivity extends BaseActivity {
 			}
 		});
 	}
+
 }

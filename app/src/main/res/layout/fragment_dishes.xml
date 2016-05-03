@@ -12,8 +12,8 @@
         android:layout_alignParentBottom="true">
 
         <!-- 下单 -->
-        <TextView
-            android:id="@+id/tv_order"
+        <Button
+            android:id="@+id/btn_order"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
@@ -29,7 +29,7 @@
             android:id="@+id/layout_check"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/tv_order"
+            android:layout_toLeftOf="@id/btn_order"
             android:background="@android:color/white"
             android:clickable="false">
 

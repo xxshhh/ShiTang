@@ -40,7 +40,7 @@
         android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:autoLink="all"
-        android:background="@drawable/edt_background"
+        android:background="@drawable/edt_common_background"
         android:enabled="true"
         android:gravity="top"
         android:inputType="textMultiLine"

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,8 +34,8 @@ public class ConfirmOrderActivity extends BaseActivity {
 
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
-	@Bind(R.id.tv_order)
-	TextView mTvOrder;
+	@Bind(R.id.btn_order)
+	Button mBtnOrder;
 	@Bind(R.id.tv_total_price)
 	TextView mTvTotalPrice;
 	@Bind(R.id.layout_confirm_order_bottom)
@@ -133,7 +134,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 		});
 
 		// 确认订单
-		mTvOrder.setOnClickListener(new View.OnClickListener() {
+		mBtnOrder.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				T.show(mContext, "完成订单");

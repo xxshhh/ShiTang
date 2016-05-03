@@ -139,16 +139,15 @@
         </LinearLayout>
 
         <!-- 确定 -->
-        <TextView
-            android:id="@+id/tv_ok"
+        <Button
+            android:id="@+id/btn_ok"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/btn_common_selector"
             android:clickable="true"
             android:gravity="center"
             android:text="确认"
-            android:textColor="@android:color/white"
             android:textSize="18sp"/>
     </LinearLayout>
 
