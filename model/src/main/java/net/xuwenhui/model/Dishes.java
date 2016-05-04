@@ -15,7 +15,7 @@ public class Dishes implements Serializable {
 	private float price;
 	private int category_id;
 
-	int sell;
+	private int sell;
 
 	public Dishes(int dishes_id, String name, String image_src, float price, int category_id, int sell) {
 		this.dishes_id = dishes_id;

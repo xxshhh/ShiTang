@@ -35,7 +35,10 @@
         <activity android:name=".activity.NeedLoginRegisterActivity"></activity>
         <activity android:name=".activity.merchant.CreateUpdateShopActivity"></activity>
         <activity android:name=".activity.merchant.ShopFunctionActivity"></activity>
-        <activity android:name=".activity.merchant.ShopNoticeActivity"></activity>
+        <activity android:name=".activity.merchant.NoticeManagementActivity"></activity>
+        <activity android:name=".activity.merchant.DishesCategoryManagementActivity"></activity>
+        <activity android:name=".activity.merchant.DishesManagementActivity"></activity>
+        <activity android:name=".activity.merchant.AddEditDishesActivity"></activity>
     </application>
 
 </manifest>

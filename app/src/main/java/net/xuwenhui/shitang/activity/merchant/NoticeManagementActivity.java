@@ -14,11 +14,11 @@ import net.xuwenhui.shitang.activity.BaseActivity;
 import butterknife.Bind;
 
 /**
- * 商家：店铺公告管理界面
+ * 商家：公告管理界面
  * <p/>
  * Created by xwh on 2016/5/3.
  */
-public class ShopNoticeActivity extends BaseActivity {
+public class NoticeManagementActivity extends BaseActivity {
 
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
@@ -29,7 +29,7 @@ public class ShopNoticeActivity extends BaseActivity {
 
 	@Override
 	protected int getContentLayoutId() {
-		return R.layout.activity_shop_notice;
+		return R.layout.activity_notice_management;
 	}
 
 	@Override

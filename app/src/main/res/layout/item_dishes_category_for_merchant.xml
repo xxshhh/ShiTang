@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/card_dishes_category"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <!-- 选中标志图 -->
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/img_flag"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:visibility="invisible"
+                app:iiv_color="@color/colorPrimary"
+                app:iiv_icon="gmd-bookmark"/>
+
+            <!-- 菜品类别名 -->
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/img_flag"
+                android:text="测试菜品"
+                android:textColor="@color/secondary_text"
+                android:textSize="18dp"/>
+        </RelativeLayout>
+
+        <!-- 编辑 -->
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/img_edit"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:iiv_color="@android:color/darker_gray"
+            app:iiv_icon="gmd-edit"/>
+
+        <!-- 删除 -->
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/img_delete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:iiv_color="@android:color/holo_red_light"
+            app:iiv_icon="gmd-remove-circle-outline"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

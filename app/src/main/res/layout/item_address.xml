@@ -17,8 +17,8 @@
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/icon_select"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:visibility="visible"
             app:iiv_color="@color/colorAccent"
@@ -30,7 +30,7 @@
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            app:iiv_color="@color/primary_text"
+            app:iiv_color="@android:color/darker_gray"
             app:iiv_icon="gmd-create"/>
 
         <LinearLayout

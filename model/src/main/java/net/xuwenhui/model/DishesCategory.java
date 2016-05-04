@@ -12,6 +12,10 @@ public class DishesCategory implements Serializable {
 	private int category_id;
 	private String category_desc;
 
+	public DishesCategory(String category_desc) {
+		this.category_desc = category_desc;
+	}
+
 	public DishesCategory(int category_id, String category_desc) {
 		this.category_id = category_id;
 		this.category_desc = category_desc;

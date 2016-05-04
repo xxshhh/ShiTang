@@ -1,10 +1,12 @@
 package net.xuwenhui.shitang.activity.merchant;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.BaseActivity;
 import net.xuwenhui.shitang.util.T;
@@ -60,6 +62,10 @@ public class ShopFunctionActivity extends BaseActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, CreateUpdateShopActivity.class);
+				Bundle bundle = new Bundle();
+				Shop shop = new Shop(1, "测试店铺", "", "6食堂", 0, 0, 0);
+				bundle.putSerializable("Shop", shop);
+				intent.putExtras(bundle);
 				startActivity(intent);
 			}
 		});
@@ -68,7 +74,7 @@ public class ShopFunctionActivity extends BaseActivity {
 		mLayoutNotice.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(mContext, ShopNoticeActivity.class);
+				Intent intent = new Intent(mContext, NoticeManagementActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -77,7 +83,8 @@ public class ShopFunctionActivity extends BaseActivity {
 		mLayoutDishesCategory.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-
+				Intent intent = new Intent(mContext, DishesCategoryManagementActivity.class);
+				startActivity(intent);
 			}
 		});
 
@@ -85,7 +92,8 @@ public class ShopFunctionActivity extends BaseActivity {
 		mLayoutDishes.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-
+				Intent intent = new Intent(mContext, DishesManagementActivity.class);
+				startActivity(intent);
 			}
 		});
 
