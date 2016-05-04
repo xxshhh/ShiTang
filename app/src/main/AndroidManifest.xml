@@ -39,6 +39,7 @@
         <activity android:name=".activity.merchant.DishesCategoryManagementActivity"></activity>
         <activity android:name=".activity.merchant.DishesManagementActivity"></activity>
         <activity android:name=".activity.merchant.AddEditDishesActivity"></activity>
+        <activity android:name=".activity.merchant.OrderManagementActivity"></activity>
     </application>
 
 </manifest>

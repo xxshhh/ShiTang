@@ -30,13 +30,13 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * 订单未完成适配器
+ * 商家：订单未完成适配器
  * <p/>
- * Created by xwh on 2016/5/2.
+ * Created by xwh on 2016/5/4.
  */
-public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
+public class OrderUnfinishedForMerchantAdapter extends CommonAdapter<Order> {
 
-	public OrderUnfinishedAdapter(Context context, List<Order> dataList) {
+	public OrderUnfinishedForMerchantAdapter(Context context, List<Order> dataList) {
 		super(context, dataList);
 	}
 
@@ -61,41 +61,6 @@ public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
 		viewHolder.mListOrderItem.setAdapter(new OrderItem2Adapter(mContext, order.getOrderItemList()));
 
 		// 设置点击事件
-		// 取消订单
-		viewHolder.mBtnCancel.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				new MaterialDialog.Builder(mContext)
-						.content("确定取消订单?")
-						.positiveText(R.string.agree)
-						.negativeText(R.string.disagree)
-						.onPositive(new MaterialDialog.SingleButtonCallback() {
-							@Override
-							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-								notifyItemRemoved(position);
-								mDataList.remove(position);
-								notifyItemRangeChanged(position, getItemCount());
-							}
-						}).show();
-			}
-		});
-		// 付款
-		viewHolder.mBtnPay.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				new MaterialDialog.Builder(mContext)
-						.content("确定付款?")
-						.positiveText(R.string.agree)
-						.negativeText(R.string.disagree)
-						.onPositive(new MaterialDialog.SingleButtonCallback() {
-							@Override
-							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-								order.setOrder_state_id(2);
-								notifyItemChanged(position);
-							}
-						}).show();
-			}
-		});
 		// 查看订单详情界面
 		viewHolder.mLayoutMore.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -111,27 +76,58 @@ public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
 		// 根据订单状态设置外观
 		switch (order.getOrder_state_id()) {
 			case 1:// 用户已提交
-				viewHolder.mBtnCancel.setVisibility(View.VISIBLE);
-				viewHolder.mBtnCancel.setText("取消订单");
-				viewHolder.mBtnCancel.setClickable(true);
+				viewHolder.mBtnCancel.setVisibility(View.INVISIBLE);
 
 				viewHolder.mBtnPay.setVisibility(View.VISIBLE);
-				viewHolder.mBtnPay.setText("付款");
-				viewHolder.mBtnPay.setClickable(true);
+				viewHolder.mBtnPay.setText("等待用户付款...");
+				viewHolder.mBtnPay.setBackgroundColor(Color.BLACK);
+				viewHolder.mBtnPay.setClickable(false);
 				break;
 			case 2:// 用户已支付
 				viewHolder.mBtnCancel.setVisibility(View.INVISIBLE);
 
-				viewHolder.mBtnPay.setText("等待商家确认...");
-				viewHolder.mBtnPay.setBackgroundColor(Color.BLACK);
-				viewHolder.mBtnPay.setClickable(false);
+				viewHolder.mBtnPay.setText("接受订单");
+				viewHolder.mBtnPay.setClickable(true);
+				viewHolder.mBtnPay.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						new MaterialDialog.Builder(mContext)
+								.content("确定接受订单吗?")
+								.positiveText(R.string.agree)
+								.negativeText(R.string.disagree)
+								.onPositive(new MaterialDialog.SingleButtonCallback() {
+									@Override
+									public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+										order.setOrder_state_id(3);
+										notifyItemChanged(position);
+									}
+								}).show();
+					}
+				});
 				break;
 			case 3:// 商家已确认
 				viewHolder.mBtnCancel.setVisibility(View.INVISIBLE);
 
-				viewHolder.mBtnPay.setText("等待商家配送...");
-				viewHolder.mBtnPay.setBackgroundColor(Color.BLACK);
-				viewHolder.mBtnPay.setClickable(false);
+				viewHolder.mBtnPay.setText("确认送达");
+				viewHolder.mBtnPay.setClickable(true);
+				viewHolder.mBtnPay.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						new MaterialDialog.Builder(mContext)
+								.content("确定订单已送达吗?")
+								.positiveText(R.string.agree)
+								.negativeText(R.string.disagree)
+								.onPositive(new MaterialDialog.SingleButtonCallback() {
+									@Override
+									public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+										order.setOrder_state_id(4);
+										notifyItemRemoved(position);
+										mDataList.remove(position);
+										notifyItemRangeChanged(position, getItemCount());
+									}
+								}).show();
+					}
+				});
 				break;
 		}
 	}

@@ -101,7 +101,8 @@ public class ShopFunctionActivity extends BaseActivity {
 		mLayoutOrder.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-
+				Intent intent = new Intent(mContext, OrderManagementActivity.class);
+				startActivity(intent);
 			}
 		});
 

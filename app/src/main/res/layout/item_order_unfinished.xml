@@ -108,11 +108,11 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_common_selector"
+                android:background="@drawable/btn_warning_selector"
                 android:gravity="center"
                 android:text="取消订单"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
 
             <!-- 分隔条 -->
             <ImageView
@@ -129,7 +129,7 @@
                 android:gravity="center"
                 android:text="付款"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
 
     </RelativeLayout>

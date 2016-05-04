@@ -1,4 +1,4 @@
-package net.xuwenhui.shitang.fragment;
+package net.xuwenhui.shitang.fragment.merchant;
 
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,7 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.shitang.R;
-import net.xuwenhui.shitang.adapter.OrderFinishedAdapter;
+import net.xuwenhui.shitang.adapter.OrderFinishedForMerchantAdapter;
+import net.xuwenhui.shitang.fragment.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +16,16 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
- * 订单已完成界面
- * <p>
- * Created by xwh on 2016/5/2.
+ * 商家：订单已完成界面
+ * <p/>
+ * Created by xwh on 2016/5/4.
  */
-public class OrderFinishedFragment extends BaseFragment {
+public class OrderFinishedForMerchantFragment extends BaseFragment {
 
 	@Bind(R.id.list_order_finished)
 	RecyclerView mListOrderFinished;
 
-	OrderFinishedAdapter mOrderFinishedAdapter;
+	OrderFinishedForMerchantAdapter mOrderFinishedForMerchantAdapter;
 
 	@Override
 	protected int getContentLayoutId() {
@@ -47,8 +48,8 @@ public class OrderFinishedFragment extends BaseFragment {
 			}
 			data.add(order);
 		}
-		mOrderFinishedAdapter = new OrderFinishedAdapter(mContext, data);
-		mListOrderFinished.setAdapter(mOrderFinishedAdapter);
+		mOrderFinishedForMerchantAdapter = new OrderFinishedForMerchantAdapter(mContext, data);
+		mListOrderFinished.setAdapter(mOrderFinishedForMerchantAdapter);
 	}
 
 	@Override

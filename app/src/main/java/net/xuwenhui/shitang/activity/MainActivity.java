@@ -17,10 +17,10 @@ import com.mikepenz.materialdrawer.model.interfaces.Badgeable;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import net.xuwenhui.shitang.R;
-import net.xuwenhui.shitang.fragment.EmptyFragment;
 import net.xuwenhui.shitang.fragment.HomeFragment;
 import net.xuwenhui.shitang.fragment.OrderFragment;
 import net.xuwenhui.shitang.fragment.PersonFragment;
+import net.xuwenhui.shitang.fragment.SettingFragment;
 import net.xuwenhui.shitang.fragment.merchant.ShopFragment;
 
 import butterknife.Bind;
@@ -111,7 +111,7 @@ public class MainActivity extends BaseActivity {
 							mToolbar.setTitle("我的信息");
 							break;
 						case 4:
-							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new EmptyFragment()).commit();
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new SettingFragment()).commit();
 							mToolbar.setTitle("设置");
 							break;
 						case 5:
@@ -137,8 +137,19 @@ public class MainActivity extends BaseActivity {
 		SecondaryDrawerItem item_settings = (SecondaryDrawerItem) new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(4);
 		PrimaryDrawerItem item_shop_management = new PrimaryDrawerItem().withName(R.string.drawer_item_shop).withIcon(GoogleMaterial.Icon.gmd_local_dining).withIdentifier(5);
 
-		if (mApplication.getUser() == null || mApplication.getUser().getRole_id() == 2) {
-			// 游客或普通用户
+		if (mApplication.getUser() == null) {
+			// 游客
+			mDrawer = new DrawerBuilder()
+					.withActivity(this)
+					.withHeader(R.layout.layout_drawer_header)
+					.withToolbar(mToolbar)
+					.addDrawerItems(
+							item_home,
+							new SectionDrawerItem().withName(R.string.drawer_item_others),
+							item_settings
+					).build();
+		} else if (mApplication.getUser().getRole_id() == 2) {
+			// 普通用户
 			mDrawer = new DrawerBuilder()
 					.withActivity(this)
 					.withHeader(R.layout.layout_drawer_header)

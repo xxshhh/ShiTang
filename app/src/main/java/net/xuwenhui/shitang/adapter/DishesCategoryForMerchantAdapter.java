@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * 菜品类别适配器（用于商家）
  * <p/>
- * Created by xwh on 2016/4/21.
+ * Created by xwh on 2016/5/4.
  */
 public class DishesCategoryForMerchantAdapter extends CommonAdapter<DishesCategory> {
 

@@ -2,6 +2,7 @@ package net.xuwenhui.shitang.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -22,7 +23,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.hedgehog.ratingbar.RatingBar;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.view.IconicsImageView;
 
 import net.xuwenhui.model.Order;
 import net.xuwenhui.shitang.R;
@@ -71,11 +71,12 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 		// 设置点击事件
 		// 根据评价信息设置外观及点击事件
 		if (!order.is_evaluate()) {
+			viewHolder.mBtnEvaluate.setText("去评价");
 			viewHolder.mBtnEvaluate.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
 					final MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-							.title("评价订单")
+							.title("去评价")
 							.customView(R.layout.dialog_evaluate, true)
 							.negativeText(R.string.disagree)
 							.positiveText(R.string.agree)
@@ -130,7 +131,43 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 				}
 			});
 		} else {
-			viewHolder.mLayout2.setVisibility(View.GONE);
+			viewHolder.mBtnEvaluate.setText("查看评价");
+			viewHolder.mBtnEvaluate.setBackgroundColor(Color.BLACK);
+			viewHolder.mBtnEvaluate.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					MaterialDialog dialog = new MaterialDialog.Builder(mContext)
+							.title("查看评价")
+							.customView(R.layout.dialog_evaluate, true)
+							.positiveText(R.string.agree)
+							.build();
+					RatingBar ratingBar = (RatingBar) dialog.getCustomView().findViewById(R.id.ratingBar);
+					EditText edtContent = (EditText) dialog.getCustomView().findViewById(R.id.edt_content);
+					// 设置评分条外观
+					Drawable fill = new IconicsDrawable(mContext)
+							.icon(GoogleMaterial.Icon.gmd_star)
+							.color(mContext.getResources().getColor(R.color.colorPrimary))
+							.sizeDp(20);
+					Drawable empty = new IconicsDrawable(mContext)
+							.icon(GoogleMaterial.Icon.gmd_star_border)
+							.color(mContext.getResources().getColor(R.color.colorPrimary))
+							.sizeDp(20);
+					Drawable half = new IconicsDrawable(mContext)
+							.icon(GoogleMaterial.Icon.gmd_star_half)
+							.color(mContext.getResources().getColor(R.color.colorPrimary))
+							.sizeDp(20);
+					ratingBar.setStarFillDrawable(fill);
+					ratingBar.setStarEmptyDrawable(empty);
+					ratingBar.setStarHalfDrawable(half);
+					ratingBar.setStar(4);
+					ratingBar.setEnabled(false);
+					// 设置评论内容
+					edtContent.setText("很好，味道不错。");
+					edtContent.setEnabled(false);
+
+					dialog.show();
+				}
+			});
 		}
 
 		// 查看订单详情界面

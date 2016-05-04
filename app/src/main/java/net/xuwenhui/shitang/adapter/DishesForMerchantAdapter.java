@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * 商家：菜品适配器
  * <p/>
- * Created by xwh on 2016/4/21.
+ * Created by xwh on 2016/5/4.
  */
 public class DishesForMerchantAdapter extends CommonAdapter<Dishes> {
 
