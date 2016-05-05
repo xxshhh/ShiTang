@@ -33,6 +33,7 @@
         <activity android:name=".activity.AddressDetailActivity"></activity>
         <activity android:name=".activity.OrderDetailActivity"></activity>
         <activity android:name=".activity.NeedLoginRegisterActivity"></activity>
+        <activity android:name=".activity.ForgetPasswordActivity"></activity>
         <activity android:name=".activity.merchant.CreateUpdateShopActivity"></activity>
         <activity android:name=".activity.merchant.ShopFunctionActivity"></activity>
         <activity android:name=".activity.merchant.NoticeManagementActivity"></activity>
@@ -40,6 +41,9 @@
         <activity android:name=".activity.merchant.DishesManagementActivity"></activity>
         <activity android:name=".activity.merchant.AddEditDishesActivity"></activity>
         <activity android:name=".activity.merchant.OrderManagementActivity"></activity>
+        <activity android:name=".activity.admin.UserManagementActivity"></activity>
+        <activity android:name=".activity.admin.MerchantManagementActivity"></activity>
+        <activity android:name=".activity.admin.NoticeWallManagementActivity"></activity>
     </application>
 
 </manifest>

@@ -20,7 +20,7 @@ import butterknife.Bind;
 
 /**
  * 登录界面
- * <p/>
+ * <p>
  * Created by xwh on 2016/3/25.
  */
 public class LoginActivity extends BaseActivity {
@@ -121,6 +121,17 @@ public class LoginActivity extends BaseActivity {
 						})
 						.positiveText(R.string.choose)
 						.show();
+			}
+		});
+
+		/**
+		 * 跳转忘记密码界面
+		 */
+		mTvForgetPsw.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(mContext, ForgetPasswordActivity.class);
+				startActivity(intent);
 			}
 		});
 	}

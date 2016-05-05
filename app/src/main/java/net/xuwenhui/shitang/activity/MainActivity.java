@@ -21,6 +21,7 @@ import net.xuwenhui.shitang.fragment.HomeFragment;
 import net.xuwenhui.shitang.fragment.OrderFragment;
 import net.xuwenhui.shitang.fragment.PersonFragment;
 import net.xuwenhui.shitang.fragment.SettingFragment;
+import net.xuwenhui.shitang.fragment.admin.AdminFragment;
 import net.xuwenhui.shitang.fragment.merchant.ShopFragment;
 
 import butterknife.Bind;
@@ -118,13 +119,16 @@ public class MainActivity extends BaseActivity {
 							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ShopFragment()).commit();
 							mToolbar.setTitle("我的店铺");
 							break;
+						case 6:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new AdminFragment()).commit();
+							mToolbar.setTitle("管理员专属");
 						default:
 					}
 				}
 				return false;
 			}
 		});
-		mDrawer.setSelection(1); // 默认首页
+		mDrawer.setSelectionAtPosition(1); // 默认首页，管理员为专属界面
 	}
 
 	/**
@@ -136,6 +140,7 @@ public class MainActivity extends BaseActivity {
 		PrimaryDrawerItem item_person = new PrimaryDrawerItem().withName(R.string.drawer_item_person).withIcon(GoogleMaterial.Icon.gmd_person).withIdentifier(3);
 		SecondaryDrawerItem item_settings = (SecondaryDrawerItem) new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(4);
 		PrimaryDrawerItem item_shop_management = new PrimaryDrawerItem().withName(R.string.drawer_item_shop).withIcon(GoogleMaterial.Icon.gmd_local_dining).withIdentifier(5);
+		PrimaryDrawerItem item_admin = new PrimaryDrawerItem().withName(R.string.drawer_item_admin).withIcon(GoogleMaterial.Icon.gmd_security).withIdentifier(6);
 
 		if (mApplication.getUser() == null) {
 			// 游客
@@ -175,8 +180,17 @@ public class MainActivity extends BaseActivity {
 							new SectionDrawerItem().withName(R.string.drawer_item_others),
 							item_settings
 					).build();
-		} else if (mApplication.getUser().getRole_id() == 4) {
+		} else if (mApplication.getUser().getRole_id() == 1) {
 			// 管理员
+			mDrawer = new DrawerBuilder()
+					.withActivity(this)
+					.withHeader(R.layout.layout_drawer_header)
+					.withToolbar(mToolbar)
+					.addDrawerItems(
+							item_admin,
+							new SectionDrawerItem().withName(R.string.drawer_item_others),
+							item_settings
+					).build();
 		}
 	}
 

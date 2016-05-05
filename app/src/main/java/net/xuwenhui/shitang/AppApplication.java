@@ -21,7 +21,6 @@ public class AppApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		mAppAction = new AppActionImpl(this);
-		mUser = new User(1, 3, "", "", "", "");
 	}
 
 	public AppAction getAppAction() {

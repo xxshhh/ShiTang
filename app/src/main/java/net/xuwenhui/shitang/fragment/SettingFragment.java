@@ -2,12 +2,16 @@ package net.xuwenhui.shitang.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import net.xuwenhui.shitang.AppApplication;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.activity.MainActivity;
 import net.xuwenhui.shitang.util.T;
 
 import butterknife.Bind;
@@ -66,7 +70,20 @@ public class SettingFragment extends BaseFragment {
 		mLayoutLogout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				T.show(mContext, "注销用户");
+				new MaterialDialog.Builder(mContext)
+						.content("确定要注销当前用户吗？")
+						.negativeText(R.string.disagree)
+						.positiveText(R.string.agree)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+							@Override
+							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+								T.show(mContext, "注销用户");
+								((AppApplication) getActivity().getApplication()).setUser(null);
+								startActivity(new Intent(mContext, MainActivity.class));
+								getActivity().finish();
+							}
+						})
+						.show();
 			}
 		});
 	}

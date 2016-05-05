@@ -1,6 +1,11 @@
 package net.xuwenhui.shitang.activity.merchant;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +20,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.BaseActivity;
+import net.xuwenhui.shitang.util.FileHandleUtil;
 import net.xuwenhui.shitang.util.T;
+
+import java.io.File;
 
 import butterknife.Bind;
 
@@ -157,4 +165,26 @@ public class AddEditDishesActivity extends BaseActivity {
 		});
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == REQUEST_CODE_PICK_IMAGE) {
+				ContentResolver resolver = mContext.getContentResolver();
+				File file = null;
+				Bitmap bitmap = null;
+				try {
+					Uri uri = data.getData();
+					file = new File(FileHandleUtil.getImageAbsolutePath(mContext, uri));
+					bitmap = BitmapFactory.decodeStream(resolver.openInputStream(uri));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (file != null && bitmap != null) {
+					// 上传头像到服务器
+					mImgDishes.setImageBitmap(bitmap);
+				}
+			}
+		}
+	}
 }

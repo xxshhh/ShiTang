@@ -12,17 +12,23 @@ public class User implements Serializable {
 	private int user_id;
 	private int role_id;
 	private String phone_num;
-	private String passeord;
+	private String password;
 	private String image_src;
 	private String nickname;
+	private boolean is_valid;
 
-	public User(int user_id, int role_id, String phone_num, String passeord, String image_src, String nickname) {
+	public User() {
+		super();
+	}
+
+	public User(int user_id, int role_id, String phone_num, String password, String image_src, String nickname, boolean is_valid) {
 		this.user_id = user_id;
 		this.role_id = role_id;
 		this.phone_num = phone_num;
-		this.passeord = passeord;
+		this.password = password;
 		this.image_src = image_src;
 		this.nickname = nickname;
+		this.is_valid = is_valid;
 	}
 
 	public int getUser_id() {
@@ -49,12 +55,12 @@ public class User implements Serializable {
 		this.phone_num = phone_num;
 	}
 
-	public String getPasseord() {
-		return passeord;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPasseord(String passeord) {
-		this.passeord = passeord;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getImage_src() {
@@ -71,5 +77,13 @@ public class User implements Serializable {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public boolean is_valid() {
+		return is_valid;
+	}
+
+	public void setIs_valid(boolean is_valid) {
+		this.is_valid = is_valid;
 	}
 }

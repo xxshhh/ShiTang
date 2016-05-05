@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 用户管理 -->
+            <LinearLayout
+                android:id="@+id/layout_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_green_light"
+                    app:iiv_icon="gmd-group"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="用户管理"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+
+            <!-- 分隔线 -->
+            <ImageView
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/third_text"/>
+
+            <!-- 审核商家 -->
+            <LinearLayout
+                android:id="@+id/layout_merchant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_blue_light"
+                    app:iiv_icon="gmd-domain"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="商家管理"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 分隔线 -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/third_text"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 公告墙管理 -->
+            <LinearLayout
+                android:id="@+id/layout_notice_wall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/holo_red_light"
+                    app:iiv_icon="gmd-wallpaper"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="公告墙管理"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+
+            <!-- 分隔线 -->
+            <ImageView
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/third_text"/>
+
+            <!-- 更多 -->
+            <LinearLayout
+                android:id="@+id/layout_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/layout_common_selector"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    app:iiv_color="@android:color/black"
+                    app:iiv_icon="gmd-more-horiz"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="更多"
+                    android:textColor="@color/primary_text"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 分隔线 -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/third_text"/>
+
+    </LinearLayout>
+</RelativeLayout>
