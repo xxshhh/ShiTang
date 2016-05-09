@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity {
 				ProgressDialogUtil.show(mContext);
 				String phoneNum = mEdtUsername.getText().toString();
 				String password = mEdtPassword.getText().toString();
-				mAppAction.login(phoneNum, password, new ActionCallbackListener<User>() {
+				mAppAction.user_login(phoneNum, password, new ActionCallbackListener<User>() {
 					@Override
 					public void onSuccess(User data) {
 						ProgressDialogUtil.dismiss();

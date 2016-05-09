@@ -23,7 +23,7 @@ public class FormCheckUtil {
 	}
 
 	/**
-	 * 手机号检查
+	 * 手机号格式检查
 	 *
 	 * @param phoneNum
 	 * @return
@@ -35,12 +35,15 @@ public class FormCheckUtil {
 	}
 
 	/**
-	 * 密码检查
+	 * 长度检查
 	 *
-	 * @param password
+	 * @param string
+	 * @param minLength
+	 * @param maxLength
 	 * @return
 	 */
-	public static boolean checkPassword(String password) {
-		return password.length() >= 6 && password.length() <= 16;
+	public static boolean checkLength(String string, int minLength, int maxLength) {
+		return string.length() >= minLength && string.length() <= maxLength;
 	}
+
 }

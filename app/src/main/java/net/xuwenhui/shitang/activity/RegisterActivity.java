@@ -168,7 +168,7 @@ public class RegisterActivity extends BaseActivity {
 					case 3:
 						// 注册
 						mPassword = mEdtInput.getText().toString();
-						mAppAction.register(mPhoneNum, mPassword, mRoleId, new ActionCallbackListener<Void>() {
+						mAppAction.user_register(mPhoneNum, mPassword, mRoleId, new ActionCallbackListener<Void>() {
 							@Override
 							public void onSuccess(Void data) {
 								ProgressDialogUtil.dismiss();

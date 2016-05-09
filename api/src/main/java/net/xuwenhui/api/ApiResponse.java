@@ -2,7 +2,7 @@ package net.xuwenhui.api;
 
 /**
  * 响应结果的json数据实体类
- * <p/>
+ * <p>
  * Created by xwh on 2016/3/22.
  */
 public class ApiResponse<T> {

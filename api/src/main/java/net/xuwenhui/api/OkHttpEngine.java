@@ -22,7 +22,7 @@ import okhttp3.Response;
 public class OkHttpEngine {
 
 	private final static String TAG = "OkHttpEngine";
-	private final static String SERVER_URL = "http://192.168.1.104:8080/web/";
+	private final static String SERVER_URL = "http://192.168.1.101:8080/web/";
 
 	private static OkHttpEngine instance = null;
 
@@ -52,7 +52,7 @@ public class OkHttpEngine {
 		for (String key : paramsMap.keySet()) {
 			builder.add(key, paramsMap.get(key));
 			// 打印键表单参数
-			Log.i(TAG, "request: key=" + key + " ,value=" + paramsMap.get(key));
+			Log.e(TAG, "request: key=" + key + " ,value=" + paramsMap.get(key));
 		}
 		RequestBody formBody = builder.build();
 		Request request = new Request.Builder()
@@ -66,11 +66,11 @@ public class OkHttpEngine {
 			// 返回字符串
 			final String result = response.body().string();
 			// 打印成功结果
-			Log.i(TAG, "response: " + result);
+			Log.e(TAG, "response: " + result);
 			Gson gson = new Gson();
 			return gson.fromJson(result, typeOfT);
 		} else {
-			Log.i(TAG, "response error!!!");
+			Log.e(TAG, "response error!!!");
 			return null;
 		}
 	}

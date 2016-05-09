@@ -2,7 +2,7 @@ package net.xuwenhui.core;
 
 /**
  * Action的处理结果回调监听器
- * <p/>
+ * <p>
  * Created by xwh on 2016/3/29.
  */
 public interface ActionCallbackListener<T> {
@@ -17,8 +17,8 @@ public interface ActionCallbackListener<T> {
 	/**
 	 * 失败时调用
 	 *
-	 * @param code    错误码
-	 * @param message 错误信息
+	 * @param errorCode    错误码
+	 * @param errorMessage 错误信息
 	 */
-	void onFailure(String code, String message);
+	void onFailure(String errorCode, String errorMessage);
 }
