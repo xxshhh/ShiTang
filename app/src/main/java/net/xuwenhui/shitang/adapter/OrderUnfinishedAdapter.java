@@ -18,10 +18,15 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.core.AppAction;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.OrderDetailActivity;
+import net.xuwenhui.shitang.util.DensityUtils;
+import net.xuwenhui.shitang.util.T;
 
 import java.util.List;
 
@@ -36,8 +41,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
 
-	public OrderUnfinishedAdapter(Context context, List<Order> dataList) {
+	AppAction mAppAction;
+
+	public OrderUnfinishedAdapter(Context context, List<Order> dataList, AppAction appAction) {
 		super(context, dataList);
+		mAppAction = appAction;
 	}
 
 	@Override
@@ -59,6 +67,13 @@ public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
 		viewHolder.mListOrderItem.setLayoutManager(new LinearLayoutManager(mContext));
 		viewHolder.mListOrderItem.setItemAnimator(new DefaultItemAnimator());
 		viewHolder.mListOrderItem.setAdapter(new OrderItem2Adapter(mContext, order.getOrderItemList()));
+		if (order.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(viewHolder.mCircleImageShop);
+		} else {
+			Picasso.with(mContext).load(order.getImage_src())
+					.resize(DensityUtils.dp2px(mContext, 48), DensityUtils.dp2px(mContext, 48))
+					.centerCrop().into(viewHolder.mCircleImageShop);
+		}
 
 		// 设置点击事件
 		// 取消订单
@@ -72,9 +87,19 @@ public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
 						.onPositive(new MaterialDialog.SingleButtonCallback() {
 							@Override
 							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-								notifyItemRemoved(position);
-								mDataList.remove(position);
-								notifyItemRangeChanged(position, getItemCount());
+								mAppAction.order_update_state(order.getOrder_id(), 5, new ActionCallbackListener<Order>() {
+									@Override
+									public void onSuccess(Order data) {
+										notifyItemRemoved(position);
+										mDataList.remove(position);
+										notifyItemRangeChanged(position, getItemCount());
+									}
+
+									@Override
+									public void onFailure(String errorCode, String errorMessage) {
+										T.show(mContext, errorMessage);
+									}
+								});
 							}
 						}).show();
 			}
@@ -90,8 +115,19 @@ public class OrderUnfinishedAdapter extends CommonAdapter<Order> {
 						.onPositive(new MaterialDialog.SingleButtonCallback() {
 							@Override
 							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-								order.setOrder_state_id(2);
-								notifyItemChanged(position);
+								mAppAction.order_update_state(order.getOrder_id(), 2, new ActionCallbackListener<Order>() {
+									@Override
+									public void onSuccess(Order data) {
+										order.setOrder_state_id(2);
+										notifyItemChanged(position);
+									}
+
+									@Override
+									public void onFailure(String errorCode, String errorMessage) {
+										T.show(mContext, errorMessage);
+									}
+								});
+
 							}
 						}).show();
 			}

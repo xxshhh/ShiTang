@@ -19,11 +19,12 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.Notice;
 import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.ShopAdapter;
 import net.xuwenhui.shitang.util.T;
-import net.xuwenhui.shitang.view.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -37,7 +38,7 @@ import butterknife.Bind;
  * <p/>
  * Created by xwh on 2016/4/14.
  */
-public class HomeFragment extends BaseFragment implements BaseSliderView.OnSliderClickListener {
+public class HomeFragment extends BaseFragment {
 
 	@Bind(R.id.slider_show)
 	SliderLayout mSliderShow;
@@ -79,12 +80,37 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 	 * 初始化图片展示墙
 	 */
 	private void initImageDisplay() {
-		Map<String, String> url_maps = new LinkedHashMap<>();
-		url_maps.put("必胜客下午茶", "http://7xjda2.com1.z0.glb.clouddn.com/t1.jpg");
-		url_maps.put("KFC宅急送", "http://7xjda2.com1.z0.glb.clouddn.com/t2.jpg");
-		url_maps.put("八方缘食馆", "http://7xjda2.com1.z0.glb.clouddn.com/t3.jpg");
-		url_maps.put("小何屋外卖店", "http://7xjda2.com1.z0.glb.clouddn.com/t4.jpg");
+		final Map<String, String> url_maps = new LinkedHashMap<>();
+		mAppAction.notice_query(new ActionCallbackListener<List<Notice>>() {
+			@Override
+			public void onSuccess(List<Notice> data) {
+				for (Notice notice : data) {
+					url_maps.put(notice.getTitle(), notice.getImage_src());
+				}
+				// 设置图片展示墙
+				setupImageDisplay(url_maps);
+			}
 
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, "请求图片墙失败，使用默认图片");
+				// 测试数据
+				url_maps.put("KFC", "http://o6wgg8qjk.bkt.clouddn.com/test1.jpg");
+				url_maps.put("新鲜蔬菜", "http://o6wgg8qjk.bkt.clouddn.com/test2.jpg");
+				url_maps.put("星巴克", "http://o6wgg8qjk.bkt.clouddn.com/test3.jpg");
+
+				// 设置图片展示墙
+				setupImageDisplay(url_maps);
+			}
+		});
+	}
+
+	/**
+	 * 设置图片展示墙
+	 *
+	 * @param url_maps
+	 */
+	private void setupImageDisplay(Map<String, String> url_maps) {
 		for (String name : url_maps.keySet()) {
 			TextSliderView textSliderView = new TextSliderView(mContext);
 			// initialize a SliderLayout
@@ -92,7 +118,12 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 					.description(name)
 					.image(url_maps.get(name))
 					.setScaleType(BaseSliderView.ScaleType.Fit)
-					.setOnSliderClickListener(this);
+					.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+						@Override
+						public void onSliderClick(BaseSliderView slider) {
+							T.show(mContext, slider.getDescription());
+						}
+					});
 
 			//add your extra information
 			textSliderView.bundle(new Bundle());
@@ -105,6 +136,7 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 		mSliderShow.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
 		mSliderShow.setCustomAnimation(new DescriptionAnimation());
 		mSliderShow.setDuration(6000);
+		mSliderShow.startAutoCycle(6000, 6000, true);
 	}
 
 	/**
@@ -120,13 +152,27 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 		// 设置固定大小
 		mListShop.setHasFixedSize(true);
 
-		final List<Shop> data = new ArrayList<>();
-		for (int i = 1; i < 10; i++) {
-			Shop shop = new Shop(i, "测试店" + i, "", "六食堂", i + 20, (float) (i / 5.0 + 3.0), 200 * i);
-			data.add(shop);
-		}
-		ShopAdapter adapter = new ShopAdapter(mContext, data);
-		mListShop.setAdapter(adapter);
+		mAppAction.shop_query(new ActionCallbackListener<List<Shop>>() {
+			@Override
+			public void onSuccess(List<Shop> data) {
+				ShopAdapter adapter = new ShopAdapter(mContext, data);
+				mListShop.setAdapter(adapter);
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+				// 测试数据
+				List<Shop> data = new ArrayList<>();
+				for (int i = 1; i < 10; i++) {
+					Shop shop = new Shop(i, "测试店" + i, "", "六食堂", "", i + 20, (float) (i / 5.0 + 3.0), 200 * i);
+					data.add(shop);
+				}
+
+				ShopAdapter adapter = new ShopAdapter(mContext, data);
+				mListShop.setAdapter(adapter);
+			}
+		});
 	}
 
 	/**
@@ -217,23 +263,6 @@ public class HomeFragment extends BaseFragment implements BaseSliderView.OnSlide
 				mFabMenu.collapse();
 			}
 		});
-	}
-
-	@Override
-	public void onResume() {
-		mSliderShow.startAutoCycle(6000, 6000, true);
-		super.onResume();
-	}
-
-	@Override
-	public void onStop() {
-		mSliderShow.stopAutoCycle();
-		super.onStop();
-	}
-
-	@Override
-	public void onSliderClick(BaseSliderView slider) {
-		T.show(mContext, slider.getDescription());
 	}
 
 }

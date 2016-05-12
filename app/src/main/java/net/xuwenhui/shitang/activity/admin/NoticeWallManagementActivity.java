@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,19 +13,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.squareup.picasso.Picasso;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.Notice;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.BaseActivity;
 import net.xuwenhui.shitang.util.FileHandleUtil;
+import net.xuwenhui.shitang.util.ProgressDialogUtil;
 import net.xuwenhui.shitang.util.T;
 
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -36,7 +47,7 @@ import butterknife.Bind;
  * <p/>
  * Created by xwh on 2016/5/5.
  */
-public class NoticeWallManagementActivity extends BaseActivity implements BaseSliderView.OnSliderClickListener {
+public class NoticeWallManagementActivity extends BaseActivity {
 
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
@@ -47,7 +58,9 @@ public class NoticeWallManagementActivity extends BaseActivity implements BaseSl
 
 	private static final int REQUEST_CODE_PICK_IMAGE = 1;//选择图片
 
-	private MaterialDialog mDialog = null;
+	List<Notice> mNoticeList;
+
+	MaterialDialog mDialog;
 
 	@Override
 	protected int getContentLayoutId() {
@@ -85,14 +98,17 @@ public class NoticeWallManagementActivity extends BaseActivity implements BaseSl
 							@Override
 							public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 								T.show(mContext, text);
+								final Notice notice = mNoticeList.get(which);
 								mDialog = new MaterialDialog.Builder(mContext)
 										.title("更新" + text)
 										.customView(R.layout.dialog_update_notice_wall, true)
 										.negativeText(R.string.disagree)
 										.positiveText(R.string.agree)
 										.build();
-								EditText editText = (EditText) mDialog.getCustomView().findViewById(R.id.edt_title);
-								ImageView imageView = (ImageView) mDialog.getCustomView().findViewById(R.id.img_notice_wall);
+								final EditText editText = (EditText) mDialog.getCustomView().findViewById(R.id.edt_title);
+								editText.setText(notice.getTitle());
+								final ImageView imageView = (ImageView) mDialog.getCustomView().findViewById(R.id.img_notice_wall);
+								Picasso.with(mContext).load(notice.getImage_src()).into(imageView);
 								imageView.setOnClickListener(new View.OnClickListener() {
 									@Override
 									public void onClick(View view) {
@@ -100,6 +116,23 @@ public class NoticeWallManagementActivity extends BaseActivity implements BaseSl
 										intent.setType("image/*");
 										intent.setAction(Intent.ACTION_GET_CONTENT);
 										startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+									}
+								});
+								mDialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(new View.OnClickListener() {
+									@Override
+									public void onClick(View view) {
+										mAppAction.notice_update(notice.getNotice_id(), editText.getText().toString(), (String) imageView.getTag(), new ActionCallbackListener<Void>() {
+											@Override
+											public void onSuccess(Void data) {
+												T.show(mContext, "更新成功");
+												mDialog.dismiss();
+											}
+
+											@Override
+											public void onFailure(String errorCode, String errorMessage) {
+												T.show(mContext, errorMessage);
+											}
+										});
 									}
 								});
 								mDialog.show();
@@ -116,12 +149,41 @@ public class NoticeWallManagementActivity extends BaseActivity implements BaseSl
 	 * 初始化图片展示墙
 	 */
 	private void initImageDisplay() {
-		Map<String, String> url_maps = new LinkedHashMap<>();
-		url_maps.put("必胜客下午茶", "http://7xjda2.com1.z0.glb.clouddn.com/t1.jpg");
-		url_maps.put("KFC宅急送", "http://7xjda2.com1.z0.glb.clouddn.com/t2.jpg");
-		url_maps.put("八方缘食馆", "http://7xjda2.com1.z0.glb.clouddn.com/t3.jpg");
-		url_maps.put("小何屋外卖店", "http://7xjda2.com1.z0.glb.clouddn.com/t4.jpg");
+		final Map<String, String> url_maps = new LinkedHashMap<>();
+		mAppAction.notice_query(new ActionCallbackListener<List<Notice>>() {
+			@Override
+			public void onSuccess(List<Notice> data) {
+				mNoticeList = data;
+				for (Notice notice : data) {
+					url_maps.put(notice.getTitle(), notice.getImage_src());
+				}
+				// 设置图片展示墙
+				setupImageDisplay(url_maps);
+			}
 
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, "请求图片墙失败，使用默认图片");
+				// 测试数据
+				mNoticeList.add(new Notice(1, "KFC", "http://o6wgg8qjk.bkt.clouddn.com/test1.jpg"));
+				mNoticeList.add(new Notice(2, "新鲜蔬菜", "http://o6wgg8qjk.bkt.clouddn.com/test2.jpg"));
+				mNoticeList.add(new Notice(3, "星巴克", "http://o6wgg8qjk.bkt.clouddn.com/test3.jpg"));
+				url_maps.put("KFC", "http://o6wgg8qjk.bkt.clouddn.com/test1.jpg");
+				url_maps.put("新鲜蔬菜", "http://o6wgg8qjk.bkt.clouddn.com/test2.jpg");
+				url_maps.put("星巴克", "http://o6wgg8qjk.bkt.clouddn.com/test3.jpg");
+
+				// 设置图片展示墙
+				setupImageDisplay(url_maps);
+			}
+		});
+	}
+
+	/**
+	 * 设置图片展示墙
+	 *
+	 * @param url_maps
+	 */
+	private void setupImageDisplay(Map<String, String> url_maps) {
 		for (String name : url_maps.keySet()) {
 			TextSliderView textSliderView = new TextSliderView(mContext);
 			// initialize a SliderLayout
@@ -129,7 +191,12 @@ public class NoticeWallManagementActivity extends BaseActivity implements BaseSl
 					.description(name)
 					.image(url_maps.get(name))
 					.setScaleType(BaseSliderView.ScaleType.Fit)
-					.setOnSliderClickListener(this);
+					.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+						@Override
+						public void onSliderClick(BaseSliderView slider) {
+							T.show(mContext, slider.getDescription());
+						}
+					});
 
 			//add your extra information
 			textSliderView.bundle(new Bundle());
@@ -142,23 +209,7 @@ public class NoticeWallManagementActivity extends BaseActivity implements BaseSl
 		mSliderShow.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
 		mSliderShow.setCustomAnimation(new DescriptionAnimation());
 		mSliderShow.setDuration(6000);
-	}
-
-	@Override
-	public void onResume() {
 		mSliderShow.startAutoCycle(6000, 6000, true);
-		super.onResume();
-	}
-
-	@Override
-	public void onStop() {
-		mSliderShow.stopAutoCycle();
-		super.onStop();
-	}
-
-	@Override
-	public void onSliderClick(BaseSliderView slider) {
-		T.show(mContext, slider.getDescription());
 	}
 
 	@Override
@@ -177,10 +228,44 @@ public class NoticeWallManagementActivity extends BaseActivity implements BaseSl
 					e.printStackTrace();
 				}
 				if (file != null && bitmap != null) {
-					// 上传头像到服务器
-					((ImageView) mDialog.getCustomView().findViewById(R.id.img_notice_wall)).setBackgroundDrawable(new BitmapDrawable(bitmap));
+					// 上传头像到七牛图床
+					uploadImageToQiniu(file);
 				}
 			}
 		}
+	}
+
+	/**
+	 * 上传头像到七牛图床
+	 *
+	 * @param file
+	 */
+	private void uploadImageToQiniu(final File file) {
+		ProgressDialogUtil.show(mContext);
+		mAppAction.common_get_qiniu_token(new ActionCallbackListener<String>() {
+			@Override
+			public void onSuccess(String data) {
+				String token = data;
+				UploadManager uploadManager = new UploadManager();
+				final String name = mApplication.getUser().getUser_id() + "_" + new Date().getTime();
+				uploadManager.put(file, name, token,
+						new UpCompletionHandler() {
+							@Override
+							public void complete(String key, ResponseInfo info, JSONObject response) {
+								ProgressDialogUtil.dismiss();
+								T.show(mContext, "头像上传成功");
+								final ImageView imageView = (ImageView) mDialog.getCustomView().findViewById(R.id.img_notice_wall);
+								imageView.setTag("http://o6wgg8qjk.bkt.clouddn.com/" + name);
+								Picasso.with(mContext).load(file).into(imageView);
+							}
+						}, null);
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				ProgressDialogUtil.dismiss();
+				T.show(mContext, errorMessage);
+			}
+		});
 	}
 }

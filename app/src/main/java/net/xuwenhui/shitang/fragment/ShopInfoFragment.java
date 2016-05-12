@@ -1,12 +1,13 @@
 package net.xuwenhui.shitang.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.activity.ShopDetailActivity;
+import net.xuwenhui.shitang.util.T;
 
 import butterknife.Bind;
 
@@ -26,6 +27,8 @@ public class ShopInfoFragment extends BaseFragment {
 	@Bind(R.id.layout_address)
 	LinearLayout mLayoutAddress;
 
+	Shop mShop;
+
 	@Override
 	protected int getContentLayoutId() {
 		return R.layout.fragment_shop_info;
@@ -33,7 +36,23 @@ public class ShopInfoFragment extends BaseFragment {
 
 	@Override
 	protected void initData() {
+		// 获取Activity的Shop对象
+		mShop = ((ShopDetailActivity) getActivity()).getShop();
+		if (!mShop.getAddress_desc().equals("")) {
+			mTvAddressDesc.setText(mShop.getAddress_desc());
+		}
+		mAppAction.shop_query_phone(mShop.getShop_id(), new ActionCallbackListener<String>() {
+			@Override
+			public void onSuccess(String data) {
+				if (!data.equals(""))
+					mTvPhoneNum.setText(data);
+			}
 
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+			}
+		});
 	}
 
 	@Override

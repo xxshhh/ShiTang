@@ -11,9 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mikepenz.iconics.view.IconicsImageView;
+import com.squareup.picasso.Picasso;
 
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.util.DensityUtils;
 
 import java.util.List;
 
@@ -57,6 +59,13 @@ public class DishesForMerchantAdapter extends CommonAdapter<Dishes> {
 		Dishes dishes = mDataList.get(position);
 		viewHolder.mTvName.setText(dishes.getName());
 		viewHolder.mTvPrice.setText("￥" + dishes.getPrice());
+		if (dishes.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(viewHolder.mImgDishes);
+		} else {
+			Picasso.with(mContext).load(dishes.getImage_src())
+					.resize(DensityUtils.dp2px(mContext, 48), DensityUtils.dp2px(mContext, 48))
+					.centerCrop().into(viewHolder.mImgDishes);
+		}
 
 		// 设置点击事件
 		if (mOnMyClickListener != null) {

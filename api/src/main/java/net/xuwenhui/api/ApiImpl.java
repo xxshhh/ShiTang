@@ -7,12 +7,12 @@ import net.xuwenhui.model.Address;
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
 import net.xuwenhui.model.Evaluation;
+import net.xuwenhui.model.Notice;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.model.Shop;
 import net.xuwenhui.model.User;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Api实现类
- * <p>
+ * <p/>
  * Created by xwh on 2016/3/22.
  */
 public class ApiImpl implements Api {
@@ -45,7 +45,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -62,7 +62,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -78,7 +78,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -95,7 +95,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -112,7 +112,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -128,7 +128,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -142,7 +142,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -156,7 +156,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -176,7 +176,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -191,7 +191,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -211,7 +211,22 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
+			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
+		}
+	}
+
+	@Override
+	public ApiResponse<Address> address_query_by_id(int address_id) {
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("method", "address_query_by_id");
+		paramMap.put("address_id", String.valueOf(address_id));
+
+		Type type = new TypeToken<ApiResponse<Address>>() {
+		}.getType();
+		try {
+			return mOkHttpEngine.postHandle(paramMap, type);
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -226,7 +241,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -245,7 +260,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -264,7 +279,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -280,22 +295,22 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
 
 	@Override
-	public ApiResponse<Shop> shop_query_info(int shop_id) {
+	public ApiResponse<Shop> shop_query_by_user(int user_id) {
 		Map<String, String> paramMap = new HashMap<>();
-		paramMap.put("method", "shop_query_info");
-		paramMap.put("shop_id", String.valueOf(shop_id));
+		paramMap.put("method", "shop_query_by_user");
+		paramMap.put("user_id", String.valueOf(user_id));
 
 		Type type = new TypeToken<ApiResponse<Shop>>() {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -310,7 +325,36 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
+			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
+		}
+	}
+
+	@Override
+	public ApiResponse<String> shop_query_phone(int shop_id) {
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("method", "shop_query_phone");
+		paramMap.put("shop_id", String.valueOf(shop_id));
+
+		Type type = new TypeToken<ApiResponse<String>>() {
+		}.getType();
+		try {
+			return mOkHttpEngine.postHandle(paramMap, type);
+		} catch (Exception e) {
+			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
+		}
+	}
+
+	@Override
+	public ApiResponse<List<Shop>> shop_query() {
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("method", "shop_query");
+
+		Type type = new TypeToken<ApiResponse<List<Shop>>>() {
+		}.getType();
+		try {
+			return mOkHttpEngine.postHandle(paramMap, type);
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -329,7 +373,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -344,7 +388,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -363,7 +407,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -378,7 +422,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -394,7 +438,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -409,7 +453,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -425,7 +469,22 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
+			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
+		}
+	}
+
+	@Override
+	public ApiResponse<DishesCategory> dishes_category_query_by_id(int dishes_category_id) {
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("method", "dishes_category_query_by_id");
+		paramMap.put("dishes_category_id", String.valueOf(dishes_category_id));
+
+		Type type = new TypeToken<ApiResponse<DishesCategory>>() {
+		}.getType();
+		try {
+			return mOkHttpEngine.postHandle(paramMap, type);
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -440,7 +499,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -460,7 +519,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -476,7 +535,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -491,7 +550,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -506,7 +565,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -524,7 +583,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -539,7 +598,53 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
+			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
+		}
+	}
+
+	@Override
+	public ApiResponse<List<Evaluation>> evaluation_query_by_shop(int shop_id) {
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("method", "evaluation_query_by_shop");
+		paramMap.put("shop_id", String.valueOf(shop_id));
+
+		Type type = new TypeToken<ApiResponse<List<Evaluation>>>() {
+		}.getType();
+		try {
+			return mOkHttpEngine.postHandle(paramMap, type);
+		} catch (Exception e) {
+			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
+		}
+	}
+
+	@Override
+	public ApiResponse<Void> notice_update(int notice_id, String title, String image_src) {
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("method", "notice_update");
+		paramMap.put("notice_id", String.valueOf(notice_id));
+		paramMap.put("title", title);
+		paramMap.put("image_src", image_src);
+
+		Type type = new TypeToken<ApiResponse<Void>>() {
+		}.getType();
+		try {
+			return mOkHttpEngine.postHandle(paramMap, type);
+		} catch (Exception e) {
+			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
+		}
+	}
+
+	@Override
+	public ApiResponse<List<Notice>> notice_query() {
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("method", "notice_query");
+
+		Type type = new TypeToken<ApiResponse<List<Notice>>>() {
+		}.getType();
+		try {
+			return mOkHttpEngine.postHandle(paramMap, type);
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}
@@ -553,7 +658,7 @@ public class ApiImpl implements Api {
 		}.getType();
 		try {
 			return mOkHttpEngine.postHandle(paramMap, type);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return new ApiResponse(TIME_OUT_EVENT, TIME_OUT_EVENT_MSG);
 		}
 	}

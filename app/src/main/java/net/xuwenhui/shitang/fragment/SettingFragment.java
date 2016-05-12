@@ -70,6 +70,11 @@ public class SettingFragment extends BaseFragment {
 		mLayoutLogout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				if (mApplication.getUser() == null) {
+					T.show(mContext, "您还未登录~");
+					return;
+				}
+
 				new MaterialDialog.Builder(mContext)
 						.content("确定要注销当前用户吗？")
 						.negativeText(R.string.disagree)

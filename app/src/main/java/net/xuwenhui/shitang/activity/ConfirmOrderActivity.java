@@ -1,5 +1,6 @@
 package net.xuwenhui.shitang.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,11 +17,16 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.view.IconicsImageView;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.Address;
+import net.xuwenhui.model.Order;
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.OrderItem2Adapter;
+import net.xuwenhui.shitang.util.DateHandleUtil;
 import net.xuwenhui.shitang.util.T;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -73,6 +79,14 @@ public class ConfirmOrderActivity extends BaseActivity {
 
 	OrderItem2Adapter mOrderItem2Adapter;
 
+	int shop_id;
+	float total_price;
+	List<OrderItem> orderItemList;
+
+	Address address;
+
+	private static final int REQUEST_CODE_CHOOSE_ADDRESS = 1;//获取选择收货地址信息
+
 	@Override
 	protected int getContentLayoutId() {
 		return R.layout.activity_confirm_order;
@@ -94,14 +108,16 @@ public class ConfirmOrderActivity extends BaseActivity {
 
 		// 获取Intent
 		Bundle bundle = getIntent().getExtras();
-		List<OrderItem> data = (List<OrderItem>) bundle.getSerializable("OrderItemList");
-		String total_price = bundle.getString("TotalPrice");
+		shop_id = bundle.getInt("shop_id");
+		total_price = bundle.getFloat("total_price");
+		orderItemList = (List<OrderItem>) bundle.getSerializable("OrderItemList");
+		mTvNote.setTag("");
 		// 初始化订单列表
 		mListOrderItem.setLayoutManager(new LinearLayoutManager(mContext));
 		mListOrderItem.setItemAnimator(new DefaultItemAnimator());
-		mOrderItem2Adapter = new OrderItem2Adapter(mContext, data);
+		mOrderItem2Adapter = new OrderItem2Adapter(mContext, orderItemList);
 		mListOrderItem.setAdapter(mOrderItem2Adapter);
-
+		// 初始化总价
 		mTvTotalPrice.setText("总价 " + total_price);
 	}
 
@@ -112,7 +128,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, AddressActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent, REQUEST_CODE_CHOOSE_ADDRESS);
 			}
 		});
 
@@ -127,7 +143,8 @@ public class ConfirmOrderActivity extends BaseActivity {
 						.input("", "", false, new MaterialDialog.InputCallback() {
 							@Override
 							public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-								mTvNote.setText(input);
+								mTvNote.setText(input.toString());
+								mTvNote.setTag(input.toString());
 							}
 						}).show();
 			}
@@ -137,9 +154,38 @@ public class ConfirmOrderActivity extends BaseActivity {
 		mBtnOrder.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				T.show(mContext, "完成订单");
+				if (address == null) {
+					T.show(mContext, "请选择一个收货地址！");
+					return;
+				}
+				mAppAction.order_create(mApplication.getUser().getUser_id(), shop_id, address.getAddress_id(), DateHandleUtil.convertToStandard(new Date()), total_price, (String) mTvNote.getTag(), orderItemList, new ActionCallbackListener<Order>() {
+					@Override
+					public void onSuccess(Order data) {
+						T.show(mContext, "订单已生成，请赶快支付。");
+						Intent intent = new Intent(mContext, MainActivity.class);
+						startActivity(intent);
+						finish();
+					}
+
+					@Override
+					public void onFailure(String errorCode, String errorMessage) {
+						T.show(mContext, errorMessage);
+					}
+				});
 			}
 		});
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_CODE_CHOOSE_ADDRESS) {
+			if (resultCode == Activity.RESULT_OK) {
+				address = (Address) data.getExtras().getSerializable("Address");
+				// 显示选择收货地址信息
+				mTvAddress1.setText(address.getName() + " " + address.getSex() + address.getPhone_num());
+				mTvAddress2.setText(address.getAddress_desc());
+			}
+		}
+	}
 }

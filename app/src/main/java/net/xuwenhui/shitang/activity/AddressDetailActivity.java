@@ -8,8 +8,10 @@ import android.widget.EditText;
 
 import com.mikepenz.iconics.view.IconicsImageView;
 
+import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.model.Address;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.util.T;
 
 import butterknife.Bind;
 
@@ -36,6 +38,12 @@ public class AddressDetailActivity extends BaseActivity {
 	EditText mEdtNote;
 	@Bind(R.id.btn_ok)
 	Button mBtnOk;
+	@Bind(R.id.btn_delete)
+	Button mBtnDelete;
+
+	Address address;
+
+	String sex;
 
 	@Override
 	protected int getContentLayoutId() {
@@ -46,20 +54,26 @@ public class AddressDetailActivity extends BaseActivity {
 	protected void initData() {
 		// 获取Intent
 		Intent intent = getIntent();
-		Address address = (Address) intent.getSerializableExtra("Address");
+		address = (Address) intent.getSerializableExtra("Address");
 		if (address != null) {
 			mToolbar.setTitle("修改地址");
 			mEdtName.setText(address.getName());
-			if (address.getSex().equals("男士")) {
-				mIconMan.performClick();
+			if (address.getSex().equals("先生")) {
+				mIconMan.setColor(getResources().getColor(R.color.colorAccent));
+				mIconWoman.setColor(getResources().getColor(R.color.third_text));
+				sex = "先生";
 			} else {
-				mIconWoman.performClick();
+				mIconMan.setColor(getResources().getColor(R.color.third_text));
+				mIconWoman.setColor(getResources().getColor(R.color.colorAccent));
+				sex = "女士";
 			}
 			mEdtPhoneNum.setText(address.getPhone_num());
 			mEdtAddressDesc.setText(address.getAddress_desc());
 			mEdtNote.setText(address.getNote());
 		} else {
 			mToolbar.setTitle("新增地址");
+			mBtnDelete.setVisibility(View.INVISIBLE);
+			sex = "先生";
 		}
 
 		// 设置toolbar
@@ -82,6 +96,7 @@ public class AddressDetailActivity extends BaseActivity {
 			public void onClick(View view) {
 				mIconMan.setColor(getResources().getColor(R.color.colorAccent));
 				mIconWoman.setColor(getResources().getColor(R.color.third_text));
+				sex = "先生";
 			}
 		});
 		mIconWoman.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +104,60 @@ public class AddressDetailActivity extends BaseActivity {
 			public void onClick(View view) {
 				mIconMan.setColor(getResources().getColor(R.color.third_text));
 				mIconWoman.setColor(getResources().getColor(R.color.colorAccent));
+				sex = "女士";
+			}
+		});
+
+		// 确认
+		mBtnOk.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (address != null) {
+					mAppAction.address_update(address.getAddress_id(), mEdtName.getText().toString(), sex, mEdtPhoneNum.getText().toString(), mEdtAddressDesc.getText().toString(), mEdtNote.getText().toString(), new ActionCallbackListener<Address>() {
+						@Override
+						public void onSuccess(Address data) {
+							T.show(mContext, "修改地址成功");
+							finish();
+						}
+
+						@Override
+						public void onFailure(String errorCode, String errorMessage) {
+							T.show(mContext, errorMessage);
+						}
+					});
+				} else {
+					mAppAction.address_create(mApplication.getUser().getUser_id(), mEdtName.getText().toString(), sex, mEdtPhoneNum.getText().toString(), mEdtAddressDesc.getText().toString(), mEdtNote.getText().toString(), new ActionCallbackListener<Address>() {
+						@Override
+						public void onSuccess(Address data) {
+							T.show(mContext, "新增地址成功");
+							finish();
+						}
+
+						@Override
+						public void onFailure(String errorCode, String errorMessage) {
+							T.show(mContext, errorMessage);
+						}
+					});
+				}
+			}
+		});
+
+		// 删除
+		mBtnDelete.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mAppAction.address_delete(address.getAddress_id(), new ActionCallbackListener<Void>() {
+					@Override
+					public void onSuccess(Void data) {
+						T.show(mContext, "删除地址成功");
+						finish();
+					}
+
+					@Override
+					public void onFailure(String errorCode, String errorMessage) {
+						T.show(mContext, errorMessage);
+					}
+				});
 			}
 		});
 	}

@@ -23,12 +23,19 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.hedgehog.ratingbar.RatingBar;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.squareup.picasso.Picasso;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.core.AppAction;
+import net.xuwenhui.model.Evaluation;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.OrderDetailActivity;
+import net.xuwenhui.shitang.util.DateHandleUtil;
+import net.xuwenhui.shitang.util.DensityUtils;
 import net.xuwenhui.shitang.util.T;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +51,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class OrderFinishedAdapter extends CommonAdapter<Order> {
 
-	public OrderFinishedAdapter(Context context, List<Order> dataList) {
+	AppAction mAppAction;
+
+	public OrderFinishedAdapter(Context context, List<Order> dataList, AppAction appAction) {
 		super(context, dataList);
+		mAppAction = appAction;
 	}
 
 	@Override
@@ -67,6 +77,13 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 		viewHolder.mListOrderItem.setLayoutManager(new LinearLayoutManager(mContext));
 		viewHolder.mListOrderItem.setItemAnimator(new DefaultItemAnimator());
 		viewHolder.mListOrderItem.setAdapter(new OrderItem2Adapter(mContext, order.getOrderItemList()));
+		if (order.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(viewHolder.mCircleImageShop);
+		} else {
+			Picasso.with(mContext).load(order.getImage_src())
+					.resize(DensityUtils.dp2px(mContext, 48), DensityUtils.dp2px(mContext, 48))
+					.centerCrop().into(viewHolder.mCircleImageShop);
+		}
 
 		// 设置点击事件
 		// 根据评价信息设置外观及点击事件
@@ -123,7 +140,20 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 								T.show(mContext, "评价内容不能为空");
 								return;
 							}
-							T.show(mContext, "评价成功");
+
+							mAppAction.evaluation_create(order.getOrder_id(), Integer.parseInt(map.get("star")), map.get("content"), DateHandleUtil.convertToStandard(new Date()), new ActionCallbackListener<Evaluation>() {
+								@Override
+								public void onSuccess(Evaluation data) {
+									T.show(mContext, "评价成功");
+									order.setEvaluate(true);
+									notifyItemChanged(position);
+								}
+
+								@Override
+								public void onFailure(String errorCode, String errorMessage) {
+									T.show(mContext, errorMessage);
+								}
+							});
 							dialog.dismiss();
 						}
 					});
@@ -141,8 +171,8 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 							.customView(R.layout.dialog_evaluate, true)
 							.positiveText(R.string.agree)
 							.build();
-					RatingBar ratingBar = (RatingBar) dialog.getCustomView().findViewById(R.id.ratingBar);
-					EditText edtContent = (EditText) dialog.getCustomView().findViewById(R.id.edt_content);
+					final RatingBar ratingBar = (RatingBar) dialog.getCustomView().findViewById(R.id.ratingBar);
+					final EditText edtContent = (EditText) dialog.getCustomView().findViewById(R.id.edt_content);
 					// 设置评分条外观
 					Drawable fill = new IconicsDrawable(mContext)
 							.icon(GoogleMaterial.Icon.gmd_star)
@@ -159,12 +189,25 @@ public class OrderFinishedAdapter extends CommonAdapter<Order> {
 					ratingBar.setStarFillDrawable(fill);
 					ratingBar.setStarEmptyDrawable(empty);
 					ratingBar.setStarHalfDrawable(half);
-					ratingBar.setStar(4);
 					ratingBar.setEnabled(false);
 					// 设置评论内容
-					edtContent.setText("很好，味道不错。");
 					edtContent.setEnabled(false);
 
+					mAppAction.evaluation_query(order.getOrder_id(), new ActionCallbackListener<Evaluation>() {
+						@Override
+						public void onSuccess(Evaluation data) {
+							ratingBar.setStar(data.getStar());
+							edtContent.setText(data.getContent());
+						}
+
+						@Override
+						public void onFailure(String errorCode, String errorMessage) {
+							T.show(mContext, errorMessage);
+							// 测试数据
+							ratingBar.setStar(4);
+							edtContent.setText("很好，味道不错。");
+						}
+					});
 					dialog.show();
 				}
 			});

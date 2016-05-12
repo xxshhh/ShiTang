@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.BaseActivity;
@@ -35,6 +36,8 @@ public class ShopFunctionActivity extends BaseActivity {
 	@Bind(R.id.layout_more)
 	LinearLayout mLayoutMore;
 
+	Shop mShop;
+
 	@Override
 	protected int getContentLayoutId() {
 		return R.layout.activity_shop_function;
@@ -42,6 +45,9 @@ public class ShopFunctionActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		// 获取intent
+		Bundle bundle = getIntent().getExtras();
+		mShop = (Shop) bundle.getSerializable("Shop");
 		// 设置toolbar
 		mToolbar.setTitle("店铺功能");
 		setSupportActionBar(mToolbar);
@@ -63,8 +69,7 @@ public class ShopFunctionActivity extends BaseActivity {
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, CreateUpdateShopActivity.class);
 				Bundle bundle = new Bundle();
-				Shop shop = new Shop(1, "测试店铺", "", "6食堂", 0, 0, 0);
-				bundle.putSerializable("Shop", shop);
+				bundle.putSerializable("Shop", mShop);
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
@@ -75,6 +80,7 @@ public class ShopFunctionActivity extends BaseActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, NoticeManagementActivity.class);
+				intent.putExtra("shop_id", mShop.getShop_id());
 				startActivity(intent);
 			}
 		});
@@ -84,6 +90,7 @@ public class ShopFunctionActivity extends BaseActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, DishesCategoryManagementActivity.class);
+				intent.putExtra("shop_id", mShop.getShop_id());
 				startActivity(intent);
 			}
 		});
@@ -93,6 +100,7 @@ public class ShopFunctionActivity extends BaseActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, DishesManagementActivity.class);
+				intent.putExtra("shop_id", mShop.getShop_id());
 				startActivity(intent);
 			}
 		});
@@ -102,6 +110,7 @@ public class ShopFunctionActivity extends BaseActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, OrderManagementActivity.class);
+				intent.putExtra("shop_id", mShop.getShop_id());
 				startActivity(intent);
 			}
 		});
@@ -115,4 +124,19 @@ public class ShopFunctionActivity extends BaseActivity {
 		});
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mAppAction.shop_query_by_user(mApplication.getUser().getUser_id(), new ActionCallbackListener<Shop>() {
+			@Override
+			public void onSuccess(Shop data) {
+				mShop = data;
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+			}
+		});
+	}
 }

@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.xuwenhui.core.AppAction;
+import net.xuwenhui.shitang.AppApplication;
+
 import butterknife.ButterKnife;
 
 /**
@@ -26,6 +29,14 @@ public abstract class BaseFragment extends Fragment {
 	 * 上下文实例
 	 */
 	protected Context mContext;
+	/**
+	 * 应用全局实例
+	 */
+	protected AppApplication mApplication;
+	/**
+	 * 核心层的Action实例
+	 */
+	protected AppAction mAppAction;
 
 	/**
 	 * 获取布局文件Id
@@ -55,6 +66,8 @@ public abstract class BaseFragment extends Fragment {
 		// 字段赋值
 		TAG = getClass().getName();
 		mContext = getActivity();
+		mApplication = (AppApplication) getActivity().getApplication();
+		mAppAction = mApplication.getAppAction();
 		// 注解绑定
 		ButterKnife.bind(this, view);
 		initData();

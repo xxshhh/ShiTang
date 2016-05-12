@@ -78,7 +78,7 @@
                 android:id="@+id/tv_address_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="许文辉 先生 18995629148"
+                android:text="暂无收货地址"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"/>
 
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="海4"
+                android:text="点击选择收货地址"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp"/>
         </LinearLayout>

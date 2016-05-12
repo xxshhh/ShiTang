@@ -11,6 +11,7 @@ import net.xuwenhui.model.Address;
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
 import net.xuwenhui.model.Evaluation;
+import net.xuwenhui.model.Notice;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.model.Shop;
@@ -20,7 +21,7 @@ import java.util.List;
 
 /**
  * AppAction接口的实现类
- * <p>
+ * <p/>
  * Created by xwh on 2016/3/29.
  */
 public class AppActionImpl implements AppAction {
@@ -46,10 +47,6 @@ public class AppActionImpl implements AppAction {
 		}
 		if (FormCheckUtil.isEmpty(password)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "密码为空");
-			return;
-		}
-		if (!FormCheckUtil.checkLength(password, 6, 16)) {
-			listener.onFailure(ErrorCode.PARAM_NULL, "密码长度必须为6-16位");
 			return;
 		}
 
@@ -200,11 +197,7 @@ public class AppActionImpl implements AppAction {
 	@Override
 	public void user_update_info(final int user_id, final String image_src, final String nickname, final ActionCallbackListener<User> listener) {
 		// 参数检查
-		if (FormCheckUtil.isEmpty(nickname)) {
-			listener.onFailure(ErrorCode.PARAM_NULL, "昵称为空");
-			return;
-		}
-		if (!FormCheckUtil.checkLength(nickname, 1, 10)) {
+		if (!FormCheckUtil.checkLength(nickname, 0, 10)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "昵称长度不能超过10位");
 			return;
 		}
@@ -302,7 +295,7 @@ public class AppActionImpl implements AppAction {
 	@Override
 	public void address_create(final int user_id, final String name, final String sex, final String phone_num, final String address_desc, final String note, final ActionCallbackListener<Address> listener) {
 		// 参数检查
-		if (!FormCheckUtil.isEmpty(name)) {
+		if (FormCheckUtil.isEmpty(name)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "名字为空");
 			return;
 		}
@@ -310,7 +303,7 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "名字长度不能超过10位");
 			return;
 		}
-		if (!FormCheckUtil.isEmpty(sex)) {
+		if (FormCheckUtil.isEmpty(sex)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "性别为空");
 			return;
 		}
@@ -382,7 +375,7 @@ public class AppActionImpl implements AppAction {
 	@Override
 	public void address_update(final int address_id, final String name, final String sex, final String phone_num, final String address_desc, final String note, final ActionCallbackListener<Address> listener) {
 		// 参数检查
-		if (!FormCheckUtil.isEmpty(name)) {
+		if (FormCheckUtil.isEmpty(name)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "名字为空");
 			return;
 		}
@@ -390,7 +383,7 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "名字长度不能超过10位");
 			return;
 		}
-		if (!FormCheckUtil.isEmpty(sex)) {
+		if (FormCheckUtil.isEmpty(sex)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "性别为空");
 			return;
 		}
@@ -437,6 +430,29 @@ public class AppActionImpl implements AppAction {
 	}
 
 	@Override
+	public void address_query_by_id(final int address_id, final ActionCallbackListener<Address> listener) {
+		// 请求Api
+		new AsyncTask<Void, Void, ApiResponse<Address>>() {
+
+			@Override
+			protected ApiResponse<Address> doInBackground(Void... voids) {
+				return mApi.address_query_by_id(address_id);
+			}
+
+			@Override
+			protected void onPostExecute(ApiResponse<Address> response) {
+				if (response != null) {
+					if (response.isSuccess()) {
+						listener.onSuccess(response.getData());
+					} else {
+						listener.onFailure(response.getCode(), response.getMessage());
+					}
+				}
+			}
+		}.execute();
+	}
+
+	@Override
 	public void address_query(final int user_id, final ActionCallbackListener<List<Address>> listener) {
 		// 请求Api
 		new AsyncTask<Void, Void, ApiResponse<List<Address>>>() {
@@ -462,7 +478,7 @@ public class AppActionImpl implements AppAction {
 	@Override
 	public void shop_create(final int user_id, final int sort_id, final String name, final String image_src, final String address_desc, final ActionCallbackListener<Shop> listener) {
 		// 参数检查
-		if (!FormCheckUtil.isEmpty(name)) {
+		if (FormCheckUtil.isEmpty(name)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "名字为空");
 			return;
 		}
@@ -470,7 +486,11 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "名字长度不能超过10位");
 			return;
 		}
-		if (!FormCheckUtil.isEmpty(address_desc)) {
+		if (sort_id == 0) {
+			listener.onFailure(ErrorCode.PARAM_NULL, "食堂不能为空");
+			return;
+		}
+		if (FormCheckUtil.isEmpty(address_desc)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "地址描述为空");
 			return;
 		}
@@ -503,7 +523,7 @@ public class AppActionImpl implements AppAction {
 	@Override
 	public void shop_update_info(final int shop_id, final int sort_id, final String name, final String image_src, final String address_desc, final ActionCallbackListener<Shop> listener) {
 		// 参数检查
-		if (!FormCheckUtil.isEmpty(name)) {
+		if (FormCheckUtil.isEmpty(name)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "名字为空");
 			return;
 		}
@@ -511,7 +531,11 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "名字长度不能超过10位");
 			return;
 		}
-		if (!FormCheckUtil.isEmpty(address_desc)) {
+		if (sort_id == 0) {
+			listener.onFailure(ErrorCode.PARAM_NULL, "食堂不能为空");
+			return;
+		}
+		if (FormCheckUtil.isEmpty(address_desc)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "地址描述为空");
 			return;
 		}
@@ -548,7 +572,7 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_NULL, "公告内容为空");
 			return;
 		}
-		if (FormCheckUtil.checkLength(notice, 1, 50)) {
+		if (!FormCheckUtil.checkLength(notice, 1, 50)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "公告内容不能超过50字");
 			return;
 		}
@@ -575,13 +599,13 @@ public class AppActionImpl implements AppAction {
 	}
 
 	@Override
-	public void shop_query_info(final int shop_id, final ActionCallbackListener<Shop> listener) {
+	public void shop_query_by_user(final int user_id, final ActionCallbackListener<Shop> listener) {
 		// 请求Api
 		new AsyncTask<Void, Void, ApiResponse<Shop>>() {
 
 			@Override
 			protected ApiResponse<Shop> doInBackground(Void... voids) {
-				return mApi.shop_query_info(shop_id);
+				return mApi.shop_query_by_user(user_id);
 			}
 
 			@Override
@@ -621,14 +645,68 @@ public class AppActionImpl implements AppAction {
 	}
 
 	@Override
+	public void shop_query_phone(final int shop_id, final ActionCallbackListener<String> listener) {
+		// 请求Api
+		new AsyncTask<Void, Void, ApiResponse<String>>() {
+
+			@Override
+			protected ApiResponse<String> doInBackground(Void... voids) {
+				return mApi.shop_query_phone(shop_id);
+			}
+
+			@Override
+			protected void onPostExecute(ApiResponse<String> response) {
+				if (response != null) {
+					if (response.isSuccess()) {
+						listener.onSuccess(response.getData());
+					} else {
+						listener.onFailure(response.getCode(), response.getMessage());
+					}
+				}
+			}
+		}.execute();
+	}
+
+	@Override
+	public void shop_query(final ActionCallbackListener<List<Shop>> listener) {
+		// 请求Api
+		new AsyncTask<Void, Void, ApiResponse<List<Shop>>>() {
+
+			@Override
+			protected ApiResponse<List<Shop>> doInBackground(Void... voids) {
+				return mApi.shop_query();
+			}
+
+			@Override
+			protected void onPostExecute(ApiResponse<List<Shop>> response) {
+				if (response != null) {
+					if (response.isSuccess()) {
+						listener.onSuccess(response.getData());
+					} else {
+						listener.onFailure(response.getCode(), response.getMessage());
+					}
+				}
+			}
+		}.execute();
+	}
+
+	@Override
 	public void dishes_create(final int shop_id, final int category_id, final String name, final String image_src, final float price, final ActionCallbackListener<Dishes> listener) {
 		// 参数检查
 		if (FormCheckUtil.isEmpty(name)) {
 			listener.onFailure(ErrorCode.PARAM_NULL, "菜品名称为空");
 			return;
 		}
-		if (FormCheckUtil.checkLength(name, 1, 20)) {
+		if (category_id == 0) {
+			listener.onFailure(ErrorCode.PARAM_NULL, "菜品类别不能为空");
+			return;
+		}
+		if (!FormCheckUtil.checkLength(name, 1, 20)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "菜品名称不能超过20字");
+			return;
+		}
+		if (price == 0.0f) {
+			listener.onFailure(ErrorCode.PARAM_NULL, "菜品价格不能为空");
 			return;
 		}
 
@@ -683,8 +761,16 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_NULL, "菜品名称为空");
 			return;
 		}
-		if (FormCheckUtil.checkLength(name, 1, 20)) {
+		if (category_id == 0) {
+			listener.onFailure(ErrorCode.PARAM_NULL, "菜品类别不能为空");
+			return;
+		}
+		if (!FormCheckUtil.checkLength(name, 1, 20)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "菜品名称不能超过20字");
+			return;
+		}
+		if (price == 0.0f) {
+			listener.onFailure(ErrorCode.PARAM_NULL, "菜品价格不能为空");
 			return;
 		}
 
@@ -739,7 +825,7 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_NULL, "菜品类别名称为空");
 			return;
 		}
-		if (FormCheckUtil.checkLength(category_desc, 1, 10)) {
+		if (!FormCheckUtil.checkLength(category_desc, 1, 10)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "菜品类别名称不能超过10字");
 			return;
 		}
@@ -795,7 +881,7 @@ public class AppActionImpl implements AppAction {
 			listener.onFailure(ErrorCode.PARAM_NULL, "菜品类别名称为空");
 			return;
 		}
-		if (FormCheckUtil.checkLength(category_desc, 1, 10)) {
+		if (!FormCheckUtil.checkLength(category_desc, 1, 10)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "菜品类别名称不能超过10字");
 			return;
 		}
@@ -806,6 +892,29 @@ public class AppActionImpl implements AppAction {
 			@Override
 			protected ApiResponse<DishesCategory> doInBackground(Void... voids) {
 				return mApi.dishes_category_update(dishes_category_id, category_desc);
+			}
+
+			@Override
+			protected void onPostExecute(ApiResponse<DishesCategory> response) {
+				if (response != null) {
+					if (response.isSuccess()) {
+						listener.onSuccess(response.getData());
+					} else {
+						listener.onFailure(response.getCode(), response.getMessage());
+					}
+				}
+			}
+		}.execute();
+	}
+
+	@Override
+	public void dishes_category_query_by_id(final int dishes_category_id, final ActionCallbackListener<DishesCategory> listener) {
+		// 请求Api
+		new AsyncTask<Void, Void, ApiResponse<DishesCategory>>() {
+
+			@Override
+			protected ApiResponse<DishesCategory> doInBackground(Void... voids) {
+				return mApi.dishes_category_query_by_id(dishes_category_id);
 			}
 
 			@Override
@@ -847,7 +956,7 @@ public class AppActionImpl implements AppAction {
 	@Override
 	public void order_create(final int user_id, final int shop_id, final int address_id, final String create_time, final float total_price, final String note, final List<OrderItem> orderItemList, final ActionCallbackListener<Order> listener) {
 		// 参数检查
-		if (FormCheckUtil.checkLength(note, 0, 30)) {
+		if (!FormCheckUtil.checkLength(note, 0, 30)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "备注不能超过30字");
 			return;
 		}
@@ -945,7 +1054,7 @@ public class AppActionImpl implements AppAction {
 	@Override
 	public void evaluation_create(final int order_id, final int star, final String content, final String time, final ActionCallbackListener<Evaluation> listener) {
 		// 参数检查
-		if (FormCheckUtil.checkLength(content, 1, 100)) {
+		if (!FormCheckUtil.checkLength(content, 1, 100)) {
 			listener.onFailure(ErrorCode.PARAM_ILLEGAL, "评价内容不能超过100字");
 			return;
 		}
@@ -983,6 +1092,75 @@ public class AppActionImpl implements AppAction {
 
 			@Override
 			protected void onPostExecute(ApiResponse<Evaluation> response) {
+				if (response != null) {
+					if (response.isSuccess()) {
+						listener.onSuccess(response.getData());
+					} else {
+						listener.onFailure(response.getCode(), response.getMessage());
+					}
+				}
+			}
+		}.execute();
+	}
+
+	@Override
+	public void evaluation_query_by_shop(final int shop_id, final ActionCallbackListener<List<Evaluation>> listener) {
+		// 请求Api
+		new AsyncTask<Void, Void, ApiResponse<List<Evaluation>>>() {
+
+			@Override
+			protected ApiResponse<List<Evaluation>> doInBackground(Void... voids) {
+				return mApi.evaluation_query_by_shop(shop_id);
+			}
+
+			@Override
+			protected void onPostExecute(ApiResponse<List<Evaluation>> response) {
+				if (response != null) {
+					if (response.isSuccess()) {
+						listener.onSuccess(response.getData());
+					} else {
+						listener.onFailure(response.getCode(), response.getMessage());
+					}
+				}
+			}
+		}.execute();
+	}
+
+	@Override
+	public void notice_update(final int notice_id, final String title, final String image_src, final ActionCallbackListener<Void> listener) {
+		// 请求Api
+		new AsyncTask<Void, Void, ApiResponse<Void>>() {
+
+			@Override
+			protected ApiResponse<Void> doInBackground(Void... voids) {
+				return mApi.notice_update(notice_id, title, image_src);
+			}
+
+			@Override
+			protected void onPostExecute(ApiResponse<Void> response) {
+				if (response != null) {
+					if (response.isSuccess()) {
+						listener.onSuccess(null);
+					} else {
+						listener.onFailure(response.getCode(), response.getMessage());
+					}
+				}
+			}
+		}.execute();
+	}
+
+	@Override
+	public void notice_query(final ActionCallbackListener<List<Notice>> listener) {
+		// 请求Api
+		new AsyncTask<Void, Void, ApiResponse<List<Notice>>>() {
+
+			@Override
+			protected ApiResponse<List<Notice>> doInBackground(Void... voids) {
+				return mApi.notice_query();
+			}
+
+			@Override
+			protected void onPostExecute(ApiResponse<List<Notice>> response) {
 				if (response != null) {
 					if (response.isSuccess()) {
 						listener.onSuccess(response.getData());

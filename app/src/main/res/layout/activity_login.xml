@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <!-- 用户名 -->
+        <!-- 手机号 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 app:iiv_icon="gmd-phone-android"/>
 
             <EditText
-                android:id="@+id/edt_username"
+                android:id="@+id/edt_phone_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

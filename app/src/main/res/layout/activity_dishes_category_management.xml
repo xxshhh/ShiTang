@@ -10,21 +10,9 @@
         android:id="@+id/appbar"
         layout="@layout/layout_appbar"/>
 
-    <!-- 上传修改 -->
-    <Button
-        android:id="@+id/btn_update_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_common_selector"
-        android:text="上传修改"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_update_category"
         android:layout_below="@id/appbar"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
@@ -81,7 +69,7 @@
                 android:id="@+id/tv_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提示：当前一共有3个菜品类别"
+                android:text="提示：当前一共有0个菜品类别"
                 android:textColor="@color/secondary_text"
                 android:textSize="12dp"/>
 

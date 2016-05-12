@@ -5,8 +5,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.Address;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.util.T;
 
 import butterknife.Bind;
 
@@ -56,7 +59,20 @@ public class OrderDetailActivity extends BaseActivity {
 			mTvOrderId.setText(String.valueOf(order.getOrder_id()));
 			mTvName.setText(order.getName());
 			mTvCreateTime.setText(order.getCreate_time());
-			mTvAddressSummary.setText(order.getAddress_summary());
+			mAppAction.address_query_by_id(order.getOrder_id(), new ActionCallbackListener<Address>() {
+				@Override
+				public void onSuccess(Address data) {
+					String summary = data.getName() + " " + data.getSex() + " "
+							+ data.getPhone_num() + '\n' + data.getAddress_desc();
+					mTvAddressSummary.setText(summary);
+				}
+
+				@Override
+				public void onFailure(String errorCode, String errorMessage) {
+					T.show(mContext, errorMessage);
+					mTvAddressSummary.setText("");
+				}
+			});
 			mTvNote.setText(order.getNote());
 		}
 	}

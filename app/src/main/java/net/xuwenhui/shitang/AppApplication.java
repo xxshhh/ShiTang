@@ -8,7 +8,7 @@ import net.xuwenhui.model.User;
 
 /**
  * Application类，应用级别的操作都放在这里
- * <p/>
+ * <p>
  * Created by xwh on 2016/3/22.
  */
 public class AppApplication extends Application {
@@ -21,6 +21,7 @@ public class AppApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		mAppAction = new AppActionImpl(this);
+//		mUser = new User(1, 3, "18995629148","","http://o6wgg8qjk.bkt.clouddn.com/logo%28origin%29.png","",true);
 	}
 
 	public AppAction getAppAction() {

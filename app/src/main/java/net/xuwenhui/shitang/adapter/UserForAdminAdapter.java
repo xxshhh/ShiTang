@@ -13,9 +13,14 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.core.AppAction;
 import net.xuwenhui.model.User;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.util.DensityUtils;
+import net.xuwenhui.shitang.util.T;
 
 import java.util.List;
 
@@ -30,8 +35,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class UserForAdminAdapter extends CommonAdapter<User> {
 
-	public UserForAdminAdapter(Context context, List<User> dataList) {
+	AppAction mAppAction;
+
+	public UserForAdminAdapter(Context context, List<User> dataList, AppAction appAction) {
 		super(context, dataList);
+		mAppAction = appAction;
 	}
 
 	@Override
@@ -44,9 +52,16 @@ public class UserForAdminAdapter extends CommonAdapter<User> {
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 		ViewHolder viewHolder = (ViewHolder) holder;
 
-		User user = mDataList.get(position);
+		final User user = mDataList.get(position);
 		viewHolder.mTvId.setText(String.valueOf(user.getUser_id()));
 		viewHolder.mTvPhoneNum.setText(user.getPhone_num());
+		if (user.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(viewHolder.mCircleImagePerson);
+		} else {
+			Picasso.with(mContext).load(user.getImage_src())
+					.resize(DensityUtils.dp2px(mContext, 30), DensityUtils.dp2px(mContext, 30))
+					.centerCrop().into(viewHolder.mCircleImagePerson);
+		}
 
 		// 根据用户角色改变布局样式
 		if (user.getRole_id() == 2 || user.is_valid()) {
@@ -64,9 +79,20 @@ public class UserForAdminAdapter extends CommonAdapter<User> {
 							.onPositive(new MaterialDialog.SingleButtonCallback() {
 								@Override
 								public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-									notifyItemRemoved(position);
-									mDataList.remove(position);
-									notifyItemRangeChanged(position, getItemCount());
+									mAppAction.user_check_merchant(user.getUser_id(), true, new ActionCallbackListener<Void>() {
+										@Override
+										public void onSuccess(Void data) {
+											notifyItemRemoved(position);
+											mDataList.remove(position);
+											notifyItemRangeChanged(position, getItemCount());
+										}
+
+										@Override
+										public void onFailure(String errorCode, String errorMessage) {
+											T.show(mContext, errorMessage);
+										}
+									});
+
 								}
 							}).show();
 				}
@@ -82,9 +108,19 @@ public class UserForAdminAdapter extends CommonAdapter<User> {
 							.onPositive(new MaterialDialog.SingleButtonCallback() {
 								@Override
 								public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-									notifyItemRemoved(position);
-									mDataList.remove(position);
-									notifyItemRangeChanged(position, getItemCount());
+									mAppAction.user_check_merchant(user.getUser_id(), false, new ActionCallbackListener<Void>() {
+										@Override
+										public void onSuccess(Void data) {
+											notifyItemRemoved(position);
+											mDataList.remove(position);
+											notifyItemRangeChanged(position, getItemCount());
+										}
+
+										@Override
+										public void onFailure(String errorCode, String errorMessage) {
+											T.show(mContext, errorMessage);
+										}
+									});
 								}
 							}).show();
 				}

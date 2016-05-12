@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -30,7 +29,7 @@ import cn.smssdk.SMSSDK;
 
 /**
  * 注册界面
- * <p/>
+ * <p>
  * Created by xwh on 2016/3/25.
  */
 public class RegisterActivity extends BaseActivity {
@@ -177,9 +176,9 @@ public class RegisterActivity extends BaseActivity {
 							}
 
 							@Override
-							public void onFailure(String code, String message) {
+							public void onFailure(String errorCode, String errorMessage) {
 								ProgressDialogUtil.dismiss();
-								Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+								T.show(mContext, errorMessage);
 							}
 						});
 						break;

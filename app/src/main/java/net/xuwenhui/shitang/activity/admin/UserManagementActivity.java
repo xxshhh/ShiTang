@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.model.User;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.BaseActivity;
 import net.xuwenhui.shitang.adapter.UserForAdminAdapter;
+import net.xuwenhui.shitang.util.T;
 import net.xuwenhui.shitang.view.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -54,13 +56,27 @@ public class UserManagementActivity extends BaseActivity {
 		mListUser.setLayoutManager(new LinearLayoutManager(mContext));
 		mListUser.setItemAnimator(new DefaultItemAnimator());
 		mListUser.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-		List<User> data = new ArrayList<>();
-		for (int i = 1; i <= 20; i++) {
-			User user = new User(i, 2, "1899562914" + i % 10, "", "", "", true);
-			data.add(user);
-		}
-		mUserForAdminAdapter = new UserForAdminAdapter(mContext, data);
-		mListUser.setAdapter(mUserForAdminAdapter);
+		mAppAction.user_query_user(new ActionCallbackListener<List<User>>() {
+			@Override
+			public void onSuccess(List<User> data) {
+				mUserForAdminAdapter = new UserForAdminAdapter(mContext, data, mAppAction);
+				mListUser.setAdapter(mUserForAdminAdapter);
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+				// 测试数据
+				List<User> data = new ArrayList<>();
+				for (int i = 1; i <= 20; i++) {
+					User user = new User(i, 2, "1899562914" + i % 10, "", "", true);
+					data.add(user);
+				}
+
+				mUserForAdminAdapter = new UserForAdminAdapter(mContext, data, mAppAction);
+				mListUser.setAdapter(mUserForAdminAdapter);
+			}
+		});
 	}
 
 	@Override

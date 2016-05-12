@@ -74,10 +74,10 @@
                 android:ellipsize="marquee"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:hint="暂无公告"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text="公告！！！"
                 android:textSize="14sp"/>
         </LinearLayout>
 

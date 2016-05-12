@@ -11,26 +11,26 @@ import java.util.List;
 public class Order implements Serializable {
 
 	private int order_id;
+	private int address_id;
 	private int order_state_id;
 	private String image_src;
 	private String name;
 	private String create_time;
-	private boolean is_evaluate;
+	private boolean evaluate;
 	private float total_price;
-	private String address_summary;
 	private String note;
 
 	private List<OrderItem> orderItemList;
 
-	public Order(int order_id, int order_state_id, String image_src, String name, String create_time, boolean is_evaluate, float total_price, String address_summary, String note, List<OrderItem> orderItemList) {
+	public Order(int order_id, int address_id, int order_state_id, String image_src, String name, String create_time, boolean evaluate, float total_price, String note, List<OrderItem> orderItemList) {
 		this.order_id = order_id;
+		this.address_id = address_id;
 		this.order_state_id = order_state_id;
 		this.image_src = image_src;
 		this.name = name;
 		this.create_time = create_time;
-		this.is_evaluate = is_evaluate;
+		this.evaluate = evaluate;
 		this.total_price = total_price;
-		this.address_summary = address_summary;
 		this.note = note;
 		this.orderItemList = orderItemList;
 	}
@@ -41,6 +41,14 @@ public class Order implements Serializable {
 
 	public void setOrder_id(int order_id) {
 		this.order_id = order_id;
+	}
+
+	public int getAddress_id() {
+		return address_id;
+	}
+
+	public void setAddress_id(int address_id) {
+		this.address_id = address_id;
 	}
 
 	public int getOrder_state_id() {
@@ -76,11 +84,11 @@ public class Order implements Serializable {
 	}
 
 	public boolean is_evaluate() {
-		return is_evaluate;
+		return evaluate;
 	}
 
-	public void setIs_evaluate(boolean is_evaluate) {
-		this.is_evaluate = is_evaluate;
+	public void setEvaluate(boolean evaluate) {
+		this.evaluate = evaluate;
 	}
 
 	public float getTotal_price() {
@@ -89,14 +97,6 @@ public class Order implements Serializable {
 
 	public void setTotal_price(float total_price) {
 		this.total_price = total_price;
-	}
-
-	public String getAddress_summary() {
-		return address_summary;
-	}
-
-	public void setAddress_summary(String address_summary) {
-		this.address_summary = address_summary;
 	}
 
 	public String getNote() {

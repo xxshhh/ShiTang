@@ -21,10 +21,16 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.hedgehog.ratingbar.RatingBar;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.squareup.picasso.Picasso;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.core.AppAction;
+import net.xuwenhui.model.Evaluation;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.OrderDetailActivity;
+import net.xuwenhui.shitang.util.DensityUtils;
+import net.xuwenhui.shitang.util.T;
 
 import java.util.List;
 
@@ -39,8 +45,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class OrderFinishedForMerchantAdapter extends CommonAdapter<Order> {
 
-	public OrderFinishedForMerchantAdapter(Context context, List<Order> dataList) {
+	AppAction mAppAction;
+
+	public OrderFinishedForMerchantAdapter(Context context, List<Order> dataList, AppAction appAction) {
 		super(context, dataList);
+		mAppAction = appAction;
 	}
 
 	@Override
@@ -57,6 +66,13 @@ public class OrderFinishedForMerchantAdapter extends CommonAdapter<Order> {
 		viewHolder.mTvName.setText(order.getName());
 		viewHolder.mTvTime.setText(order.getCreate_time());
 		viewHolder.mTvTotalPrice.setText("总价 ￥" + order.getTotal_price());
+		if (order.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(viewHolder.mCircleImageShop);
+		} else {
+			Picasso.with(mContext).load(order.getImage_src())
+					.resize(DensityUtils.dp2px(mContext, 48), DensityUtils.dp2px(mContext, 48))
+					.centerCrop().into(viewHolder.mCircleImageShop);
+		}
 
 		// 初始化订单项列表
 		viewHolder.mListOrderItem.setLayoutManager(new LinearLayoutManager(mContext));
@@ -66,7 +82,7 @@ public class OrderFinishedForMerchantAdapter extends CommonAdapter<Order> {
 		// 设置点击事件
 		// 根据评价信息设置外观及点击事件
 		if (!order.is_evaluate()) {
-			viewHolder.mBtnEvaluate.setText("等待用户评价...");
+			viewHolder.mBtnEvaluate.setText("用户暂未评价");
 			viewHolder.mBtnEvaluate.setBackgroundColor(Color.BLACK);
 		} else {
 			viewHolder.mBtnEvaluate.setText("查看评价");
@@ -79,8 +95,8 @@ public class OrderFinishedForMerchantAdapter extends CommonAdapter<Order> {
 							.customView(R.layout.dialog_evaluate, true)
 							.positiveText(R.string.agree)
 							.build();
-					RatingBar ratingBar = (RatingBar) dialog.getCustomView().findViewById(R.id.ratingBar);
-					EditText edtContent = (EditText) dialog.getCustomView().findViewById(R.id.edt_content);
+					final RatingBar ratingBar = (RatingBar) dialog.getCustomView().findViewById(R.id.ratingBar);
+					final EditText edtContent = (EditText) dialog.getCustomView().findViewById(R.id.edt_content);
 					// 设置评分条外观
 					Drawable fill = new IconicsDrawable(mContext)
 							.icon(GoogleMaterial.Icon.gmd_star)
@@ -97,12 +113,25 @@ public class OrderFinishedForMerchantAdapter extends CommonAdapter<Order> {
 					ratingBar.setStarFillDrawable(fill);
 					ratingBar.setStarEmptyDrawable(empty);
 					ratingBar.setStarHalfDrawable(half);
-					ratingBar.setStar(4);
 					ratingBar.setEnabled(false);
 					// 设置评论内容
-					edtContent.setText("很好，味道不错。");
 					edtContent.setEnabled(false);
 
+					mAppAction.evaluation_query(order.getOrder_id(), new ActionCallbackListener<Evaluation>() {
+						@Override
+						public void onSuccess(Evaluation data) {
+							ratingBar.setStar(data.getStar());
+							edtContent.setText(data.getContent());
+						}
+
+						@Override
+						public void onFailure(String errorCode, String errorMessage) {
+							T.show(mContext, errorMessage);
+							// 测试数据
+							ratingBar.setStar(4);
+							edtContent.setText("很好，味道不错。");
+						}
+					});
 					dialog.show();
 				}
 			});

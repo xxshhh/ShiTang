@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="18995629148"
+            android:hint="暂无商家电话"
             android:textSize="16sp"/>
     </LinearLayout>
 
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="六食堂前面2号窗口 川味热干面"
+            android:hint="暂无详细地址描述"
             android:textSize="16sp"/>
     </LinearLayout>
 

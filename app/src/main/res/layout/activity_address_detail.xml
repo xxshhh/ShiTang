@@ -149,6 +149,18 @@
             android:gravity="center"
             android:text="确认"
             android:textSize="18sp"/>
+
+        <!-- 删除 -->
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_warning_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="删除"
+            android:textSize="18sp"/>
     </LinearLayout>
 
 </RelativeLayout>

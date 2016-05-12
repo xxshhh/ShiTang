@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.model.Address;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.AddressAdapter;
@@ -20,7 +21,7 @@ import butterknife.Bind;
 
 /**
  * 收货地址
- * <p/>
+ * <p>
  * Created by xwh on 2016/4/28.
  */
 public class AddressActivity extends BaseActivity {
@@ -52,18 +53,8 @@ public class AddressActivity extends BaseActivity {
 				onBackPressed();
 			}
 		});
-
 		// 初始化地址列表
-		mListAddress.setLayoutManager(new LinearLayoutManager(mContext));
-		mListAddress.setItemAnimator(new DefaultItemAnimator());
-		mListAddress.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-		List<Address> data = new ArrayList<>();
-		for (int i = 1; i <= 3; i++) {
-			Address address = new Address(i, "许文辉" + i, "先生", "18995629148", "海4", "");
-			data.add(address);
-		}
-		mAddressAdapter = new AddressAdapter(mContext, data);
-		mListAddress.setAdapter(mAddressAdapter);
+		initAddressList();
 	}
 
 	@Override
@@ -78,4 +69,39 @@ public class AddressActivity extends BaseActivity {
 		});
 	}
 
+	/**
+	 * 初始化地址列表
+	 */
+	private void initAddressList() {
+		mListAddress.setLayoutManager(new LinearLayoutManager(mContext));
+		mListAddress.setItemAnimator(new DefaultItemAnimator());
+		mListAddress.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
+		mAppAction.address_query(mApplication.getUser().getUser_id(), new ActionCallbackListener<List<Address>>() {
+			@Override
+			public void onSuccess(List<Address> data) {
+				mAddressAdapter = new AddressAdapter(mContext, data);
+				mListAddress.setAdapter(mAddressAdapter);
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				// 测试数据
+				List<Address> data = new ArrayList<>();
+				for (int i = 1; i <= 3; i++) {
+					Address address = new Address(i, "许文辉" + i, "先生", "18995629148", "海4", "");
+					data.add(address);
+				}
+
+				mAddressAdapter = new AddressAdapter(mContext, data);
+				mListAddress.setAdapter(mAddressAdapter);
+			}
+		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// 初始化地址列表
+		initAddressList();
+	}
 }

@@ -12,7 +12,6 @@ public class User implements Serializable {
 	private int user_id;
 	private int role_id;
 	private String phone_num;
-	private String password;
 	private String image_src;
 	private String nickname;
 	private boolean is_valid;
@@ -21,11 +20,10 @@ public class User implements Serializable {
 		super();
 	}
 
-	public User(int user_id, int role_id, String phone_num, String password, String image_src, String nickname, boolean is_valid) {
+	public User(int user_id, int role_id, String phone_num, String image_src, String nickname, boolean is_valid) {
 		this.user_id = user_id;
 		this.role_id = role_id;
 		this.phone_num = phone_num;
-		this.password = password;
 		this.image_src = image_src;
 		this.nickname = nickname;
 		this.is_valid = is_valid;
@@ -53,14 +51,6 @@ public class User implements Serializable {
 
 	public void setPhone_num(String phone_num) {
 		this.phone_num = phone_num;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getImage_src() {

@@ -4,6 +4,7 @@ import net.xuwenhui.model.Address;
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
 import net.xuwenhui.model.Evaluation;
+import net.xuwenhui.model.Notice;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.model.Shop;
@@ -13,7 +14,7 @@ import java.util.List;
 
 /**
  * 接收app层的各种Action
- * <p>
+ * <p/>
  * Created by xwh on 2016/3/29.
  */
 public interface AppAction {
@@ -124,6 +125,15 @@ public interface AppAction {
 	void address_update(int address_id, String name, String sex, String phone_num, String address_desc, String note, ActionCallbackListener<Address> listener);
 
 	/**
+	 * 根据id查询收货地址
+	 *
+	 * @param address_id 地址id
+	 * @param listener   回调监听器
+	 * @return
+	 */
+	void address_query_by_id(int address_id, ActionCallbackListener<Address> listener);
+
+	/**
 	 * 查询用户所有收货地址
 	 *
 	 * @param user_id  用户id
@@ -165,12 +175,12 @@ public interface AppAction {
 	void shop_update_notice(int shop_id, String notice, ActionCallbackListener<Shop> listener);
 
 	/**
-	 * 查询店铺基本信息
+	 * 查询商户的店铺
 	 *
-	 * @param shop_id  店铺id
+	 * @param user_id  商户id
 	 * @param listener 回调监听器
 	 */
-	void shop_query_info(int shop_id, ActionCallbackListener<Shop> listener);
+	void shop_query_by_user(int user_id, ActionCallbackListener<Shop> listener);
 
 	/**
 	 * 查询店铺公告
@@ -179,6 +189,21 @@ public interface AppAction {
 	 * @param listener 回调监听器
 	 */
 	void shop_query_notice(int shop_id, ActionCallbackListener<String> listener);
+
+	/**
+	 * 查询店铺商家电话
+	 *
+	 * @param shop_id  店铺id
+	 * @param listener 回调监听器
+	 */
+	void shop_query_phone(int shop_id, ActionCallbackListener<String> listener);
+
+	/**
+	 * 查询所有店铺
+	 *
+	 * @param listener 回调监听器
+	 */
+	void shop_query(ActionCallbackListener<List<Shop>> listener);
 
 	/**
 	 * 新增菜品
@@ -247,6 +272,14 @@ public interface AppAction {
 	void dishes_category_update(int dishes_category_id, String category_desc, ActionCallbackListener<DishesCategory> listener);
 
 	/**
+	 * 查询菜品类别
+	 *
+	 * @param dishes_category_id 菜品类别id
+	 * @param listener           回调监听器
+	 */
+	void dishes_category_query_by_id(int dishes_category_id, ActionCallbackListener<DishesCategory> listener);
+
+	/**
 	 * 查询店铺所有菜品类别
 	 *
 	 * @param shop_id  店铺id
@@ -311,6 +344,31 @@ public interface AppAction {
 	 * @param listener 回调监听器
 	 */
 	void evaluation_query(int order_id, ActionCallbackListener<Evaluation> listener);
+
+	/**
+	 * 查看店铺所有订单评价
+	 *
+	 * @param shop_id  店铺id
+	 * @param listener 回调监听器
+	 */
+	void evaluation_query_by_shop(int shop_id, ActionCallbackListener<List<Evaluation>> listener);
+
+	/**
+	 * 修改公告
+	 *
+	 * @param notice_id 公告id
+	 * @param title     标题
+	 * @param image_src 图片地址
+	 * @param listener  回调监听器
+	 */
+	void notice_update(int notice_id, String title, String image_src, ActionCallbackListener<Void> listener);
+
+	/**
+	 * 查询所有公告
+	 *
+	 * @param listener 回调监听器
+	 */
+	void notice_query(ActionCallbackListener<List<Notice>> listener);
 
 	/**
 	 * 获取七牛图片上传的Token

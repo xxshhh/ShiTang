@@ -1,5 +1,6 @@
 package net.xuwenhui.shitang.activity;
 
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -9,18 +10,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.ViewpagerAdapter;
 import net.xuwenhui.shitang.fragment.DishesFragment;
-import net.xuwenhui.shitang.fragment.EmptyFragment;
 import net.xuwenhui.shitang.fragment.EvaluationFragment;
 import net.xuwenhui.shitang.fragment.ShopInfoFragment;
+import net.xuwenhui.shitang.util.T;
 
 import butterknife.Bind;
 
 /**
  * 店铺详情界面
- * <p>
+ * <p/>
  * Created by xwh on 2016/4/20.
  */
 public class ShopDetailActivity extends BaseActivity {
@@ -40,6 +43,12 @@ public class ShopDetailActivity extends BaseActivity {
 	@Bind(R.id.viewPager)
 	ViewPager mViewPager;
 
+	private Shop mShop;
+
+	public Shop getShop() {
+		return mShop;
+	}
+
 	@Override
 	protected int getContentLayoutId() {
 		return R.layout.activity_shop_detail;
@@ -47,6 +56,9 @@ public class ShopDetailActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		// 获取intent
+		Bundle bundle = getIntent().getExtras();
+		mShop = (Shop) bundle.getSerializable("Shop");
 		// 设置toolbar
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -56,16 +68,11 @@ public class ShopDetailActivity extends BaseActivity {
 				onBackPressed();
 			}
 		});
-		mCollapsingToolbar.setTitle("这是店铺名");
-		// 设置公告
-		mTvNotice.setText("这是一段很长的公告！！！这是一段很长的公告！！！这是一段很长的公告！！！");
-		// 设置Viewpager
-		ViewpagerAdapter adapter = new ViewpagerAdapter(getSupportFragmentManager());
-		adapter.addFragment(new DishesFragment(), "点菜");
-		adapter.addFragment(new EvaluationFragment(), "评价");
-		adapter.addFragment(new ShopInfoFragment(), "商家");
-		mViewPager.setAdapter(adapter);
-		mTabLayout.setupWithViewPager(mViewPager);
+		mCollapsingToolbar.setTitle(mShop.getName());
+		// 初始化公告
+		initNotice();
+		// 初始化Viewpager
+		initViewpager();
 	}
 
 	@Override
@@ -73,4 +80,34 @@ public class ShopDetailActivity extends BaseActivity {
 
 	}
 
+	/**
+	 * 初始化公告
+	 */
+	private void initNotice() {
+		mAppAction.shop_query_notice(mShop.getShop_id(), new ActionCallbackListener<String>() {
+			@Override
+			public void onSuccess(String data) {
+				if (!data.equals("")) {
+					mTvNotice.setText(data);
+				}
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+			}
+		});
+	}
+
+	/**
+	 * 初始化Viewpager
+	 */
+	private void initViewpager() {
+		ViewpagerAdapter adapter = new ViewpagerAdapter(getSupportFragmentManager());
+		adapter.addFragment(new DishesFragment(), "点菜");
+		adapter.addFragment(new EvaluationFragment(), "评价");
+		adapter.addFragment(new ShopInfoFragment(), "商家");
+		mViewPager.setAdapter(adapter);
+		mTabLayout.setupWithViewPager(mViewPager);
+	}
 }

@@ -4,6 +4,7 @@ import net.xuwenhui.model.Address;
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
 import net.xuwenhui.model.Evaluation;
+import net.xuwenhui.model.Notice;
 import net.xuwenhui.model.Order;
 import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.model.Shop;
@@ -13,7 +14,7 @@ import java.util.List;
 
 /**
  * Api接口
- * <p>
+ * <p/>
  * Created by xwh on 2016/3/22.
  */
 public interface Api {
@@ -124,6 +125,14 @@ public interface Api {
 	ApiResponse<Address> address_update(int address_id, String name, String sex, String phone_num, String address_desc, String note);
 
 	/**
+	 * 根据id查询收货地址
+	 *
+	 * @param address_id 地址id
+	 * @return
+	 */
+	ApiResponse<Address> address_query_by_id(int address_id);
+
+	/**
 	 * 查询用户所有收货地址
 	 *
 	 * @param user_id 用户id
@@ -165,12 +174,12 @@ public interface Api {
 	ApiResponse<Shop> shop_update_notice(int shop_id, String notice);
 
 	/**
-	 * 查询店铺基本信息
+	 * 查询商户的店铺
 	 *
-	 * @param shop_id 店铺id
+	 * @param user_id 商户id
 	 * @return
 	 */
-	ApiResponse<Shop> shop_query_info(int shop_id);
+	ApiResponse<Shop> shop_query_by_user(int user_id);
 
 	/**
 	 * 查询店铺公告
@@ -179,6 +188,21 @@ public interface Api {
 	 * @return
 	 */
 	ApiResponse<String> shop_query_notice(int shop_id);
+
+	/**
+	 * 查询店铺商家电话
+	 *
+	 * @param shop_id 店铺id
+	 * @return
+	 */
+	ApiResponse<String> shop_query_phone(int shop_id);
+
+	/**
+	 * 查询所有店铺
+	 *
+	 * @return
+	 */
+	ApiResponse<List<Shop>> shop_query();
 
 	/**
 	 * 新增菜品
@@ -247,6 +271,14 @@ public interface Api {
 	ApiResponse<DishesCategory> dishes_category_update(int dishes_category_id, String category_desc);
 
 	/**
+	 * 查询菜品类别
+	 *
+	 * @param dishes_category_id 菜品类别id
+	 * @return
+	 */
+	ApiResponse<DishesCategory> dishes_category_query_by_id(int dishes_category_id);
+
+	/**
 	 * 查询店铺所有菜品类别
 	 *
 	 * @param shop_id 店铺id
@@ -280,7 +312,7 @@ public interface Api {
 	/**
 	 * 查询用户所有订单
 	 *
-	 * @param user_id 用户id
+	 * @param user_id   用户id
 	 * @return
 	 */
 	ApiResponse<List<Order>> order_query_by_user(int user_id);
@@ -288,7 +320,7 @@ public interface Api {
 	/**
 	 * 查询店铺所有订单
 	 *
-	 * @param shop_id 店铺id
+	 * @param shop_id   店铺id
 	 * @return
 	 */
 	ApiResponse<List<Order>> order_query_by_shop(int shop_id);
@@ -311,6 +343,31 @@ public interface Api {
 	 * @return
 	 */
 	ApiResponse<Evaluation> evaluation_query(int order_id);
+
+	/**
+	 * 查看店铺所有订单评价
+	 *
+	 * @param shop_id 店铺id
+	 * @return
+	 */
+	ApiResponse<List<Evaluation>> evaluation_query_by_shop(int shop_id);
+
+	/**
+	 * 修改公告
+	 *
+	 * @param notice_id 公告id
+	 * @param title     标题
+	 * @param image_src 图片地址
+	 * @return
+	 */
+	ApiResponse<Void> notice_update(int notice_id, String title, String image_src);
+
+	/**
+	 * 查询所有公告
+	 *
+	 * @return
+	 */
+	ApiResponse<List<Notice>> notice_query();
 
 	/**
 	 * 获取七牛图片上传的Token

@@ -31,6 +31,12 @@ public class OrderManagementActivity extends BaseActivity {
 
 	OrderFinishedForMerchantFragment mOrderFinishedForMerchantFragment;
 
+	int shop_id;
+
+	public int getShop_id() {
+		return shop_id;
+	}
+
 	@Override
 	protected int getContentLayoutId() {
 		return R.layout.activity_order_management;
@@ -38,6 +44,8 @@ public class OrderManagementActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		// 获取intent
+		shop_id = getIntent().getIntExtra("shop_id", 0);
 		// 设置toolbar
 		mToolbar.setTitle("订单管理");
 		setSupportActionBar(mToolbar);

@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -16,18 +16,24 @@ import okhttp3.Response;
 
 /**
  * OkHttp引擎处理类
- * <p>
+ * <p/>
  * Created by xwh on 2016/3/29.
  */
 public class OkHttpEngine {
 
 	private final static String TAG = "OkHttpEngine";
-	private final static String SERVER_URL = "http://192.168.1.101:8080/web/";
+	private final static String SERVER_URL = "http://192.168.1.103:8080/web/";
+
+	private OkHttpClient mOkHttpClient;
 
 	private static OkHttpEngine instance = null;
 
 	private OkHttpEngine() {
-
+		mOkHttpClient = new OkHttpClient.Builder()
+				.connectTimeout(5, TimeUnit.SECONDS)
+				.writeTimeout(5, TimeUnit.SECONDS)
+				.readTimeout(5, TimeUnit.SECONDS)
+				.build();
 	}
 
 	public static OkHttpEngine getInstance() {
@@ -44,9 +50,9 @@ public class OkHttpEngine {
 	 * @param typeOfT   泛型参数类型
 	 * @param <T>       泛型参数
 	 * @return
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	public <T> T postHandle(Map<String, String> paramsMap, Type typeOfT) throws IOException {
+	public <T> T postHandle(Map<String, String> paramsMap, Type typeOfT) throws Exception {
 		// 请求表单参数
 		FormBody.Builder builder = new FormBody.Builder();
 		for (String key : paramsMap.keySet()) {
@@ -60,8 +66,7 @@ public class OkHttpEngine {
 				.post(formBody)
 				.build();
 
-		OkHttpClient okHttpClient = new OkHttpClient();
-		Response response = okHttpClient.newCall(request).execute();
+		Response response = mOkHttpClient.newCall(request).execute();
 		if (response.isSuccessful()) {
 			// 返回字符串
 			final String result = response.body().string();

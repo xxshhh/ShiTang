@@ -17,14 +17,19 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.view.IconicsImageView;
 
+import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.model.DishesCategory;
 import net.xuwenhui.model.OrderItem;
+import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.ConfirmOrderActivity;
+import net.xuwenhui.shitang.activity.NeedLoginRegisterActivity;
+import net.xuwenhui.shitang.activity.ShopDetailActivity;
 import net.xuwenhui.shitang.adapter.DishesAdapter;
 import net.xuwenhui.shitang.adapter.DishesCategoryAdapter;
 import net.xuwenhui.shitang.adapter.OrderItem1Adapter;
+import net.xuwenhui.shitang.util.T;
 import net.xuwenhui.shitang.view.DividerItemDecoration;
 
 import java.io.Serializable;
@@ -71,6 +76,10 @@ public class DishesFragment extends BaseFragment {
 
 	OrderItem1Adapter mOrderItem1Adapter;
 
+	Shop mShop;
+
+	float total_price;
+
 	// 菜品数量
 	private Map<Integer, Integer> mDishesCountMap;
 
@@ -81,42 +90,188 @@ public class DishesFragment extends BaseFragment {
 
 	@Override
 	protected void initData() {
+		// 获取Activity的Shop对象
+		mShop = ((ShopDetailActivity) getActivity()).getShop();
+		// 初始化菜品类别列表和菜品列表
+		initDishesCategoryListAndDishesList();
+		// 初始化订单项列表
+		initOrderItemList();
+	}
+
+	@Override
+	protected void initListener() {
+		// 监听购物车上的加、减按钮
+		mOrderItem1Adapter.setOnMyClickListener(new OrderItem1Adapter.onMyClickListener() {
+			@Override
+			public void onAddClickListener(View view, int position) {
+				int dishes_id = mOrderItem1Adapter.getDataList().get(position).getDishes_id();
+				int count = mDishesCountMap.get(dishes_id);
+				mDishesCountMap.put(dishes_id, count + 1);
+				mOrderItem1Adapter.getDataList().get(position).setCount(count + 1);
+				updateBottomCartStyle();
+
+				mDishesAdapter.notifyDataSetChanged();
+				mOrderItem1Adapter.notifyDataSetChanged();
+			}
+
+			@Override
+			public void onSubtractClickListener(View view, int position) {
+				int dishes_id = mOrderItem1Adapter.getDataList().get(position).getDishes_id();
+				int count = mDishesCountMap.get(dishes_id);
+				if (count == 1) {
+					mDishesCountMap.remove(dishes_id);
+					mOrderItem1Adapter.getDataList().remove(position);
+					updateBottomCartStyle();
+				} else {
+					mDishesCountMap.put(dishes_id, count - 1);
+					mOrderItem1Adapter.getDataList().get(position).setCount(count - 1);
+					updateBottomCartStyle();
+				}
+
+				mDishesAdapter.notifyDataSetChanged();
+				mOrderItem1Adapter.notifyDataSetChanged();
+			}
+		});
+
+		// 设置购物车显示
+		mLayoutCartDetail.setVisibility(View.INVISIBLE);
+		mLayoutCheck.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (mLayoutCartDetail.getVisibility() == View.INVISIBLE)
+					mLayoutCartDetail.setVisibility(View.VISIBLE);
+				else {
+					mLayoutCartDetail.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+		mLayoutCheck.setClickable(false);
+
+		// 清空购物车
+		mLayoutCleanCart.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				new MaterialDialog.Builder(mContext)
+						.content("确定要清空购物车吗？")
+						.positiveText(R.string.agree)
+						.negativeText(R.string.disagree)
+						.onPositive(new MaterialDialog.SingleButtonCallback() {
+							@Override
+							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+								mDishesCountMap.clear();
+								mOrderItem1Adapter.getDataList().clear();
+								updateBottomCartStyle();
+
+								mDishesAdapter.notifyDataSetChanged();
+								mOrderItem1Adapter.notifyDataSetChanged();
+							}
+						})
+						.show();
+			}
+		});
+
+		// 下单按钮
+		mBtnOrder.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// 检查用户是否登录
+				if (mApplication.getUser() == null) {
+					Intent intent = new Intent(mContext, NeedLoginRegisterActivity.class);
+					startActivity(intent);
+					return;
+				}
+				Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putInt("shop_id", mShop.getShop_id());
+				bundle.putSerializable("OrderItemList", (Serializable) mOrderItem1Adapter.getDataList());
+				bundle.putFloat("total_price", total_price);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
+		mBtnOrder.setClickable(false);
+	}
+
+	/**
+	 * 初始化菜品类别列表和菜品列表
+	 */
+	private void initDishesCategoryListAndDishesList() {
 		// 初始化菜品类别列表
 		mListDishesCategory.setLayoutManager(new LinearLayoutManager(mContext));
 		mListDishesCategory.setItemAnimator(new DefaultItemAnimator());
 		mListDishesCategory.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-		List<DishesCategory> data1 = new ArrayList<>();
-		for (int i = 1; i <= 3; i++) {
-			DishesCategory dishesCategory = new DishesCategory(i, "类别" + i);
-			data1.add(dishesCategory);
-		}
-		mDishesCategoryAdapter = new DishesCategoryAdapter(mContext, data1);
-		mListDishesCategory.setAdapter(mDishesCategoryAdapter);
+		mAppAction.dishes_category_query(mShop.getShop_id(), new ActionCallbackListener<List<DishesCategory>>() {
+			@Override
+			public void onSuccess(List<DishesCategory> data) {
+				mDishesCategoryAdapter = new DishesCategoryAdapter(mContext, data);
+				mListDishesCategory.setAdapter(mDishesCategoryAdapter);
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+				// 测试数据
+				List<DishesCategory> data = new ArrayList<>();
+				for (int i = 1; i <= 3; i++) {
+					DishesCategory dishesCategory = new DishesCategory(i, "类别" + i);
+					data.add(dishesCategory);
+				}
+
+				mDishesCategoryAdapter = new DishesCategoryAdapter(mContext, data);
+				mListDishesCategory.setAdapter(mDishesCategoryAdapter);
+			}
+		});
 
 		// 初始化菜品列表
 		mListDishes.setLayoutManager(new LinearLayoutManager(mContext));
 		mListDishes.setItemAnimator(new DefaultItemAnimator());
 		mListDishes.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-		List<Dishes> data2 = new ArrayList<>();
-		for (int i = 1; i <= 15; i++) {
-			Dishes dishes = new Dishes(i, "测试菜品" + i, "", 10 - i / 5, (i - 1) / 5 + 1, 99 * i);
-			data2.add(dishes);
-		}
-		mDishesCountMap = new HashMap<>(); // 记录菜品数量
-		mDishesAdapter = new DishesAdapter(mContext, data2, mDishesCountMap);
-		mListDishes.setAdapter(mDishesAdapter);
+		mAppAction.dishes_query(mShop.getShop_id(), new ActionCallbackListener<List<Dishes>>() {
+			@Override
+			public void onSuccess(List<Dishes> data) {
+				mDishesCountMap = new HashMap<>(); // 记录菜品数量
+				mDishesAdapter = new DishesAdapter(mContext, data, mDishesCountMap);
+				mListDishes.setAdapter(mDishesAdapter);
+				// 初始化相关监听器
+				initRelatedListener();
+			}
 
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+				// 测试数据
+				List<Dishes> data = new ArrayList<>();
+				for (int i = 1; i <= 15; i++) {
+					Dishes dishes = new Dishes(i, "测试菜品" + i, "", 10 - i / 5, (i - 1) / 5 + 1, 99 * i);
+					data.add(dishes);
+				}
+
+				mDishesCountMap = new HashMap<>(); // 记录菜品数量
+				mDishesAdapter = new DishesAdapter(mContext, data, mDishesCountMap);
+				mListDishes.setAdapter(mDishesAdapter);
+				// 初始化相关监听器
+				initRelatedListener();
+			}
+		});
+	}
+
+	/**
+	 * 初始化订单项列表
+	 */
+	private void initOrderItemList() {
 		// 初始化订单列表
 		mListOrderItem.setLayoutManager(new LinearLayoutManager(mContext));
 		mListOrderItem.setItemAnimator(new DefaultItemAnimator());
 		mListOrderItem.addItemDecoration(new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL_LIST));
-		List<OrderItem> data3 = new ArrayList<>();
-		mOrderItem1Adapter = new OrderItem1Adapter(mContext, data3);
+		List<OrderItem> data = new ArrayList<>();
+		mOrderItem1Adapter = new OrderItem1Adapter(mContext, data);
 		mListOrderItem.setAdapter(mOrderItem1Adapter);
 	}
 
-	@Override
-	protected void initListener() {
+	/**
+	 * 初始化相关监听器
+	 */
+	private void initRelatedListener() {
 		// 设置两个列表联动
 		mDishesCategoryAdapter.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -205,90 +360,6 @@ public class DishesFragment extends BaseFragment {
 				}
 			}
 		});
-
-		// 监听购物车上的加、减按钮
-		mOrderItem1Adapter.setOnMyClickListener(new OrderItem1Adapter.onMyClickListener() {
-			@Override
-			public void onAddClickListener(View view, int position) {
-				int dishes_id = mOrderItem1Adapter.getDataList().get(position).getDishes_id();
-				int count = mDishesCountMap.get(dishes_id);
-				mDishesCountMap.put(dishes_id, count + 1);
-				mOrderItem1Adapter.getDataList().get(position).setCount(count + 1);
-				updateBottomCartStyle();
-
-				mDishesAdapter.notifyDataSetChanged();
-				mOrderItem1Adapter.notifyDataSetChanged();
-			}
-
-			@Override
-			public void onSubtractClickListener(View view, int position) {
-				int dishes_id = mOrderItem1Adapter.getDataList().get(position).getDishes_id();
-				int count = mDishesCountMap.get(dishes_id);
-				if (count == 1) {
-					mDishesCountMap.remove(dishes_id);
-					mOrderItem1Adapter.getDataList().remove(position);
-					updateBottomCartStyle();
-				} else {
-					mDishesCountMap.put(dishes_id, count - 1);
-					mOrderItem1Adapter.getDataList().get(position).setCount(count - 1);
-					updateBottomCartStyle();
-				}
-
-				mDishesAdapter.notifyDataSetChanged();
-				mOrderItem1Adapter.notifyDataSetChanged();
-			}
-		});
-
-		// 设置购物车显示
-		mLayoutCartDetail.setVisibility(View.INVISIBLE);
-		mLayoutCheck.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (mLayoutCartDetail.getVisibility() == View.INVISIBLE)
-					mLayoutCartDetail.setVisibility(View.VISIBLE);
-				else {
-					mLayoutCartDetail.setVisibility(View.INVISIBLE);
-				}
-			}
-		});
-		mLayoutCheck.setClickable(false);
-
-		// 清空购物车
-		mLayoutCleanCart.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				new MaterialDialog.Builder(mContext)
-						.content("确定要清空购物车吗？")
-						.positiveText(R.string.agree)
-						.negativeText(R.string.disagree)
-						.onPositive(new MaterialDialog.SingleButtonCallback() {
-							@Override
-							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-								mDishesCountMap.clear();
-								mOrderItem1Adapter.getDataList().clear();
-								updateBottomCartStyle();
-
-								mDishesAdapter.notifyDataSetChanged();
-								mOrderItem1Adapter.notifyDataSetChanged();
-							}
-						})
-						.show();
-			}
-		});
-
-		// 下单按钮
-		mBtnOrder.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(mContext, ConfirmOrderActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putSerializable("OrderItemList", (Serializable) mOrderItem1Adapter.getDataList());
-				bundle.putString("TotalPrice", mTvTotalPrice.getText().toString());
-				intent.putExtras(bundle);
-				startActivity(intent);
-			}
-		});
-		mBtnOrder.setClickable(false);
 	}
 
 	/**
@@ -303,6 +374,7 @@ public class DishesFragment extends BaseFragment {
 			mImgCart.setColor(getResources().getColor(R.color.third_text));
 			mBtnOrder.setText("开始选购");
 			mBtnOrder.setBackgroundColor(getResources().getColor(R.color.third_text));
+			total_price = 0.0f;
 			mTvTotalPrice.setText("￥0.0");
 			mTvTotalPrice.setTextColor(getResources().getColor(R.color.third_text));
 		} else {
@@ -311,7 +383,7 @@ public class DishesFragment extends BaseFragment {
 			mImgCart.setColor(getResources().getColor(R.color.colorPrimary));
 			mBtnOrder.setText("选好了");
 			mBtnOrder.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_common_selector));
-			float total_price = 0.0f;
+			total_price = 0.0f;
 			for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
 				total_price += mOrderItem1Adapter.getDataList().get(i).getPrice()
 						* mOrderItem1Adapter.getDataList().get(i).getCount();

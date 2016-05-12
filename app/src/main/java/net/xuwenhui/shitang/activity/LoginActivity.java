@@ -27,8 +27,8 @@ public class LoginActivity extends BaseActivity {
 
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
-	@Bind(R.id.edt_username)
-	EditText mEdtUsername;
+	@Bind(R.id.edt_phone_num)
+	EditText mEdtPhoneNum;
 	@Bind(R.id.edt_password)
 	EditText mEdtPassword;
 	@Bind(R.id.layout_login)
@@ -69,13 +69,14 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void onClick(View view) {
 				ProgressDialogUtil.show(mContext);
-				String phoneNum = mEdtUsername.getText().toString();
+				String phone_num = mEdtPhoneNum.getText().toString();
 				String password = mEdtPassword.getText().toString();
-				mAppAction.user_login(phoneNum, password, new ActionCallbackListener<User>() {
+				mAppAction.user_login(phone_num, password, new ActionCallbackListener<User>() {
 					@Override
 					public void onSuccess(User data) {
 						ProgressDialogUtil.dismiss();
 						T.show(mContext, "登录成功");
+						// 设置全局用户并跳转主界面
 						mApplication.setUser(data);
 						Intent intent = new Intent(mContext, MainActivity.class);
 						startActivity(intent);
@@ -83,9 +84,12 @@ public class LoginActivity extends BaseActivity {
 					}
 
 					@Override
-					public void onFailure(String code, String message) {
+					public void onFailure(String errorCode, String errorMessage) {
 						ProgressDialogUtil.dismiss();
-						T.show(mContext, message);
+						T.show(mContext, errorMessage);
+						// 清空输入框
+						mEdtPhoneNum.setText("");
+						mEdtPassword.setText("");
 					}
 				});
 			}
@@ -99,7 +103,7 @@ public class LoginActivity extends BaseActivity {
 			public void onClick(View view) {
 				new MaterialDialog.Builder(mContext)
 						.title("请选择注册用户类型")
-						.items("普通用户", "商家用户")
+						.items("普通用户", "商家用户(需要管理员审核)")
 						.itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
 							@Override
 							public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {

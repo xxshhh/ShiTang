@@ -8,8 +8,11 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.activity.BaseActivity;
+import net.xuwenhui.shitang.util.T;
 
 import butterknife.Bind;
 
@@ -27,6 +30,8 @@ public class NoticeManagementActivity extends BaseActivity {
 	@Bind(R.id.btn_update_notice)
 	Button mBtnUpdateNotice;
 
+	int shop_id;
+
 	@Override
 	protected int getContentLayoutId() {
 		return R.layout.activity_notice_management;
@@ -34,6 +39,8 @@ public class NoticeManagementActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		// 获取intent
+		shop_id = getIntent().getIntExtra("shop_id", 0);
 		// 设置toolbar
 		mToolbar.setTitle("公告管理");
 		setSupportActionBar(mToolbar);
@@ -47,7 +54,20 @@ public class NoticeManagementActivity extends BaseActivity {
 		});
 
 		// 设置公告
-		mTvNotice.setText("这是一段很长的公告！！！这是一段很长的公告！！！这是一段很长的公告！！！");
+		mAppAction.shop_query_notice(shop_id, new ActionCallbackListener<String>() {
+			@Override
+			public void onSuccess(String data) {
+				if (!data.equals("")) {
+					mTvNotice.setText(data);
+				}
+			}
+
+			@Override
+			public void onFailure(String errorCode, String errorMessage) {
+				T.show(mContext, errorMessage);
+			}
+		});
+
 	}
 
 	@Override
@@ -60,10 +80,22 @@ public class NoticeManagementActivity extends BaseActivity {
 						.title("请输入新公告内容")
 						.negativeText(R.string.disagree)
 						.positiveText(R.string.agree)
-						.input("", "", false, new MaterialDialog.InputCallback() {
+						.input("", mTvNotice.getText().toString(), false, new MaterialDialog.InputCallback() {
 							@Override
-							public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-								mTvNotice.setText(input);
+							public void onInput(@NonNull MaterialDialog dialog, final CharSequence input) {
+								mAppAction.shop_update_notice(shop_id, input.toString(), new ActionCallbackListener<Shop>() {
+									@Override
+									public void onSuccess(Shop data) {
+										T.show(mContext, "公告更新成功");
+										mTvNotice.setText(input.toString());
+									}
+
+									@Override
+									public void onFailure(String errorCode, String errorMessage) {
+										T.show(mContext, errorMessage);
+									}
+								});
+
 							}
 						}).show();
 			}

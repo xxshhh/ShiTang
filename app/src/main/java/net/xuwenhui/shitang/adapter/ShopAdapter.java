@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,8 +78,10 @@ public class ShopAdapter extends CommonAdapter<Shop> {
 		viewHolder.mRatingBar.setStarHalfDrawable(half);
 		viewHolder.mRatingBar.setStar(shop.getAvg_star());
 
-		if (!TextUtils.isEmpty(shop.getImage_src())) {
-			Picasso.with(mContext).load("http://7xjda2.com1.z0.glb.clouddn.com/t1.jpg")
+		if (shop.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(viewHolder.mImgShop);
+		} else {
+			Picasso.with(mContext).load(shop.getImage_src())
 					.resize(DensityUtils.dp2px(mContext, 64), DensityUtils.dp2px(mContext, 64))
 					.centerCrop()
 					.into(viewHolder.mImgShop, new Callback() {
@@ -112,6 +114,9 @@ public class ShopAdapter extends CommonAdapter<Shop> {
 			public void onClick(View view) {
 				T.show(mContext, viewHolder.mTvName.getText());
 				Intent intent = new Intent(mContext, ShopDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("Shop", shop);
+				intent.putExtras(bundle);
 				mContext.startActivity(intent);
 			}
 		});

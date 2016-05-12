@@ -1,7 +1,9 @@
 package net.xuwenhui.shitang.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import net.xuwenhui.model.Address;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.activity.AddressActivity;
 import net.xuwenhui.shitang.activity.AddressDetailActivity;
 
 import java.util.List;
@@ -29,7 +32,7 @@ import butterknife.ButterKnife;
 public class AddressAdapter extends CommonAdapter<Address> {
 
 	// 当前选中地址位置
-	private int current_location = 0;
+	private int current_location = -1;
 
 	public AddressAdapter(Context context, List<Address> dataList) {
 		super(context, dataList);
@@ -64,6 +67,13 @@ public class AddressAdapter extends CommonAdapter<Address> {
 				int position = (int) view.getTag();
 				current_location = position;
 				notifyDataSetChanged();
+
+				Intent returnIntent = new Intent();
+				Bundle bundle = new Bundle();
+				Address address = mDataList.get(current_location);
+				bundle.putSerializable("Address", address);
+				returnIntent.putExtras(bundle);
+				((AddressActivity) mContext).setResult(Activity.RESULT_OK, returnIntent);
 			}
 		});
 		viewHolder.mIconEdit.setOnClickListener(new View.OnClickListener() {

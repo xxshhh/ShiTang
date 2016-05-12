@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 店铺实体类
- * <p>
+ * <p/>
  * Created by xwh on 2016/4/15.
  */
 public class Shop implements Serializable {
@@ -13,16 +13,18 @@ public class Shop implements Serializable {
 	private String name;
 	private String image_src;
 	private String sort_desc;
+	private String address_desc;
 
 	private int delivery_time;
 	private float avg_star;
 	private int sell;
 
-	public Shop(int shop_id, String name, String image_src, String sort_desc, int delivery_time, float avg_star, int sell) {
+	public Shop(int shop_id, String name, String image_src, String sort_desc, String address_desc, int delivery_time, float avg_star, int sell) {
 		this.shop_id = shop_id;
 		this.name = name;
 		this.image_src = image_src;
 		this.sort_desc = sort_desc;
+		this.address_desc = address_desc;
 		this.delivery_time = delivery_time;
 		this.avg_star = avg_star;
 		this.sell = sell;
@@ -58,6 +60,14 @@ public class Shop implements Serializable {
 
 	public void setSort_desc(String sort_desc) {
 		this.sort_desc = sort_desc;
+	}
+
+	public String getAddress_desc() {
+		return address_desc;
+	}
+
+	public void setAddress_desc(String address_desc) {
+		this.address_desc = address_desc;
 	}
 
 	public int getDelivery_time() {

@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="false"
-            android:text="许文辉 先生 1899562914\n海虹公寓4栋"
+            android:hint="暂无收货地址"
             android:textSize="16sp"/>
     </LinearLayout>
 

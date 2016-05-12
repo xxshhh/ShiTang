@@ -15,6 +15,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
+import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.util.ProgressDialogUtil;
 import net.xuwenhui.shitang.util.T;
@@ -155,8 +156,22 @@ public class ForgetPasswordActivity extends BaseActivity {
 						SMSSDK.submitVerificationCode("+86", mPhoneNum, mCode);
 						break;
 					case 3:
-						// 重置密码...(待完善)
+						// 重置密码
 						mPassword = mEdtInput.getText().toString();
+						mAppAction.user_forget_password(mPhoneNum, mPassword, new ActionCallbackListener<Void>() {
+							@Override
+							public void onSuccess(Void data) {
+								ProgressDialogUtil.dismiss();
+								T.show(mContext, "重置密码成功");
+								finish();
+							}
+
+							@Override
+							public void onFailure(String errorCode, String errorMessage) {
+								ProgressDialogUtil.dismiss();
+								T.show(mContext, errorMessage);
+							}
+						});
 						break;
 					default:
 				}

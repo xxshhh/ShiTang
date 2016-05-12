@@ -11,9 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mikepenz.iconics.view.IconicsImageView;
+import com.squareup.picasso.Picasso;
 
 import net.xuwenhui.model.Dishes;
 import net.xuwenhui.shitang.R;
+import net.xuwenhui.shitang.util.DensityUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -63,6 +65,13 @@ public class DishesAdapter extends CommonAdapter<Dishes> {
 		viewHolder.mTvName.setText(dishes.getName());
 		viewHolder.mTvSell.setText("月售" + dishes.getSell() + "份");
 		viewHolder.mTvPrice.setText("￥" + dishes.getPrice());
+		if (dishes.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(viewHolder.mImgDishes);
+		} else {
+			Picasso.with(mContext).load(dishes.getImage_src())
+					.resize(DensityUtils.dp2px(mContext, 64), DensityUtils.dp2px(mContext, 64))
+					.centerCrop().into(viewHolder.mImgDishes);
+		}
 
 		if (mDishesCountMap.size() != 0 && mDishesCountMap.containsKey(dishes.getDishes_id())) {
 			viewHolder.mTvAmount.setText(String.valueOf(mDishesCountMap.get(dishes.getDishes_id())));

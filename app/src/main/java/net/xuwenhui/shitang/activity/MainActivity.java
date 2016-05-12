@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -15,6 +16,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.Badgeable;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.squareup.picasso.Picasso;
 
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.fragment.HomeFragment;
@@ -23,8 +25,10 @@ import net.xuwenhui.shitang.fragment.PersonFragment;
 import net.xuwenhui.shitang.fragment.SettingFragment;
 import net.xuwenhui.shitang.fragment.admin.AdminFragment;
 import net.xuwenhui.shitang.fragment.merchant.ShopFragment;
+import net.xuwenhui.shitang.util.DensityUtils;
 
 import butterknife.Bind;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 主界面
@@ -35,8 +39,18 @@ public class MainActivity extends BaseActivity {
 
 	@Bind(R.id.toolbar)
 	Toolbar mToolbar;
+	@Bind(R.id.frame_content)
+	FrameLayout mFrameContent;
 
 	private Drawer mDrawer;
+
+	/**
+	 * 更新信息
+	 */
+	public void updateInfo() {
+		// 设置抽屉顶部
+		setupDrawerHeader();
+	}
 
 	@Override
 	protected int getContentLayoutId() {
@@ -51,32 +65,13 @@ public class MainActivity extends BaseActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(false);
 		// 设置抽屉导航菜单
-		setupDrawer();
+		setupDrawerMenu();
+		// 设置抽屉顶部
+		setupDrawerHeader();
 	}
 
 	@Override
 	protected void initListener() {
-		/**
-		 * 抽屉顶部点击事件
-		 */
-		if (mApplication.getUser() == null) {
-			// 没登录，则点击跳转登录界面
-			mDrawer.getHeader().setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					Intent intent = new Intent(mContext, LoginActivity.class);
-					startActivity(intent);
-				}
-			});
-		} else {
-			TextView tv_nickname = (TextView) mDrawer.getHeader().findViewById(R.id.tv_nickname);
-			if (mApplication.getUser().getNickname().equals("")) {
-				tv_nickname.setText("昵称");
-			} else {
-				tv_nickname.setText(mApplication.getUser().getNickname());
-			}
-		}
-
 		/**
 		 * 抽屉导航菜单点击事件
 		 */
@@ -134,7 +129,7 @@ public class MainActivity extends BaseActivity {
 	/**
 	 * 设置抽屉导航菜单（分角色）
 	 */
-	private void setupDrawer() {
+	private void setupDrawerMenu() {
 		PrimaryDrawerItem item_home = new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1);
 		PrimaryDrawerItem item_order = new PrimaryDrawerItem().withName(R.string.drawer_item_order).withIcon(GoogleMaterial.Icon.gmd_assignment).withBadge("99").withIdentifier(2);
 		PrimaryDrawerItem item_person = new PrimaryDrawerItem().withName(R.string.drawer_item_person).withIcon(GoogleMaterial.Icon.gmd_person).withIdentifier(3);
@@ -194,6 +189,41 @@ public class MainActivity extends BaseActivity {
 		}
 	}
 
+	/**
+	 * 设置抽屉顶部
+	 */
+	private void setupDrawerHeader() {
+		if (mApplication.getUser() == null) {
+			// 没登录，则点击跳转登录界面
+			CircleImageView circle_image_person = (CircleImageView) mDrawer.getHeader().findViewById(R.id.circle_image_person);
+			TextView tv_nickname = (TextView) mDrawer.getHeader().findViewById(R.id.tv_nickname);
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(circle_image_person);
+			tv_nickname.setText("登录/注册");
+			mDrawer.getHeader().setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Intent intent = new Intent(mContext, LoginActivity.class);
+					startActivity(intent);
+				}
+			});
+		} else {
+			CircleImageView circle_image_person = (CircleImageView) mDrawer.getHeader().findViewById(R.id.circle_image_person);
+			TextView tv_nickname = (TextView) mDrawer.getHeader().findViewById(R.id.tv_nickname);
+			if (mApplication.getUser().getImage_src().equals("")) {
+				Picasso.with(mContext).load(R.mipmap.ic_launcher).into(circle_image_person);
+			} else {
+				Picasso.with(mContext).load(mApplication.getUser().getImage_src())
+						.resize(DensityUtils.dp2px(mContext, 96), DensityUtils.dp2px(mContext, 96))
+						.centerCrop().into(circle_image_person);
+			}
+			if (mApplication.getUser().getNickname().equals("")) {
+				tv_nickname.setText("暂无昵称");
+			} else {
+				tv_nickname.setText(mApplication.getUser().getNickname());
+			}
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -225,4 +255,5 @@ public class MainActivity extends BaseActivity {
 			super.onBackPressed();
 		}
 	}
+
 }
