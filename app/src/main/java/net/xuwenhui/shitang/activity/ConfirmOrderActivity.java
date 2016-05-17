@@ -24,6 +24,7 @@ import net.xuwenhui.model.OrderItem;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.adapter.OrderItem2Adapter;
 import net.xuwenhui.shitang.util.DateHandleUtil;
+import net.xuwenhui.shitang.util.ProgressDialogUtil;
 import net.xuwenhui.shitang.util.T;
 
 import java.util.Date;
@@ -123,11 +124,12 @@ public class ConfirmOrderActivity extends BaseActivity {
 
 	@Override
 	protected void initListener() {
-		// 管理收货地址
+		// 选择地址
 		mLayoutAddress.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, AddressActivity.class);
+				intent.putExtra("flag", false);
 				startActivityForResult(intent, REQUEST_CODE_CHOOSE_ADDRESS);
 			}
 		});
@@ -158,9 +160,11 @@ public class ConfirmOrderActivity extends BaseActivity {
 					T.show(mContext, "请选择一个收货地址！");
 					return;
 				}
+				ProgressDialogUtil.show(mContext);
 				mAppAction.order_create(mApplication.getUser().getUser_id(), shop_id, address.getAddress_id(), DateHandleUtil.convertToStandard(new Date()), total_price, (String) mTvNote.getTag(), orderItemList, new ActionCallbackListener<Order>() {
 					@Override
 					public void onSuccess(Order data) {
+						ProgressDialogUtil.dismiss();
 						T.show(mContext, "订单已生成，请赶快支付。");
 						Intent intent = new Intent(mContext, MainActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -170,6 +174,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 
 					@Override
 					public void onFailure(String errorCode, String errorMessage) {
+						ProgressDialogUtil.dismiss();
 						T.show(mContext, errorMessage);
 					}
 				});

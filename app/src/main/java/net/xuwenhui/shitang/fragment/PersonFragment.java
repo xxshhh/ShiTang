@@ -39,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 我的信息界面
- * <p/>
+ * <p>
  * Created by xwh on 2016/5/2.
  */
 public class PersonFragment extends BaseFragment {
@@ -185,6 +185,7 @@ public class PersonFragment extends BaseFragment {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(mContext, AddressActivity.class);
+				intent.putExtra("flag", true);
 				startActivity(intent);
 			}
 		});

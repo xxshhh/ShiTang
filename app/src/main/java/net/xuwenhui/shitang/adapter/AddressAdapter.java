@@ -26,16 +26,19 @@ import butterknife.ButterKnife;
 
 /**
  * 地址适配器
- * <p/>
+ * <p>
  * Created by xwh on 2016/4/28.
  */
 public class AddressAdapter extends CommonAdapter<Address> {
 
 	// 当前选中地址位置
 	private int current_location = -1;
+	// 用于区分使用场景（true：管理地址，false：选择地址）
+	private boolean flag;
 
-	public AddressAdapter(Context context, List<Address> dataList) {
+	public AddressAdapter(Context context, List<Address> dataList, boolean flag) {
 		super(context, dataList);
+		this.flag = flag;
 	}
 
 	@Override
@@ -60,22 +63,25 @@ public class AddressAdapter extends CommonAdapter<Address> {
 			viewHolder.mIconSelect.setVisibility(View.INVISIBLE);
 		}
 
-		// 设置点击事件
-		viewHolder.mCardAddress.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				int position = (int) view.getTag();
-				current_location = position;
-				notifyDataSetChanged();
+		if (!flag) {
+			// 设置点击事件
+			viewHolder.mCardAddress.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					int position = (int) view.getTag();
+					current_location = position;
+					notifyDataSetChanged();
 
-				Intent returnIntent = new Intent();
-				Bundle bundle = new Bundle();
-				Address address = mDataList.get(current_location);
-				bundle.putSerializable("Address", address);
-				returnIntent.putExtras(bundle);
-				((AddressActivity) mContext).setResult(Activity.RESULT_OK, returnIntent);
-			}
-		});
+					Intent returnIntent = new Intent();
+					Bundle bundle = new Bundle();
+					Address address = mDataList.get(current_location);
+					bundle.putSerializable("Address", address);
+					returnIntent.putExtras(bundle);
+					((AddressActivity) mContext).setResult(Activity.RESULT_OK, returnIntent);
+					((AddressActivity) mContext).finish();
+				}
+			});
+		}
 		viewHolder.mIconEdit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {

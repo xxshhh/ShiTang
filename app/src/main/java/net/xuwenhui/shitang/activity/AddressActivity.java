@@ -35,6 +35,9 @@ public class AddressActivity extends BaseActivity {
 
 	AddressAdapter mAddressAdapter;
 
+	// 用于区分使用场景（true：管理地址，false：选择地址）
+	boolean mFlag;
+
 	@Override
 	protected int getContentLayoutId() {
 		return R.layout.activity_address;
@@ -42,8 +45,13 @@ public class AddressActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
+		// 获取intent
+		mFlag = getIntent().getBooleanExtra("flag", true);
 		// 设置toolbar
-		mToolbar.setTitle("管理地址");
+		if (mFlag)
+			mToolbar.setTitle("管理地址");
+		else
+			mToolbar.setTitle("选择地址");
 		setSupportActionBar(mToolbar);
 		// 设置返回键<-
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,7 +87,7 @@ public class AddressActivity extends BaseActivity {
 		mAppAction.address_query(mApplication.getUser().getUser_id(), new ActionCallbackListener<List<Address>>() {
 			@Override
 			public void onSuccess(List<Address> data) {
-				mAddressAdapter = new AddressAdapter(mContext, data);
+				mAddressAdapter = new AddressAdapter(mContext, data, mFlag);
 				mListAddress.setAdapter(mAddressAdapter);
 			}
 
@@ -92,7 +100,7 @@ public class AddressActivity extends BaseActivity {
 					data.add(address);
 				}
 
-				mAddressAdapter = new AddressAdapter(mContext, data);
+				mAddressAdapter = new AddressAdapter(mContext, data, mFlag);
 				mListAddress.setAdapter(mAddressAdapter);
 			}
 		});
