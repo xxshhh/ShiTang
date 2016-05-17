@@ -130,50 +130,53 @@ public class DishesManagementActivity extends BaseActivity {
 	 * 初始化相关监听器
 	 */
 	private void initRelatedListener() {
-		// 监听编辑和删除事件
-		mDishesForMerchantAdapter.setOnMyClickListener(new DishesForMerchantAdapter.onMyClickListener() {
-			@Override
-			public void onEditClickListener(View view, final int position) {
-				Intent intent = new Intent(mContext, AddEditDishesActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putSerializable("Dishes", mDishesForMerchantAdapter.getDataList().get(position));
-				bundle.putInt("shop_id", shop_id);
-				intent.putExtras(bundle);
-				startActivity(intent);
-			}
+		if (mDishesForMerchantAdapter.getItemCount() != 0) {
 
-			@Override
-			public void onDeleteClickListener(View view, final int position) {
-				final Dishes dishes = mDishesForMerchantAdapter.getDataList().get(position);
-				String name = dishes.getName();
-				SpannableString content = new SpannableString("确定要删除 " + name + " 吗？");
-				content.setSpan(new ForegroundColorSpan(Color.RED), 6, 6 + name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				new MaterialDialog.Builder(mContext)
-						.content(content)
-						.negativeText(R.string.disagree)
-						.positiveText(R.string.agree)
-						.onPositive(new MaterialDialog.SingleButtonCallback() {
-							@Override
-							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-								mAppAction.dishes_delete(dishes.getDishes_id(), new ActionCallbackListener<Void>() {
-									@Override
-									public void onSuccess(Void data) {
-										mDishesForMerchantAdapter.notifyItemRemoved(position);
-										mDishesForMerchantAdapter.getDataList().remove(position);
-										mDishesForMerchantAdapter.notifyItemRangeChanged(position, mDishesForMerchantAdapter.getItemCount());
-										// 更新提示
-										updateTips();
-									}
+			// 监听编辑和删除事件
+			mDishesForMerchantAdapter.setOnMyClickListener(new DishesForMerchantAdapter.onMyClickListener() {
+				@Override
+				public void onEditClickListener(View view, final int position) {
+					Intent intent = new Intent(mContext, AddEditDishesActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("Dishes", mDishesForMerchantAdapter.getDataList().get(position));
+					bundle.putInt("shop_id", shop_id);
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
 
-									@Override
-									public void onFailure(String errorCode, String errorMessage) {
-										T.show(mContext, errorMessage);
-									}
-								});
-							}
-						}).show();
-			}
-		});
+				@Override
+				public void onDeleteClickListener(View view, final int position) {
+					final Dishes dishes = mDishesForMerchantAdapter.getDataList().get(position);
+					String name = dishes.getName();
+					SpannableString content = new SpannableString("确定要删除 " + name + " 吗？");
+					content.setSpan(new ForegroundColorSpan(Color.RED), 6, 6 + name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					new MaterialDialog.Builder(mContext)
+							.content(content)
+							.negativeText(R.string.disagree)
+							.positiveText(R.string.agree)
+							.onPositive(new MaterialDialog.SingleButtonCallback() {
+								@Override
+								public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+									mAppAction.dishes_delete(dishes.getDishes_id(), new ActionCallbackListener<Void>() {
+										@Override
+										public void onSuccess(Void data) {
+											mDishesForMerchantAdapter.notifyItemRemoved(position);
+											mDishesForMerchantAdapter.getDataList().remove(position);
+											mDishesForMerchantAdapter.notifyItemRangeChanged(position, mDishesForMerchantAdapter.getItemCount());
+											// 更新提示
+											updateTips();
+										}
+
+										@Override
+										public void onFailure(String errorCode, String errorMessage) {
+											T.show(mContext, errorMessage);
+										}
+									});
+								}
+							}).show();
+				}
+			});
+		}
 	}
 
 	/**

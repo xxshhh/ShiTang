@@ -272,94 +272,96 @@ public class DishesFragment extends BaseFragment {
 	 * 初始化相关监听器
 	 */
 	private void initRelatedListener() {
-		// 设置两个列表联动
-		mDishesCategoryAdapter.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				int category_position = (int) view.getTag();
-				int category_id = mDishesCategoryAdapter.getDataList().get(category_position).getCategory_id();
-				int first_position = 0;
-				for (int i = 0; i < mDishesAdapter.getItemCount(); i++) {
-					if (mDishesAdapter.getDataList().get(i).getCategory_id() == category_id) {
-						first_position = i;
-						break;
-					}
-				}
-				LinearLayoutManager layoutManager = (LinearLayoutManager) mListDishes.getLayoutManager();
-				layoutManager.scrollToPositionWithOffset(first_position, 0);
-			}
-		});
-		mListDishes.addOnScrollListener(new RecyclerView.OnScrollListener() {
-			@Override
-			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-				super.onScrollStateChanged(recyclerView, newState);
-				LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-				int first_position = layoutManager.findFirstVisibleItemPosition();
-				int category_id = mDishesAdapter.getDataList().get(first_position).getCategory_id();
-				mDishesCategoryAdapter.setCurrentLocation(category_id);
-			}
-		});
-
-		// 监听菜品上的加、减按钮
-		mDishesAdapter.setOnMyClickListener(new DishesAdapter.onMyClickListener() {
-			@Override
-			public void onAddClickListener(View view, int position) {
-				Dishes dishes = mDishesAdapter.getDataList().get(position);
-				int dishes_id = dishes.getDishes_id();
-				if (mDishesCountMap.size() != 0 && mDishesCountMap.containsKey(dishes_id)) {
-					int count = mDishesCountMap.get(dishes_id);
-					mDishesCountMap.put(dishes_id, count + 1);
-					// 更新购物车数据
-					for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
-						if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
-							mOrderItem1Adapter.getDataList().get(i).setCount(count + 1);
+		if (mDishesCategoryAdapter.getItemCount() != 0 && mDishesAdapter.getItemCount() != 0) {
+			// 设置两个列表联动
+			mDishesCategoryAdapter.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					int category_position = (int) view.getTag();
+					int category_id = mDishesCategoryAdapter.getDataList().get(category_position).getCategory_id();
+					int first_position = 0;
+					for (int i = 0; i < mDishesAdapter.getItemCount(); i++) {
+						if (mDishesAdapter.getDataList().get(i).getCategory_id() == category_id) {
+							first_position = i;
 							break;
 						}
 					}
-					updateBottomCartStyle();
-				} else {
-					mDishesCountMap.put(dishes_id, 1);
-					// 更新购物车数据
-					OrderItem orderItem = new OrderItem(dishes_id, dishes.getName(), dishes.getPrice(), 1);
-					mOrderItem1Adapter.getDataList().add(orderItem);
-					updateBottomCartStyle();
+					LinearLayoutManager layoutManager = (LinearLayoutManager) mListDishes.getLayoutManager();
+					layoutManager.scrollToPositionWithOffset(first_position, 0);
 				}
-				mDishesAdapter.notifyDataSetChanged();
-				mOrderItem1Adapter.notifyDataSetChanged();
-			}
+			});
+			mListDishes.addOnScrollListener(new RecyclerView.OnScrollListener() {
+				@Override
+				public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+					super.onScrollStateChanged(recyclerView, newState);
+					LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+					int first_position = layoutManager.findFirstVisibleItemPosition();
+					int category_id = mDishesAdapter.getDataList().get(first_position).getCategory_id();
+					mDishesCategoryAdapter.setCurrentLocation(category_id);
+				}
+			});
 
-			@Override
-			public void onSubtractClickListener(View view, int position) {
-				Dishes dishes = mDishesAdapter.getDataList().get(position);
-				int dishes_id = dishes.getDishes_id();
-				if (mDishesCountMap != null && mDishesCountMap.containsKey(dishes_id)) {
-					int count = mDishesCountMap.get(dishes_id);
-					if (count == 1) {
-						mDishesCountMap.remove(dishes_id);
+			// 监听菜品上的加、减按钮
+			mDishesAdapter.setOnMyClickListener(new DishesAdapter.onMyClickListener() {
+				@Override
+				public void onAddClickListener(View view, int position) {
+					Dishes dishes = mDishesAdapter.getDataList().get(position);
+					int dishes_id = dishes.getDishes_id();
+					if (mDishesCountMap.size() != 0 && mDishesCountMap.containsKey(dishes_id)) {
+						int count = mDishesCountMap.get(dishes_id);
+						mDishesCountMap.put(dishes_id, count + 1);
 						// 更新购物车数据
 						for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
 							if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
-								mOrderItem1Adapter.getDataList().remove(i);
+								mOrderItem1Adapter.getDataList().get(i).setCount(count + 1);
 								break;
 							}
 						}
 						updateBottomCartStyle();
 					} else {
-						mDishesCountMap.put(dishes_id, count - 1);
+						mDishesCountMap.put(dishes_id, 1);
 						// 更新购物车数据
-						for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
-							if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
-								mOrderItem1Adapter.getDataList().get(i).setCount(count - 1);
-								break;
-							}
-						}
+						OrderItem orderItem = new OrderItem(dishes_id, dishes.getName(), dishes.getPrice(), 1);
+						mOrderItem1Adapter.getDataList().add(orderItem);
 						updateBottomCartStyle();
 					}
 					mDishesAdapter.notifyDataSetChanged();
 					mOrderItem1Adapter.notifyDataSetChanged();
 				}
-			}
-		});
+
+				@Override
+				public void onSubtractClickListener(View view, int position) {
+					Dishes dishes = mDishesAdapter.getDataList().get(position);
+					int dishes_id = dishes.getDishes_id();
+					if (mDishesCountMap != null && mDishesCountMap.containsKey(dishes_id)) {
+						int count = mDishesCountMap.get(dishes_id);
+						if (count == 1) {
+							mDishesCountMap.remove(dishes_id);
+							// 更新购物车数据
+							for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
+								if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
+									mOrderItem1Adapter.getDataList().remove(i);
+									break;
+								}
+							}
+							updateBottomCartStyle();
+						} else {
+							mDishesCountMap.put(dishes_id, count - 1);
+							// 更新购物车数据
+							for (int i = 0; i < mOrderItem1Adapter.getDataList().size(); i++) {
+								if (mOrderItem1Adapter.getDataList().get(i).getDishes_id() == dishes_id) {
+									mOrderItem1Adapter.getDataList().get(i).setCount(count - 1);
+									break;
+								}
+							}
+							updateBottomCartStyle();
+						}
+						mDishesAdapter.notifyDataSetChanged();
+						mOrderItem1Adapter.notifyDataSetChanged();
+					}
+				}
+			});
+		}
 	}
 
 	/**

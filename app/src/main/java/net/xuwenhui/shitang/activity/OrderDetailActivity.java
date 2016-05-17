@@ -59,7 +59,7 @@ public class OrderDetailActivity extends BaseActivity {
 			mTvOrderId.setText(String.valueOf(order.getOrder_id()));
 			mTvName.setText(order.getName());
 			mTvCreateTime.setText(order.getCreate_time());
-			mAppAction.address_query_by_id(order.getOrder_id(), new ActionCallbackListener<Address>() {
+			mAppAction.address_query_by_id(order.getAddress_id(), new ActionCallbackListener<Address>() {
 				@Override
 				public void onSuccess(Address data) {
 					String summary = data.getName() + " " + data.getSex() + " "

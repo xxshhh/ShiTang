@@ -163,6 +163,7 @@ public class ConfirmOrderActivity extends BaseActivity {
 					public void onSuccess(Order data) {
 						T.show(mContext, "订单已生成，请赶快支付。");
 						Intent intent = new Intent(mContext, MainActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 						finish();
 					}

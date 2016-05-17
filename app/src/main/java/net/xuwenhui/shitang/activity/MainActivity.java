@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity {
 							//only use toString() if you set the test as String
 							int badge = Integer.valueOf(badgeable.getBadge().toString());
 							if (badge > 0) {
-								badgeable.withBadge(String.valueOf(badge - 1));
+								badgeable.withBadge(String.valueOf("0"));
 								mDrawer.updateItem(drawerItem);
 							}
 						}
@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity {
 	 */
 	private void setupDrawerMenu() {
 		PrimaryDrawerItem item_home = new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(GoogleMaterial.Icon.gmd_home).withIdentifier(1);
-		PrimaryDrawerItem item_order = new PrimaryDrawerItem().withName(R.string.drawer_item_order).withIcon(GoogleMaterial.Icon.gmd_assignment).withBadge("99").withIdentifier(2);
+		PrimaryDrawerItem item_order = new PrimaryDrawerItem().withName(R.string.drawer_item_order).withIcon(GoogleMaterial.Icon.gmd_assignment).withIdentifier(2);
 		PrimaryDrawerItem item_person = new PrimaryDrawerItem().withName(R.string.drawer_item_person).withIcon(GoogleMaterial.Icon.gmd_person).withIdentifier(3);
 		SecondaryDrawerItem item_settings = (SecondaryDrawerItem) new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(4);
 		PrimaryDrawerItem item_shop_management = new PrimaryDrawerItem().withName(R.string.drawer_item_shop).withIcon(GoogleMaterial.Icon.gmd_local_dining).withIdentifier(5);

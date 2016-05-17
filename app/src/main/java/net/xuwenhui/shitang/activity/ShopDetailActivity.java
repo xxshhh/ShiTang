@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import net.xuwenhui.core.ActionCallbackListener;
 import net.xuwenhui.model.Shop;
 import net.xuwenhui.shitang.R;
@@ -68,7 +70,13 @@ public class ShopDetailActivity extends BaseActivity {
 				onBackPressed();
 			}
 		});
+		// 初始化店铺名及图标
 		mCollapsingToolbar.setTitle(mShop.getName());
+		if (mShop.getImage_src().equals("")) {
+			Picasso.with(mContext).load(R.mipmap.ic_launcher).into(mImgShop);
+		} else {
+			Picasso.with(mContext).load(mShop.getImage_src()).into(mImgShop);
+		}
 		// 初始化公告
 		initNotice();
 		// 初始化Viewpager

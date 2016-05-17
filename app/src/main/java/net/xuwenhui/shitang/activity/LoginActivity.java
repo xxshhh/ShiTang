@@ -20,7 +20,7 @@ import butterknife.Bind;
 
 /**
  * 登录界面
- * <p>
+ * <p/>
  * Created by xwh on 2016/3/25.
  */
 public class LoginActivity extends BaseActivity {
@@ -79,6 +79,7 @@ public class LoginActivity extends BaseActivity {
 						// 设置全局用户并跳转主界面
 						mApplication.setUser(data);
 						Intent intent = new Intent(mContext, MainActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 						finish();
 					}

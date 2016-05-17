@@ -69,7 +69,8 @@ public class HomeFragment extends BaseFragment {
 		// 初始化商店列表
 		initShopList();
 		// 初始化FAB
-		initFAB();
+		// initFAB();
+		mFabMenu.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -95,9 +96,9 @@ public class HomeFragment extends BaseFragment {
 			public void onFailure(String errorCode, String errorMessage) {
 				T.show(mContext, "请求图片墙失败，使用默认图片");
 				// 测试数据
-				url_maps.put("KFC", "http://o6wgg8qjk.bkt.clouddn.com/test1.jpg");
-				url_maps.put("新鲜蔬菜", "http://o6wgg8qjk.bkt.clouddn.com/test2.jpg");
-				url_maps.put("星巴克", "http://o6wgg8qjk.bkt.clouddn.com/test3.jpg");
+				url_maps.put("肯德基 炸鸡套餐", "http://o6wgg8qjk.bkt.clouddn.com/default1.jpg");
+				url_maps.put("良品铺子 星座粽", "http://o6wgg8qjk.bkt.clouddn.com/default2.jpg");
+				url_maps.put("麦当劳 愤怒的小鸟", "http://o6wgg8qjk.bkt.clouddn.com/default3.jpg");
 
 				// 设置图片展示墙
 				setupImageDisplay(url_maps);

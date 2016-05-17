@@ -20,7 +20,7 @@ public class T {
 	 */
 	public static void show(Context context, CharSequence message) {
 		if (sToast == null) {
-			sToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+			sToast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 		} else {
 			sToast.setText(message);
 		}

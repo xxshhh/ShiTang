@@ -22,7 +22,7 @@ import okhttp3.Response;
 public class OkHttpEngine {
 
 	private final static String TAG = "OkHttpEngine";
-	private final static String SERVER_URL = "http://192.168.1.103:8080/web/";
+	private final static String SERVER_URL = "http://192.168.1.105:8080/web/";
 
 	private OkHttpClient mOkHttpClient;
 
