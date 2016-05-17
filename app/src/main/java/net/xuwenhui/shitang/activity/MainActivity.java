@@ -1,6 +1,8 @@
 package net.xuwenhui.shitang.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,8 @@ import com.mikepenz.materialdrawer.model.interfaces.Badgeable;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.squareup.picasso.Picasso;
 
+import net.xuwenhui.core.ActionCallbackListener;
+import net.xuwenhui.model.User;
 import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.fragment.HomeFragment;
 import net.xuwenhui.shitang.fragment.OrderFragment;
@@ -64,66 +68,40 @@ public class MainActivity extends BaseActivity {
 		setSupportActionBar(mToolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(false);
-		// 设置抽屉导航菜单
-		setupDrawerMenu();
-		// 设置抽屉顶部
-		setupDrawerHeader();
+		// 自动登录
+		SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+		String user_phone_num = sharedPreferences.getString("user_phone_num", "");
+		String user_password = sharedPreferences.getString("user_password", "");
+		if (!user_phone_num.equals("") && !user_password.equals("")) {
+			mAppAction.user_login(user_phone_num, user_password, new ActionCallbackListener<User>() {
+				@Override
+				public void onSuccess(User data) {
+					mApplication.setUser(data);
+					// 设置抽屉导航菜单
+					setupDrawerMenu();
+					// 设置抽屉顶部
+					setupDrawerHeader();
+				}
+
+				@Override
+				public void onFailure(String errorCode, String errorMessage) {
+					// 设置抽屉导航菜单
+					setupDrawerMenu();
+					// 设置抽屉顶部
+					setupDrawerHeader();
+				}
+			});
+		} else {
+			// 设置抽屉导航菜单
+			setupDrawerMenu();
+			// 设置抽屉顶部
+			setupDrawerHeader();
+		}
 	}
 
 	@Override
 	protected void initListener() {
-		/**
-		 * 抽屉导航菜单点击事件
-		 */
-		mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-			@Override
-			public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-				if (drawerItem != null) {
-					// 设置气泡
-					if (drawerItem instanceof Badgeable) {
-						Badgeable badgeable = (Badgeable) drawerItem;
-						if (badgeable.getBadge() != null) {
-							//note don't do this if your badge contains a "+"
-							//only use toString() if you set the test as String
-							int badge = Integer.valueOf(badgeable.getBadge().toString());
-							if (badge > 0) {
-								badgeable.withBadge(String.valueOf("0"));
-								mDrawer.updateItem(drawerItem);
-							}
-						}
-					}
-					// 跳转界面
-					switch ((int) drawerItem.getIdentifier()) {
-						case 1:
-							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HomeFragment()).commit();
-							mToolbar.setTitle("首页");
-							break;
-						case 2:
-							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new OrderFragment()).commit();
-							mToolbar.setTitle("我的订单");
-							break;
-						case 3:
-							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new PersonFragment()).commit();
-							mToolbar.setTitle("我的信息");
-							break;
-						case 4:
-							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new SettingFragment()).commit();
-							mToolbar.setTitle("设置");
-							break;
-						case 5:
-							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ShopFragment()).commit();
-							mToolbar.setTitle("我的店铺");
-							break;
-						case 6:
-							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new AdminFragment()).commit();
-							mToolbar.setTitle("管理员专属");
-						default:
-					}
-				}
-				return false;
-			}
-		});
-		mDrawer.setSelectionAtPosition(1); // 默认首页，管理员为专属界面
+
 	}
 
 	/**
@@ -187,6 +165,9 @@ public class MainActivity extends BaseActivity {
 							item_settings
 					).build();
 		}
+		// 初始化相关监听器
+		initRelatedListener();
+		mDrawer.setSelectionAtPosition(1); // 默认首页，管理员为专属界面
 	}
 
 	/**
@@ -222,6 +203,61 @@ public class MainActivity extends BaseActivity {
 				tv_nickname.setText(mApplication.getUser().getNickname());
 			}
 		}
+	}
+
+	/**
+	 * 初始化相关监听器
+	 */
+	private void initRelatedListener() {
+		// 抽屉导航菜单点击事件
+		mDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+			@Override
+			public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+				if (drawerItem != null) {
+					// 设置气泡
+					if (drawerItem instanceof Badgeable) {
+						Badgeable badgeable = (Badgeable) drawerItem;
+						if (badgeable.getBadge() != null) {
+							//note don't do this if your badge contains a "+"
+							//only use toString() if you set the test as String
+							int badge = Integer.valueOf(badgeable.getBadge().toString());
+							if (badge > 0) {
+								badgeable.withBadge(String.valueOf("0"));
+								mDrawer.updateItem(drawerItem);
+							}
+						}
+					}
+					// 跳转界面
+					switch ((int) drawerItem.getIdentifier()) {
+						case 1:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HomeFragment()).commit();
+							mToolbar.setTitle("首页");
+							break;
+						case 2:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new OrderFragment()).commit();
+							mToolbar.setTitle("我的订单");
+							break;
+						case 3:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new PersonFragment()).commit();
+							mToolbar.setTitle("我的信息");
+							break;
+						case 4:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new SettingFragment()).commit();
+							mToolbar.setTitle("设置");
+							break;
+						case 5:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ShopFragment()).commit();
+							mToolbar.setTitle("我的店铺");
+							break;
+						case 6:
+							getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new AdminFragment()).commit();
+							mToolbar.setTitle("管理员专属");
+						default:
+					}
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override

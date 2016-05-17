@@ -1,6 +1,7 @@
 package net.xuwenhui.shitang.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import butterknife.Bind;
 
 /**
  * 登录界面
- * <p/>
+ * <p>
  * Created by xwh on 2016/3/25.
  */
 public class LoginActivity extends BaseActivity {
@@ -76,6 +77,13 @@ public class LoginActivity extends BaseActivity {
 					public void onSuccess(User data) {
 						ProgressDialogUtil.dismiss();
 						T.show(mContext, "登录成功");
+						// 存数据到SharedPreferences
+						SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
+						SharedPreferences.Editor editor = preferences.edit();
+						editor.putString("user_phone_num", mEdtPhoneNum.getText().toString());
+						editor.putString("user_password", mEdtPassword.getText().toString());
+						editor.commit();
+
 						// 设置全局用户并跳转主界面
 						mApplication.setUser(data);
 						Intent intent = new Intent(mContext, MainActivity.class);

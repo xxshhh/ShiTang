@@ -1,6 +1,8 @@
 package net.xuwenhui.shitang.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -18,7 +20,7 @@ import butterknife.Bind;
 
 /**
  * 设置界面
- * <p/>
+ * <p>
  * Created by xwh on 2016/5/4.
  */
 public class SettingFragment extends BaseFragment {
@@ -83,6 +85,13 @@ public class SettingFragment extends BaseFragment {
 							@Override
 							public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 								T.show(mContext, "注销用户");
+								// 存数据到SharedPreferences
+								SharedPreferences preferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+								SharedPreferences.Editor editor = preferences.edit();
+								editor.putString("user_phone_num", "");
+								editor.putString("user_password", "");
+								editor.commit();
+
 								((AppApplication) getActivity().getApplication()).setUser(null);
 								startActivity(new Intent(mContext, MainActivity.class));
 								getActivity().finish();
