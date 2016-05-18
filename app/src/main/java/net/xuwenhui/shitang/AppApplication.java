@@ -6,6 +6,8 @@ import net.xuwenhui.core.AppAction;
 import net.xuwenhui.core.AppActionImpl;
 import net.xuwenhui.model.User;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Application类，应用级别的操作都放在这里
  * <p/>
@@ -20,6 +22,10 @@ public class AppApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		// 极光推送
+		JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+		JPushInterface.init(this);     		// 初始化 JPush
+
 		mAppAction = new AppActionImpl(this);
 	}
 

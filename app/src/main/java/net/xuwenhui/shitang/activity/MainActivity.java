@@ -32,6 +32,7 @@ import net.xuwenhui.shitang.fragment.merchant.ShopFragment;
 import net.xuwenhui.shitang.util.DensityUtils;
 
 import butterknife.Bind;
+import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -167,7 +168,23 @@ public class MainActivity extends BaseActivity {
 		}
 		// 初始化相关监听器
 		initRelatedListener();
-		mDrawer.setSelectionAtPosition(1); // 默认首页，管理员为专属界面
+		if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("flag")) {
+			switch (mApplication.getUser().getRole_id()) {
+				case 1:
+					mDrawer.setSelectionAtPosition(1);
+					break;
+				case 2:
+					mDrawer.setSelectionAtPosition(2);
+					break;
+				case 3:
+					mDrawer.setSelectionAtPosition(2);
+					break;
+				default:
+					mDrawer.setSelectionAtPosition(1); // 默认首页，管理员为专属界面
+			}
+		} else {
+			mDrawer.setSelectionAtPosition(1); // 默认首页，管理员为专属界面
+		}
 	}
 
 	/**
@@ -258,6 +275,18 @@ public class MainActivity extends BaseActivity {
 				return false;
 			}
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		JPushInterface.onResume(mContext);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		JPushInterface.onPause(mContext);
 	}
 
 	@Override

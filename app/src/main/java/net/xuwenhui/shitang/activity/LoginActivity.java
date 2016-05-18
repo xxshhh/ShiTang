@@ -3,6 +3,7 @@ package net.xuwenhui.shitang.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +18,11 @@ import net.xuwenhui.shitang.R;
 import net.xuwenhui.shitang.util.ProgressDialogUtil;
 import net.xuwenhui.shitang.util.T;
 
+import java.util.Set;
+
 import butterknife.Bind;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * 登录界面
@@ -77,6 +82,24 @@ public class LoginActivity extends BaseActivity {
 					public void onSuccess(User data) {
 						ProgressDialogUtil.dismiss();
 						T.show(mContext, "登录成功");
+						// 极光推送设置别名（使用用户id作为标识）
+						JPushInterface.setAliasAndTags(mContext, String.valueOf(data.getUser_id()), null, new TagAliasCallback() {
+							@Override
+							public void gotResult(int code, String alias, Set<String> tags) {
+								String logs;
+								switch (code) {
+									case 0:
+										logs = "Set tag and alias success";
+										Log.e(TAG, logs);
+										break;
+
+									default:
+										logs = "Failed with errorCode = " + code;
+										Log.e(TAG, logs);
+								}
+							}
+						});
+
 						// 存数据到SharedPreferences
 						SharedPreferences preferences = getSharedPreferences("user", MODE_PRIVATE);
 						SharedPreferences.Editor editor = preferences.edit();
