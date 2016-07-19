@@ -513,6 +513,7 @@ public class ApiImpl implements Api {
 		paramMap.put("address_id", String.valueOf(address_id));
 		paramMap.put("create_time", create_time);
 		paramMap.put("total_price", String.valueOf(total_price));
+		paramMap.put("note", String.valueOf(note));
 		paramMap.put("orderItemList", new Gson().toJson(orderItemList));
 
 		Type type = new TypeToken<ApiResponse<Order>>() {
